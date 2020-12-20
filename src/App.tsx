@@ -1,24 +1,20 @@
-import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import TsTest from './TsTest';
+import SelectNum from './SelectNum';
+import { useDispatch } from 'react-redux';
+import { actionCreators } from './store/store';
+
 
 function App() {
+  const dispatch = useDispatch(); // 디스패치 함수를 가져옵니다
+  const addList = (newList : number[]) => {
+    dispatch(actionCreators.list(newList))
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SelectNum addList={addList}></SelectNum>
+      <TsTest testprops={"123"}></TsTest>
     </div>
   );
 }

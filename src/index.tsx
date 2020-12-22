@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { compose, createStore } from 'redux';
 import rootReducer from './store/index';
 import { ThemeProvider } from 'styled-components'
-import theme from './theme.'
+import theme from './theme'
 // **** (1) Provider 불러오기
 import { Provider } from 'react-redux'
 import Global from './global'

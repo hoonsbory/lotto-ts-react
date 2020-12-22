@@ -1,12 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
-import TsTest from './TsTest';
-import SelectNum from './SelectNum';
+import TsTest from './pages/Draw';
+import SelectNum from './pages/SelectNum';
 import { useDispatch } from 'react-redux';
 import { actionCreators } from './store/store';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useState } from 'react'
+import styled from 'styled-components'
 
+const RootDiv = styled.div`
+  animation: ${props=> props.theme.fadeUp} .5s linear alternate;
+`
+const HeadLine = styled.h2`
+position: relative;
+bottom: 10vh;
+`
+
+let pcCheck:string = window.navigator.userAgent.indexOf("Mobile") > -1 ? "true" : "false"
+sessionStorage.setItem("mobile",pcCheck)
 
 function App() {
   const dispatch = useDispatch(); // 디스패치 함수를 가져옵니다
@@ -17,10 +26,11 @@ function App() {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Switch>
-        <div className="App">
+        <RootDiv className="App">
+          <HeadLine>로또 추첨기 with TypeScript</HeadLine>
           <Route exact path='/' render={()=> <SelectNum addList={addList}></SelectNum>}></Route>
           <Route path='/result' component={TsTest}></Route>
-        </div>
+        </RootDiv>
       </Switch>
     </Router>
   );

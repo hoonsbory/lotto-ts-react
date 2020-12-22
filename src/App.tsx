@@ -15,11 +15,11 @@ function App() {
   }
   const [a, setA] = useState<number>(123)
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Switch>
         <div className="App">
-          <Route exact path='/hoonsbory/lotto-ts-react' render={()=> <SelectNum addList={addList}></SelectNum>}></Route>
-          <Route path='/hoonsbory/lotto-ts-react/result' component={TsTest}></Route>
+          <Route exact path='/' render={()=> <SelectNum addList={addList}></SelectNum>}></Route>
+          <Route path='/result' component={TsTest}></Route>
         </div>
       </Switch>
     </Router>

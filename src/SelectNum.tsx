@@ -73,7 +73,7 @@ const SelectNum = ({ addList }: props) => {
         }
         if(window.confirm(`로또번호 ${numList} 를 제출하시겠습니까?`)){
             addList(numList)
-            history.push('/hoonsbory/lotto-ts-react/result')
+            history.push('/result')
         }
     }
 

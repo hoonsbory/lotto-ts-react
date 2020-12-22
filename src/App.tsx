@@ -2,8 +2,7 @@ import TsTest from './pages/Draw';
 import SelectNum from './pages/SelectNum';
 import { useDispatch } from 'react-redux';
 import { actionCreators } from './store/store';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { useState } from 'react'
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components'
 
 const RootDiv = styled.div`
@@ -22,7 +21,6 @@ function App() {
   const addList = (newList: number[]) => {
     dispatch(actionCreators.list(newList))
   }
-  const [a, setA] = useState<number>(123)
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Switch>

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import { State, Reducer as reducer } from './store';
+import { State, Reducer} from './store';
 
 export interface StoreState {
-    reducer: State;
+    Reducer: State;
 }
 
 export default combineReducers<StoreState>({
-    reducer
+    Reducer
 });

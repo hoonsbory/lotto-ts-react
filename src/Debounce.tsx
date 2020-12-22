@@ -16,10 +16,10 @@ export function Debounce<Params extends any[]>(
     timeout: number
   ): (...args: Params) => void {
     let timer: NodeJS.Timeout;
-    return useCallback((...args: Params) => {
+    return (...args: Params) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         func(...args);
       }, timeout);
-    },[])
+    }
   }

@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/hoonsbory/lotto-ts-react/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/hoonsbory/lotto-ts-react/static/js/main.aa74ec83.chunk.js",
+    "main.js.map": "/hoonsbory/lotto-ts-react/static/js/main.aa74ec83.chunk.js.map",
+    "runtime-main.js": "/hoonsbory/lotto-ts-react/static/js/runtime-main.0906d1c7.js",
+    "runtime-main.js.map": "/hoonsbory/lotto-ts-react/static/js/runtime-main.0906d1c7.js.map",
+    "static/js/2.45684caf.chunk.js": "/hoonsbory/lotto-ts-react/static/js/2.45684caf.chunk.js",
+    "static/js/2.45684caf.chunk.js.map": "/hoonsbory/lotto-ts-react/static/js/2.45684caf.chunk.js.map",
+    "static/js/3.21dbed35.chunk.js": "/hoonsbory/lotto-ts-react/static/js/3.21dbed35.chunk.js",
+    "static/js/3.21dbed35.chunk.js.map": "/hoonsbory/lotto-ts-react/static/js/3.21dbed35.chunk.js.map",
+    "index.html": "/hoonsbory/lotto-ts-react/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/hoonsbory/lotto-ts-react/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.45684caf.chunk.js.LICENSE.txt": "/hoonsbory/lotto-ts-react/static/js/2.45684caf.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0906d1c7.js",
+    "static/js/2.45684caf.chunk.js",
+    "static/css/main.8c8b27cf.chunk.css",
+    "static/js/main.aa74ec83.chunk.js"
+  ]
+}

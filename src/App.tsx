@@ -1,5 +1,4 @@
 import SelectNum from './pages/SelectNum';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components'
 import ChartSelect from './pages/ChartSelect';
 import SearchLotto from './pages/SearchLotto';

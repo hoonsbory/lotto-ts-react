@@ -38,7 +38,7 @@ const SearchLotto = () => {
             var data = res.data.data.roundSize
             setSelect(data)
             setRoundSelect2(data)
-            setRoundSelect2(data-30)
+            setRoundSelect1(data-30)
             setRoundSize(data)
             document.getElementById("root")!.style.display = "block"
             getNum(data)

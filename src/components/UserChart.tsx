@@ -41,7 +41,7 @@ const UserChart = ({addAList}:props) => {
     }
 
     const getWinData = async () => {
-        Axios.get('https://lotto-server-mongo.herokuapp.com//userWinNum').then(res => {
+        Axios.get('https://lotto-server-mongo.herokuapp.com/userWinNum').then(res => {
             console.log(res.data)
             addAList(res.data)
         })

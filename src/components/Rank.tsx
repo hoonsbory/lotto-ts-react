@@ -82,7 +82,7 @@ const Rank = ({rankResultNum, rankResult,trigger, list,listSize,idx, correct, bo
     }
 
     const sendResult = async (sumResult:RankResult,resultNums:RankResultNum) => {
-        await Axios.post('https://lotto-server-mongo.herokuapp.com:80//winData',{ sumResult : sumResult, resultNums : resultNums})
+        await Axios.post('https://lotto-server-mongo.herokuapp.com//winData',{ sumResult : sumResult, resultNums : resultNums})
         .then(res=> console.log(res.data))
         .catch(err=> console.log(err))
     }

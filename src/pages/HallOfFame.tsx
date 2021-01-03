@@ -19,7 +19,7 @@ const Section = styled.div`
 const HallOfFame = () => {
 
     const getWinData = (rank: string) => {
-        Axios.post('https://lotto-server-mongo.herokuapp.com:80/', {
+        Axios.post('https://lotto-server-mongo.herokuapp.com/', {
             query: `
         query{    
             winDataByRank(rank:"${rank}"){

@@ -29,7 +29,7 @@ const UserChart = ({addAList}:props) => {
 
 
     const getRankData = async () => {
-        Axios.post('https://lotto-server-mongo.herokuapp.com:80/', {query : `
+        Axios.post('https://lotto-server-mongo.herokuapp.com/', {query : `
         query{
             resultSum(_id:"id"){
                 first second third fourth fifth last
@@ -41,7 +41,7 @@ const UserChart = ({addAList}:props) => {
     }
 
     const getWinData = async () => {
-        Axios.get('https://lotto-server-mongo.herokuapp.com:80//userWinNum').then(res => {
+        Axios.get('https://lotto-server-mongo.herokuapp.com//userWinNum').then(res => {
             console.log(res.data)
             addAList(res.data)
         })

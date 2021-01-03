@@ -28,7 +28,7 @@ const SearchLotto = () => {
     var roundSize = useSelector((state:StoreState)=> state.Reducer.recentRound)
 
     const getSize = async () => {
-        await Axios.post('https://lotto-server-mongo.herokuapp.com:80/', {query : `
+        await Axios.post('https://lotto-server-mongo.herokuapp.com/', {query : `
         query{
             roundSize
         }
@@ -45,7 +45,7 @@ const SearchLotto = () => {
 
 
     const getNum = async (num : number) => {
-        await Axios.post('https://lotto-server-mongo.herokuapp.com:80/', {query : `
+        await Axios.post('https://lotto-server-mongo.herokuapp.com/', {query : `
             query{
                 winningNum(_id: ${num}){
                     num1 num2 num3 num4 num5 num6 bonus

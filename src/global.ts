@@ -1,27 +1,36 @@
 import { createGlobalStyle } from 'styled-components'
-
 const GlobalStyle = createGlobalStyle`
-  * {
-    margin: 0;
-    padding: 0;  
-  }
 
-  body {
-    padding: 12px 20px;
-    margin: auto;
-    width: 400px;
-    overflow: hidden;
-    min-height: 100vh;
+  html{
+    scroll-behavior : smooth;
+    @import url('./App.css');
+    font-family : 'Noto Sans' !important;
+  }
+  #root{
     box-sizing: border-box;
+    padding: 12px 20px;
     text-align : center;
     align-items : center;
-    display : grid;
-    color : rgb(70, 77, 82);
+    margin: auto;
+    width: 430px;
+    overflow: hidden;
+    min-height: 100vh;
+    display : none;
+    margin-bottom : 20vh;
   }
-  
-  @media(max-width : 400px){
-    body{
+  .afterload{
+    display : block;
+  }
+  @media(max-width : 414px){
+    #root{
       width : 100%;
+      font-size : 13px;
+    }
+  }
+  @media(max-width : 325px){
+    #root{
+      width : 320px;
+      font-size : 10px;
     }
   }
 `

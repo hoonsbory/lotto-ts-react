@@ -3,31 +3,38 @@ import styled from 'styled-components'
 interface btnProps {
     color?: string
     bg? : string
+    hoverBg? : string
+    float? : string
+    border? : boolean
+    fontSize? : string
 }
-type btnStyle = {
+interface btnStyle {
     color?: string;
     bg?: string;
-    content: string;
+    content: any;
     click?: any;
     id?: string;
+    hoverBg? : string
+    float? : string
+    fontSize? : string
+    border? : boolean
 }
 const Btn = styled.button<btnProps>`
-        border : 0;
-        outline : 0;
-        cursor : pointer;
-        transition:all ease-out .5s;
-        padding : 5px 10px;
+        float : ${props => props.float};
+        border : ${props => props.border ? "1px solid rgba(193,193,193,0.565)" : 0};
         margin-bottom : 5px;
         margin-right : 5px;
         background : ${props => props.bg || "#EAEAEA"};
         color : ${props => props.color || "unset"};
-        border-radius : 10px;
+        border-radius : 5px;
         font-weight : 600;
-        ${sessionStorage.getItem("mobile")==="true" ? '&:active{background : rgb(70, 77, 82); color : white;}': '&:hover{background : rgb(70, 77, 82); color : white;}'}
+        font-size : ${props => props.fontSize || ".9em"} !important;
+        ${props => sessionStorage.getItem("mobile")==="true" ? `&:active{background : ${props.hoverBg || "rgb(70, 77, 82)"}; color : white;}`: `&:hover{background : ${props.hoverBg || "rgb(86,115,235)"}; color : white;}`}
+        ${props => props.theme.noneOutline}
     `
-const Button = ({color,bg,content,click,id}:btnStyle) => {
+const Button = ({float,color,bg,content,click,id,hoverBg,border, fontSize}:btnStyle) => {
     return (
-        <Btn color={color} bg={bg} onClick={click} id={id}> 
+        <Btn fontSize={fontSize} border={border} float={float} hoverBg={hoverBg} color={color} bg={bg} onClick={click} id={id}> 
             {content}
         </Btn>
     )

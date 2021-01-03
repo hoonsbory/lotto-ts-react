@@ -4,10 +4,10 @@ interface styleProps {
     color? : string;
     fontSize? : number;
 }
-type props = {
+interface props {
     color? : string;
     fontSize? : number;
-    content : string;
+    content : any;
 }
 
 
@@ -15,7 +15,7 @@ const Div = styled.div<styleProps>`
     margin-top : 10px;
     margin-bottom : 5px;
     color : ${props => props.color || 'unset'};
-    font-size : ${props => props.fontSize || 'unset'};
+    font-size : ${props => props.fontSize+"px" || 'unset'};
     font-weight : 600;
     display: flex;
     align-items: center;

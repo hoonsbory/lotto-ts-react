@@ -202,7 +202,14 @@ const initialState: State = {
   resultTrigger: false,
   roundSelect1: 1,
   roundSelect2: 1,
-  userResult: {}
+  userResult: {
+    first : 0,
+    second : 0,
+    third : 0,
+    fourth : 0,
+    fifth : 0,
+    last : 0
+  }
 };
 
 // reducers

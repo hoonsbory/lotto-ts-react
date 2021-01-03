@@ -26,7 +26,7 @@ function App() {
   
   return (
         <div className="App">
-          <HeadLine>로또 추첨기 with TypeScript</HeadLine>
+          {/* <HeadLine>로또 추첨기 with TypeScript</HeadLine> */}
           <SearchLotto></SearchLotto>
           <SelectNum></SelectNum>
           {/* <Route path='/result' component={TsTest}></Route> */}

@@ -24,7 +24,9 @@ const SearchLotto = () => {
     const setRoundSelect2 = (value:number) => {
         dispatch(actionCreators.roundSelect2(value))
     }
-
+    const setRoundSelect1 = (value:number) => {
+        dispatch(actionCreators.roundSelect1(value))
+    }
     var roundSize = useSelector((state:StoreState)=> state.Reducer.recentRound)
 
     const getSize = async () => {
@@ -36,6 +38,7 @@ const SearchLotto = () => {
             var data = res.data.data.roundSize
             setSelect(data)
             setRoundSelect2(data)
+            setRoundSelect2(data-30)
             setRoundSize(data)
             document.getElementById("root")!.style.display = "block"
             getNum(data)

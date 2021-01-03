@@ -48,7 +48,7 @@ const AccumulateChart = ({ addAList }: props) => {
 
     const winGraph = (skip: number, limit: number, bonus: boolean, sort: boolean) => {
         if (roundSize === 0) return
-        Axios.post('http://192.168.35.117:7000/winGraph', { skip: skip, limit: limit !== 0 ? limit : 1, bonus: bonus, sort: sort })
+        Axios.post('https://lotto-server-mongo.herokuapp.com:80//winGraph', { skip: skip, limit: limit !== 0 ? limit : 1, bonus: bonus, sort: sort })
             .then(res => {
                 addAList(res.data)
             })

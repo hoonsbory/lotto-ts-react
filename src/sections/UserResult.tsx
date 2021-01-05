@@ -14,7 +14,7 @@ type Props = {
 const FixedDiv = styled.div<Props>`
     position: fixed;
     bottom: ${props => props.upDownBtn ? 0 : -143}px;
-    z-index: 999;
+    z-index: 998;
     width: 400px;
     left: 50%;
     transform: translateX(-50%);

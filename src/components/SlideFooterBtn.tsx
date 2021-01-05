@@ -15,6 +15,7 @@ const BtnDiv = styled.div<props2>`
     background : rgb(86,115,235);
     position : fixed;
     left: 50%;
+    z-index : 998;
     transform: translateX(-50%);
     bottom: ${props => props.upDownBtn ? 148 : 0}px;
     width : 50px;

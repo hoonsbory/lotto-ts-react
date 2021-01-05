@@ -30,7 +30,9 @@ const NumWrapper = styled.div<props>`
 const NameSpan = styled.span`
     font-size : 12px;
     font-weight : 600;
-    margin-right : 10px;
+    margin-bottom : 10px;
+    text-decoration : underline;
+    display : block;
 `
 
 
@@ -88,10 +90,11 @@ const HallOfFame = () => {
             </GroupWrapper>
             {numList.length===0 ? <NobodyWin content="당첨된 사람이 없습니다. 당첨에 도전해보세요!"></NobodyWin>: ''}
             {numList.map((obj,idx) => {
-                var numCheck = idx%2===1 ? true : false
+                var numCheck = idx%2===0 ? true : false
                 return (
+
                     <NumWrapper check={numCheck}>
-                        <NameSpan>{obj.name}</NameSpan>
+                    <NameSpan>{obj.name}</NameSpan>
                     {Object.keys(obj).map(x => {
                         if (x !== "name")
                             return <ResultNum num={obj[x][0]} bonusCorrect={obj[x][1] === 2 ? true : false} correct={obj[x][1] === 1 ? true : false}></ResultNum>

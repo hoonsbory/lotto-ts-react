@@ -24,7 +24,7 @@ const Footer = () => {
         <div>
             <SnsGroup></SnsGroup>
             <Div>
-            본 사이트의 모든 데이터는 로또 공식 홈페이지 동행복권의 자료를 활용하였습니다.
+            본 사이트의 모든 데이터는 로또 공식 홈페이지 <br></br>동행복권의 자료를 활용하였습니다.
                 <P>버그 제보 및 문의</P>
                 <Span>개발자 신재훈 - </Span><A href="mailto:hoonsbory@gmail.com">hoonsbory@gmail.com</A>
             </Div>

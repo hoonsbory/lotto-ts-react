@@ -10,7 +10,7 @@ const Bg = styled.div`
     position : fixed;
     background : rgba(0,0,0,.5);
     display : none;
-    transition : all ease-out .5s;
+    transition : all ease-out .3s;
     z-index : 999;
 `
 

@@ -22,7 +22,7 @@ const BtnDiv = styled.div<props2>`
     box-shadow : rgba(0, 0, 0, 0.28) -1px 1px 20px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
-    transition:all ease-out .5s;
+    transition:all ease-out .3s;
     cursor : pointer;
     @media(max-height : 568px){
         bottom: ${props => props.upDownBtn ? 110 : 0}px;

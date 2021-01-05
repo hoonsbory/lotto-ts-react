@@ -23,7 +23,7 @@ const FixedDiv = styled.div<Props>`
     border-top-right-radius: 50px;
     border-top-left-radius: 50px;
     box-shadow : rgba(0, 0, 0, 0.28) -1px 1px 20px;
-    transition:all ease-out .5s;
+    transition:all ease-out .3s;
     overflow-y : auto;
     @media(max-height : 568px){
         height : 110px;

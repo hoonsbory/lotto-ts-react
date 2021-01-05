@@ -6,7 +6,7 @@ const Head = styled.h3`
     color : white;
     border-radius : 15px;
     padding : 5px 10px;
-    transition:all ease-out .5s;
+    transition:all ease-out .3s;
     white-space: nowrap;
 `
 

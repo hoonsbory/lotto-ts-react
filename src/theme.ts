@@ -19,7 +19,7 @@ const theme = {
   noneOutline: css`
     outline : 0;
     cursor : pointer;
-    transition:all ease-out .5s;
+    transition:all ease-out .3s;
     padding : 4px 8px;
     font-size : .9em;
     `,

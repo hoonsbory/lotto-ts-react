@@ -16,6 +16,10 @@ type props ={
 const GroupWrapper = styled.div`
     margin-bottom : 15px;
 `
+const ScrollList = styled.div`
+    overflow-y : auto;
+    max-height : ${window.innerHeight / 2}px;
+`
 
 const Section = styled.div`
     ${props=> props.theme.sectionCss}
@@ -88,6 +92,7 @@ const HallOfFame = () => {
             <GroupWrapper>
             <LineDiv content={<ButtonGroup content={["1등", "2등", "3등"]} selected={selectBtn} click={[selected, selected, selected]}></ButtonGroup>}></LineDiv>
             </GroupWrapper>
+            <ScrollList>
             {numList.length===0 ? <NobodyWin content="당첨된 사람이 없습니다. 당첨에 도전해보세요!"></NobodyWin>: ''}
             {numList.map((obj,idx) => {
                 var numCheck = idx%2===0 ? true : false
@@ -102,6 +107,7 @@ const HallOfFame = () => {
                     </NumWrapper>
                 )
             })}
+            </ScrollList>
         </Section>
     )
 }

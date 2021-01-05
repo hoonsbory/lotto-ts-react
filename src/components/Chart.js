@@ -168,7 +168,7 @@ const Chart = () => {
                         height={300}
                         width={100}
                     /> */}
-                    <canvas height="300px" id="chartFixedTooltips"></canvas>
+                    <canvas  height="300px" id="chartFixedTooltips"></canvas>
                 </ChartWrapper>
             </ScrollDiv>
         </div>

@@ -28,7 +28,7 @@ const NumSpan = styled.button<numSpanProps>`
         outline : 0;
         cursor : pointer;
         border : 0;
-        transition:all ease-out .5s;
+        transition:all ease-out .3s;
         padding : 8px 0px;
         margin-bottom : 5px;
         margin-right : 5px;

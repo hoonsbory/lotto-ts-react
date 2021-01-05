@@ -6,6 +6,7 @@ import NaverBlog from '../SnsIcon/NaverBlog'
 import LineDiv from './LineDiv'
 import styled, { css } from 'styled-components'
 import KakaoStory from '../SnsIcon/KakaoStory'
+import { Debounce } from '../Debounce'
 
 const BtnCss = css`
     border : 0;
@@ -42,10 +43,10 @@ const HiddenTextArea = styled.textarea`
 ` 
 const ToastMsg = styled.p`
     color : gray;
-    transition:all ease-out .5s;
+    transition:all ease-out .3s;
     opacity : 0;
     position : relative;
-    top : -10px;
+    font-size : .9em;
 `
 
 const SnsGroup = () => {
@@ -89,19 +90,18 @@ const SnsGroup = () => {
     var popupY = (window.screen.height / 2) - (popupHeight / 2);
     var size = 'status=no, height=' + popupHeight + ', width=' + popupWidth + ', left=' + popupX + ', top=' + popupY;
     var url = "https://hoonsbory.github.io/lotto-ts-react/"
-    function facebook() {
+    const  facebook = Debounce(() => {
         window.open('http://www.facebook.com/sharer/sharer.php?u=' + url, "name", size)
-    }
-    function kakaoStory() {
+    }, 200)
+    const  kakaoStory = Debounce(() => {
         window.open('https://story.kakao.com/share?url=' + url, "name", size)
-    }
-    function naver() {
+    }, 200)
+    const  naver = Debounce(() => {
         window.open('http://share.naver.com/web/shareView.nhn?url=' + url + "&title=퍼스널컬러", "name", size)
-    }
-    function urlCopy() {
+    }, 200)
+    const urlCopy = Debounce(() => {
         var toast = document.getElementById("toast")
         toast.style.opacity = 1
-        toast.style.top = "0";
         var copyText = document.getElementById("copy");
         copyText.select();
         document.execCommand("Copy");
@@ -109,9 +109,8 @@ const SnsGroup = () => {
 
         setTimeout(() => {
             toast.style.opacity = 0
-            toast.style.top = "-10px"
-        }, 1000);
-    }
+        }, 1500);
+    },500)
  
     return (
         <div>

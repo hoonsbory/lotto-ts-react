@@ -28,6 +28,7 @@ const Btn = styled.button<btnProps>`
         color : ${props => props.color || "unset"};
         border-radius : 5px;
         font-weight : 600;
+        white-space: nowrap;
         font-size : ${props => props.fontSize || ".9em"} !important;
         ${props => sessionStorage.getItem("mobile")==="true" ? `&:active{background : ${props.hoverBg || "rgb(70, 77, 82)"}; color : white;}`: `&:hover{background : ${props.hoverBg || "rgb(86,115,235)"}; color : white;}`}
         ${props => props.theme.noneOutline}

@@ -10,6 +10,10 @@ import theme from './theme'
 // **** (1) Provider 불러오기
 import { Provider } from 'react-redux'
 import Global from './global'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
+
 
 declare global {
   interface Window {

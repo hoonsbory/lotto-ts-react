@@ -29,6 +29,7 @@ const Span = styled.span`
     margin-right : 10px;
     margin-top : 7px;
     font-weight : 600;
+    white-space: nowrap;
 `
 const AccumulateChart = ({ addAList }: props) => {
 
@@ -48,7 +49,7 @@ const AccumulateChart = ({ addAList }: props) => {
 
     const winGraph = (skip: number, limit: number, bonus: boolean, sort: boolean) => {
         if (roundSize === 0) return
-        Axios.post('https://lotto-server-mongo.herokuapp.com/winGraph', { skip: skip, limit: limit !== 0 ? limit : 1, bonus: bonus, sort: sort })
+        Axios.post(`${process.env.REACT_APP_URL}/winGraph`, { skip: skip, limit: limit !== 0 ? limit : 1, bonus: bonus, sort: sort })
             .then(res => {
                 addAList(res.data)
             })

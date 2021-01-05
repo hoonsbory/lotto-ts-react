@@ -21,8 +21,12 @@ type btnProps = {
 
 const Group = styled.div`
 margin-right : 10px;
+    
 `
 const btnCss = css<btnProps>`
+    margin-left: 0;
+    margin-right: 0;
+    white-space: nowrap;
     ${props => props.theme.noneOutline}
     border : 1px solid rgba(193,193,193,0.565);
     background : ${props => props.selected ? (props.selectBg || "rgb(224, 230, 251)") : (props.bg || "white")};

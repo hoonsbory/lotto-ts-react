@@ -23,13 +23,14 @@ const Span = styled.span`
     color : gray;
     margin-right : 10px;
     margin-top : 7px;
+    word-break : keep-all;
 `
 
 const UserChart = ({addAList}:props) => {
 
 
     const getRankData = async () => {
-        Axios.post('https://lotto-server-mongo.herokuapp.com/', {query : `
+        Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
         query{
             resultSum(_id:"id"){
                 first second third fourth fifth last
@@ -41,7 +42,7 @@ const UserChart = ({addAList}:props) => {
     }
 
     const getWinData = async () => {
-        Axios.get('https://lotto-server-mongo.herokuapp.com/userWinNum').then(res => {
+        Axios.get(`${process.env.REACT_APP_URL}/userWinNum`).then(res => {
             console.log(res.data)
             addAList(res.data)
         })
@@ -91,7 +92,7 @@ const UserChart = ({addAList}:props) => {
         <div>
             
 
-            <LineDiv content={<FlexDiv><Span>유저들의 가상 로또</Span><ButtonGroup content={["당첨 비율", "당첨 번호"]} selected={btnSelect} click={[rankChart,winNumChart]}></ButtonGroup></FlexDiv>}></LineDiv>
+            <LineDiv content={<FlexDiv><Span>유저들의 가상 로또</Span><ButtonGroup content={["당첨 비율", "당첨 번호(4등 이상)"]} selected={btnSelect} click={[rankChart,winNumChart]}></ButtonGroup></FlexDiv>}></LineDiv>
             
             {btnSelect[0] ? <PieChart rankList={rankList}></PieChart> : <Chart></Chart>}
         </div>

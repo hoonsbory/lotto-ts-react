@@ -117,10 +117,9 @@ function accumulateList(newList: number[]) {
     newList: newList
   };
 }
-function resizeOpt(value: boolean) {
+function resizeOpt() {
   return {
-    type: RESIZE,
-    value: value
+    type: RESIZE
   };
 }
 function graphSizeUp(size: number) {
@@ -231,7 +230,7 @@ export function Reducer(
     case RESIZE:
       return {
         ...state,
-        resizeOpt: action.value
+        resizeOpt: state.resizeOpt ? false : true
       };
     case GRAPHSIZE:
       return {

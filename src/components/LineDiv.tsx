@@ -19,6 +19,7 @@ const Div = styled.div<styleProps>`
     font-weight : 600;
     display: flex;
     align-items: center;
+    white-space: nowrap;
     &:before{
         content: "";
         margin-right : 8px;

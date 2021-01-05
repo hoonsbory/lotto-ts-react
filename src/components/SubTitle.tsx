@@ -7,7 +7,7 @@ const Head = styled.h3`
     border-radius : 15px;
     padding : 5px 10px;
     transition:all ease-out .5s;
-
+    white-space: nowrap;
 `
 
 type props = {

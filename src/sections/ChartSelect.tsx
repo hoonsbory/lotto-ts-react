@@ -25,8 +25,8 @@ const ChartSelect = () => {
     const addAList = (newList: number[]) => {
         dispatch(actionCreators.accumulateList(newList))
     }
-    const resizeOpt = (value: boolean) => {
-        dispatch(actionCreators.resizeOpt(value))
+    const resizeOpt = () => {
+        dispatch(actionCreators.resizeOpt())
     }
     const graphSizeUp = (size: number) => {
         dispatch(actionCreators.graphSizeUp(size))
@@ -39,23 +39,18 @@ const ChartSelect = () => {
 
     const sizeUp = (idx: number) => {
         selected(idx)
-        resizeOpt(true)
         graphSizeUp(size + 400)
         document.body.getElementsByTagName("canvas")[0].style.width = `${size + 400}px`
-        setTimeout(() => {
-            resizeOpt(false)
-        }, 100);
+        resizeOpt()
+        
 
     }
     const sizeDown = (idx: number) => {
         if (size < 361) return
         selected(idx)
-        resizeOpt(true)
         graphSizeDown(size - 400)
         document.body.getElementsByTagName("canvas")[0].style.width = `${size - 400}px`
-        setTimeout(() => {
-            resizeOpt(false)
-        }, 100);
+        resizeOpt()
     }
 
     const [btnSelect, setBtnSelect] = useState<any[]>([])

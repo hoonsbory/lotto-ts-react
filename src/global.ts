@@ -3,12 +3,14 @@ const GlobalStyle = createGlobalStyle`
 
   html{
     scroll-behavior : smooth;
+    -webkit-overflow-scrolling: touch;
     @import url('./App.css');
     font-family : 'Noto Sans' !important;
   }
   #root{
     box-sizing: border-box;
     padding: 12px 20px;
+    color : #262626;
     text-align : center;
     align-items : center;
     margin: auto;

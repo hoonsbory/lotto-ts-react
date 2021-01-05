@@ -3,12 +3,15 @@ export class RankResultNum {
     private firstNums! : number[][]
     private secondNums! : number[][]
     private thirdNums! : number[][]
+    private fourthNums! : number[][]
     private winnerName! : string
     
     constructor() {
         this.firstNums = []
         this.secondNums = []
         this.thirdNums = []
+        this.fourthNums = []
+        this.winnerName = ''
     }
     
     public  setFirstNums(value:number[]) {
@@ -19,6 +22,9 @@ export class RankResultNum {
     }
     public  setThirdNums(value:number[]) {
         this.thirdNums.push(value)
+    }
+    public  setFourthNums(value:number[]) {
+        this.fourthNums.push(value)
     }
     public  setWinnerName(value:string) {
         this.winnerName = value

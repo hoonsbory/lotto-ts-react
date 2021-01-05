@@ -2,24 +2,34 @@ import React from 'react'
 import styled from 'styled-components'
 import DoubleArrow from './DoubleArrow'
 
-const BtnDiv = styled.div`
+
+type props={
+    upDownBtn:boolean
+    setUpDownBtn:Function
+}
+type props2={
+    upDownBtn:boolean
+}
+
+const BtnDiv = styled.div<props2>`
     background : rgb(86,115,235);
     position : fixed;
     left: 50%;
     transform: translateX(-50%);
-    bottom : 20vh;
+    bottom: ${props => props.upDownBtn ? 148 : 0}px;
     width : 50px;
     height : 30px;
     box-shadow : rgba(0, 0, 0, 0.28) -1px 1px 20px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+    transition:all ease-out .5s;
     cursor : pointer;
+    @media(max-height : 568px){
+        bottom: ${props => props.upDownBtn ? 110 : 0}px;
+    }
     
 `
-type props={
-    upDownBtn:boolean
-    setUpDownBtn:Function
-}
+
 const SlideFooterBtn = ({upDownBtn,setUpDownBtn}:props) => {
     const clickBtn = () => {
         if(upDownBtn) setUpDownBtn(false)
@@ -27,7 +37,7 @@ const SlideFooterBtn = ({upDownBtn,setUpDownBtn}:props) => {
     }
 
     return (
-        <BtnDiv id="footerBtn" onClick={clickBtn}>
+        <BtnDiv upDownBtn={upDownBtn} id="footerBtn" onClick={clickBtn}>
             <DoubleArrow fill="white" upDown={upDownBtn}></DoubleArrow>
         </BtnDiv>
     )

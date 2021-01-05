@@ -13,24 +13,35 @@ type Props = {
 
 const FixedDiv = styled.div<Props>`
     position: fixed;
-    bottom: ${props => props.upDownBtn ? 0 : -20}vh;
+    bottom: ${props => props.upDownBtn ? 0 : -143}px;
     z-index: 999;
-    width: ${window.innerWidth > 400 ? "400px" : "95%"};
+    width: 400px;
     left: 50%;
     transform: translateX(-50%);
-    height: 20vh;
+    height: 148px;
     background: white;
     border-top-right-radius: 50px;
     border-top-left-radius: 50px;
     box-shadow : rgba(0, 0, 0, 0.28) -1px 1px 20px;
     transition:all ease-out .5s;
+    overflow-y : auto;
+    @media(max-height : 568px){
+        height : 110px;
+        bottom: ${props => props.upDownBtn ? 0 : -110}px;
+    }
+    @media(max-width : 400px){
+        width : 95%;
+    }
 `
 
 const Title = styled.p`
-    font-size : ${window.innerHeight > 568 ? "1.3em" : "1.1em"};
+    font-size : 1.3em;
     font-weight : 600;
     margin-bottom : 0px;
     margin-top : 5px;
+    @media(max-height : 568px){
+        font-size : 15px;
+    }
 `
 const LeftDiv = styled.div`
     display: flex;
@@ -54,7 +65,10 @@ const MainDivWrap = styled.div`
 
 const SmallSpan = styled.span`
     color : gray;
-    font-size : ${window.innerHeight > 568 ? "1.1em" : ".9em"};
+    font-size : 1.1em;
+    @media(max-height : 568px){
+        font-size : .9em
+    }
 `
 const MainCss = css`
     padding : 0px 4px;
@@ -64,24 +78,37 @@ const MainCss = css`
 const MainSpan = styled.span`
     background : rgb(224,230,251);
     color : rgb(86,115,235);
-    font-size : ${window.innerHeight > 568 ? "21px" : "1.1em"};
+    font-size : 21px;
+    @media(max-height : 568px){
+        font-size : 16px;
+    }
     ${MainCss}
     
 `
 const MainSpan2 = styled.span`
     background: rgba(235,83,116,0.12);
     color : rgb(235,83,116);
-    font-size : ${window.innerHeight > 568 ? "21px" : "1.1em"};
+    font-size : 21px;
+    @media(max-height : 568px){
+        font-size : 16px;
+    }
     ${MainCss}
 `
 const MainSmallSpan = styled.span<Props>`
-    font-size : ${window.innerHeight > 568 ? "15px" : "10px"};
+    font-size : 13px;
     background : ${props => props.bg};
     color : ${props => props.color};
     margin-right : 3px;
+    @media(max-height : 568px){
+        font-size : 10px;
+    }
     ${MainCss}
 `
-
+const MainSmallSpanWrapper = styled.div`
+    word-break : keep-word;
+    padding : 0px 4px;
+    overflow-y : auto;
+`
 
 const UserResult = () => {
 
@@ -98,8 +125,10 @@ const UserResult = () => {
     }, [upDownBtn,UserResult])
 
     return (
-        <FixedDiv upDownBtn={upDownBtn}>
+        <div>
             <SlideFooterBtn upDownBtn={upDownBtn} setUpDownBtn={setUpDownBtn}></SlideFooterBtn>
+        <FixedDiv upDownBtn={upDownBtn}>
+            <MainSmallSpanWrapper>
             <div>
                 <Title>내 로또 내역</Title>
             </div>
@@ -113,15 +142,15 @@ const UserResult = () => {
                     <div><MainSpan2 id="roll2"></MainSpan2></div>
                 </RightDiv>
             </MainDivWrap>
-                <div style={{wordBreak: "break-word"}}>
-                <MainSmallSpan bg="rgba(255,94,0,.12)" color="rgb(255,94,0)">1등 {UserResult.first || 0}회</MainSmallSpan>
-                <MainSmallSpan bg="rgba(235,83,116,0.12)" color="rgb(235,83,116)">2등 {UserResult.second || 0}회</MainSmallSpan>
-                <MainSmallSpan bg="rgb(224,230,251)" color="rgb(86,115,235)">3등 {UserResult.third || 0}회</MainSmallSpan>
-                <MainSmallSpan>4등 {UserResult.fourth || 0}회</MainSmallSpan>
-                <MainSmallSpan>5등 {UserResult.fifth || 0}회</MainSmallSpan>
-                <MainSmallSpan>꽝 {UserResult.last || 0}회</MainSmallSpan>
-                </div>
+                <MainSmallSpan bg="rgba(255,94,0,.12)" color="rgb(255,94,0)">1등 {UserResult.first}회</MainSmallSpan>
+                <MainSmallSpan bg="rgba(235,83,116,0.12)" color="rgb(235,83,116)">2등 {UserResult.second}회</MainSmallSpan>
+                <MainSmallSpan bg="rgb(224,230,251)" color="rgb(86,115,235)">3등 {UserResult.third}회</MainSmallSpan>
+                <MainSmallSpan>4등 {UserResult.fourth}회</MainSmallSpan>
+                <MainSmallSpan>5등 {UserResult.fifth}회</MainSmallSpan>
+                <MainSmallSpan>꽝 {UserResult.last}회</MainSmallSpan>
+                </MainSmallSpanWrapper>
         </FixedDiv>
+        </div>
     )
 }
 

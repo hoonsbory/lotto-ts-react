@@ -18,7 +18,8 @@ const Chart = () => {
     var list = useSelector((state) => state.Reducer.accumulateList);
     var resize = useSelector((state) => state.Reducer.resizeOpt);
     var size = useSelector((state) => state.Reducer.graphSize);
-    const [chart ,setChart] = useState()
+    const [list2 ,setList2] = useState()
+    const [size2 ,setSize2] = useState()
 
     const expData = {
         labels: list.map(x => `${x[0]}번`),
@@ -40,8 +41,13 @@ const Chart = () => {
         ]
     };
     useEffect(() => {
+
+        if(JSON.stringify(list)===JSON.stringify(list2)&&size===size2) return
         if(list.length===0) return
-        if(chart) chart.destroy()
+        setList2(list)
+        setSize2(size)
+        if(window.chartjs) chartjs.destroy()
+        
 
         var ctx = document.getElementById('chartFixedTooltips').getContext('2d');
         
@@ -129,7 +135,6 @@ const Chart = () => {
             } 
         });
 
-        setChart(chartjs)
     }, [list,resize])
 
 
@@ -176,3 +181,4 @@ const Chart = () => {
 }
 
 export default Chart
+

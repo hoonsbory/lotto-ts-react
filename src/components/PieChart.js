@@ -22,6 +22,8 @@ const PieChart = ({ rankList }) => {
 
     var resize = useSelector((state) => state.Reducer.resizeOpt);
     var size = useSelector((state) => state.Reducer.graphSize);
+    const [list2 ,setList2] = useState()
+    const [size2 ,setSize2] = useState()
 
     const expData = {
         labels: ["1등", "2등", "3등", "4등", "5등", "꽝"],
@@ -45,7 +47,10 @@ const PieChart = ({ rankList }) => {
         else return result.toFixed(2)
     })
     useEffect(() => {
-
+        if(JSON.stringify(rankList)===JSON.stringify(list2)&&size===size2) return
+        setList2(rankList)
+        setSize2(size)
+        if(window.chartjs) window.chartjs.destroy()
         var ctx = document.getElementById('chartFixedTooltips').getContext('2d');
         // Chart.plugins.register({
         //     beforeRender: function (chart) {
@@ -98,7 +103,7 @@ const PieChart = ({ rankList }) => {
         var gradientFill = ctx.createLinearGradient(500, 0, 100, 0);
         gradientFill.addColorStop(0, "rgba(128, 182, 244, 0.6)");
         gradientFill.addColorStop(1, "rgba(244, 144, 128, 0.6)");
-        var chartFixedTooltips = new Chart(ctx, {
+        var chartjs = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
@@ -170,7 +175,6 @@ const PieChart = ({ rankList }) => {
                 },
             }
         });
-        chartFixedTooltips.resize()
     }, [rankList, resize])
 
 

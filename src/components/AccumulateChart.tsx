@@ -11,7 +11,7 @@ import Arrow from './Arrow';
 import Button from './Button';
 import { useDispatch } from 'react-redux';
 import { actionCreators } from '../store/store';
-
+//실제 로또 통계 차트 선택 섹션
 
 type props = {
     addAList: Function

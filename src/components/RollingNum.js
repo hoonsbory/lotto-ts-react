@@ -19,7 +19,7 @@ import React from 'react'
         this.target_frame.innerHTML = this.count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + this.addString;
          
         if(this.count < this.target_count) {
-            this.timer = setTimeout(function() { self.counter(); }, 20);
+            this.timer = setTimeout(function() { self.counter(); }, 10);
         } else {
             clearTimeout(this.timer);
         }

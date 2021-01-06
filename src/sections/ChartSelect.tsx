@@ -64,6 +64,7 @@ const ChartSelect = () => {
         }))
     }, 200)
     const selected2 = Debounce((idx: number) => {
+        addAList([])
         graphSelect[idx] = true
         setGraphSelect(graphSelect.map((i, idx2) => {
             if (idx2 === idx) return true

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-
+//양옆에 radius를 준 버튼 그룹 커스텀가능!
 type props = {
     click: any
     content: string[]

@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Bar } from 'react-chartjs-2';
 import styled from 'styled-components'
 import { useSelector } from 'react-redux';
-import { StoreState } from '../store'
 import Chart2 from 'chart.js'
-
+//막대 차트.
 
 
 const ChartWrapper = styled.div`
@@ -22,31 +20,15 @@ const Chart = () => {
     const [list2 ,setList2] = useState()
     const [size2 ,setSize2] = useState()
 
-    const expData = {
-        labels: list.map(x => `${x[0]}번`),
-        datasets: [
-            {
-                data: list.map(x => x[1]),
-                borderWidth: 2,
-                hoverBorderWidth: 3,
-                backgroundColor:
-                    list.map(x => {
-                        if (x[0] < 11) return "#fbc400"
-                        else if (x[0] < 21) return "#69c8f2"
-                        else if (x[0] < 31) return "#ff7272"
-                        else if (x[0] < 41) return "#aaa"
-                        else return "#b0d840"
-                    })
-                ,
-            }
-        ]
-    };
+    
     useEffect(() => {
-
+        //여러 차트를 한 컴포넌트에서 관리했어야되는데 여기저기에 컴포넌트로 쓰여서 차트를 바꿀때마다 차트를 생성하기때문에, 두 번 렌더링된다.
+        //이를 막기 위해 복사본을 state로 관리해서 비교 후에 return을 해주었다.  chartjs를 처음써봐서 설계를 잘못했다 ㅜ
         if(JSON.stringify(list)===JSON.stringify(list2)&&size===size2) return
         if(list.length===0) return
         setList2(list)
         setSize2(size)
+        //resize하기 위해 이전 차트 지움
         if(chart) chart.destroy()
         
 
@@ -145,36 +127,6 @@ const Chart = () => {
 
             <ScrollDiv>
                 <ChartWrapper size={size}>
-                    {/* <Bar
-                        options={
-                            {
-                                plugins : {
-                                    labels: [
-                                        {
-                                        render: 'value',
-                                        fontStyle : "bold"
-                                      },
-                                    ]
-                                },
-                                maintainAspectRatio: false,
-                                legend: {
-                                    display: false
-                                },
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            suggestedMax: list.length >0 ? list[0][1] + list[0][1]*0.1 : 0,
-                                            beginAtZero: true
-                                        }
-                                    }],
-                                }
-                            }
-                        }
-                        redraw={resize}
-                        data={expData}
-                        height={300}
-                        width={100}
-                    /> */}
                     <canvas  height="300px" id="chartFixedTooltips"></canvas>
                 </ChartWrapper>
             </ScrollDiv>

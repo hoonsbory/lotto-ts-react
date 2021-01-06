@@ -126,7 +126,7 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             if (footerBtn.style.transform.indexOf("180") < 0)
                 document.getElementById("footerBtn")?.click()
             if (rank === 0&&hide) document.getElementById("noticeNoWin")!.innerText = "4등 이상 당첨된 로또가 없습니다"
-            else document.getElementById("noticeNoWin")!.innerText = ""
+            else if(hide) document.getElementById("noticeNoWin")!.innerText = ""
         }
 
     }, [])

@@ -30,7 +30,7 @@ const Loading = () => {
         <Bg id="loadingBg">
             <CenterDiv>
                 <LoadingSvg></LoadingSvg>
-                번호를 조합중입니다
+                번호를 조합 중입니다
             </CenterDiv>
         </Bg>
     )

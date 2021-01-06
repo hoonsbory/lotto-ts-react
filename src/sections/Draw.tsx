@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { Debounce } from '../Debounce'
 import Button from '../components/Button'
 import ResultNum from '../components/ResultNum';
@@ -36,9 +36,9 @@ const Draw = ({ setTrigger, list, setCorrect, correct, setbonusCorrect, bonusCor
     const [result, setResult] = useState<number[]>([]);
     //정답 유무를 구별할 boolean 배열. 동적으로 style component를 변경하려면 props를 state로 관리해야한다. 
     // const [correct,setCorrect] = useState<boolean[]>([])
-
+    
     //인터벌 변수
-    let id: NodeJS.Timeout;
+    const interval = useRef<any>();
 
 
 
@@ -46,16 +46,16 @@ const Draw = ({ setTrigger, list, setCorrect, correct, setbonusCorrect, bonusCor
         //스피드모드 일때 자동으로 추첨 진행
         if (mode) {
             random([])
-            stop(correct, bonusCorrect, result, list)
+            stop()
         }
     }, [])
 
     //랜덤으로 숫자 돌리기. 50ms마다 text의 숫자를 교체해준다. 이미 뽑힌 숫자는 제외한다.
-    const random = useCallback((arr: Array<number>) => {
+    const random = (arr: Array<number>) => {
         document.getElementById('startBtn')?.setAttribute("disabled", "true");
         var num = document.getElementById("num")
-        id = setInterval(() => {
-            if (!num) clearInterval(id)
+        interval.current = setInterval(() => {
+            if (!num) clearInterval(interval.current)
             while (num) {
                 let number = Math.floor((Math.random() * 45) + 1)
                 if (!arr.includes(number)) {
@@ -64,13 +64,13 @@ const Draw = ({ setTrigger, list, setCorrect, correct, setbonusCorrect, bonusCor
                 }
             }
         }, 50);
-    }, [])
+    }
 
 
     //state가 변경되어 렌더링이 되면 이전에 시작된 interval값을 찾지 못하기 때문에 usecallback으로 함수 재생성을 막아줘야함.
-    const stop = Debounce(useCallback((correct: Array<boolean>, bonusCorrect: Array<boolean>, result: Array<number>, list: Array<number[]>) => {
+    const stop = Debounce(() => {
         //인터벌 중지
-        clearInterval(id)
+        clearInterval(interval.current)
         //랜덤에서 뽑힌 번호.
         let text:any = document.getElementById('num')?.innerText
         let num = parseInt(text)
@@ -128,12 +128,12 @@ const Draw = ({ setTrigger, list, setCorrect, correct, setbonusCorrect, bonusCor
             document.getElementById('stopBtn')!.setAttribute("disabled", "true");
             setTrigger(true)
         }
-    }, []), 700)
+    }, 700)
 
 
     //초기화. 인터벌도 중지 시키고 뽑힌 리스트도 초기화.
-    const reset = useCallback(() => {
-        clearInterval(id)
+    const reset = () => {
+        clearInterval(interval.current)
         document.getElementById('num')!.innerText = "0"
         setCorrect([])
         setbonusCorrect([])
@@ -144,18 +144,18 @@ const Draw = ({ setTrigger, list, setCorrect, correct, setbonusCorrect, bonusCor
 
         document.getElementById('stopBtn')!.removeAttribute("disabled")
         document.getElementById('startBtn')!.removeAttribute("disabled")
-    }, [])
+    }
 
     return (
         <Div id="drawSec">
             <h1 id="num" style={{ fontSize: "30px" }}>0</h1>
             <div style={{display : mode ? "none" : "block"}}>
                 <Button fontSize="1.1em" id="startBtn" content="추첨시작" click={() => random([])}></Button>
-                <Button fontSize="1.1em" id="stopBtn" click={() => stop(correct, bonusCorrect, result, list)} content="뽑기"></Button>
+                <Button fontSize="1.1em" id="stopBtn" click={stop} content="뽑기"></Button>
                 <Button fontSize="1.1em" id="resetBtn" color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" click={reset} content="초기화"></Button>
             </div>
             <LineDiv fontSize={15} content="추첨 결과"></LineDiv>
-            <NumLineWrap idx={0} content={result.length === 0 ? <SmallSpan>추첨시작을 누른 후 당첨숫자를 뽑아보세요</SmallSpan> : result.map((x, idx) => {
+            <NumLineWrap idx={0} content={result.length === 0 ? <SmallSpan id="beforeDrawNotice">추첨시작을 누른 후 당첨숫자를 뽑아보세요</SmallSpan> : result.map((x, idx) => {
                 if (idx === 6)
                     return (
                         <span key={idx} id="bonusSpan">+  <ResultNum key={idx} bonusCorrect={bonusCorrect[x]} correct={correct[x]} bonus={true} num={x}></ResultNum></span>

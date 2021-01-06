@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux';
 import Chart2 from 'chart.js'
@@ -15,20 +15,20 @@ const ScrollDiv = styled.div`
 const Chart = () => {
     var list = useSelector((state) => state.Reducer.accumulateList);
     var size = useSelector((state) => state.Reducer.graphSize);
-    const [chart ,setChart] = useState()
-    const [list2 ,setList2] = useState()
-    const [size2 ,setSize2] = useState()
+    const chart = useRef()
+    const list2 = useRef()
+    const size2 = useRef()
 
     
     useEffect(() => {
         //여러 차트를 한 컴포넌트에서 관리했어야되는데 여기저기에 컴포넌트로 쓰여서 차트를 바꿀때마다 차트를 생성하기때문에, 두 번 렌더링된다.
-        //이를 막기 위해 복사본을 state로 관리해서 비교 후에 return을 해주었다.  chartjs를 처음써봐서 설계를 잘못했다 ㅜ
-        if(JSON.stringify(list)===JSON.stringify(list2)&&size===size2) return
+        //이를 막기 위해 복사본을 ref로 관리해서 비교 후에 return을 해주었다.  chartjs를 처음써봐서 설계를 잘못했다 ㅜ
+        if(JSON.stringify(list)===JSON.stringify(list2.current)&&size===size2.current) return
         if(list.length===0) return
-        setList2(list)
-        setSize2(size)
+        list2.current = list
+        size2.current = size
         //resize하기 위해 이전 차트 지움
-        if(chart) chart.destroy()
+        if(chart.current) chart.current.destroy()
         
 
         var ctx = document.getElementById('myChart').getContext('2d');
@@ -116,7 +116,7 @@ const Chart = () => {
             } 
         });
 
-        setChart(chartjs)
+        chart.current = chartjs
     }, [list,size])
 
 

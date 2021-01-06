@@ -43,8 +43,6 @@ const ChartSelect = () => {
         btnStateChange(idx)
         graphSizeUp(size + 400)
         document.getElementById("myChart")!.style.width = `${size + 400}px`
-        
-
     }
 
     //차트 사이즈다운

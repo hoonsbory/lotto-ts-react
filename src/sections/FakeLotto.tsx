@@ -61,7 +61,10 @@ const FakeLotto = () => {
 
 
     const modeChange = Debounce((check:boolean) => {
-        setTrigger(false)
+        setTrigger(false) //모드 체인지시에 남아있던 List가 새 모드에서 생성되면서 계산을 또 하기 때문에 false를 줘서 Rank생성 막음
+        setDraw(false) //추첨기를 미리 false를 줘서 없애줘야 새 모드에서 인터벌이 겹치지 않는다.
+        setCorrect([])
+        setbonusCorrect([])
         if(check){ //스피드모드로 변경 후 추첨을 안하고 다시 일반모드로 올 때 리스트 남겨둠. 
             if(list.length>100) setList([[]])
             setModeBtn([true,false])
@@ -70,9 +73,7 @@ const FakeLotto = () => {
         else{
             setModeBtn([false,true])
         }
-        setDraw(false)
-        setCorrect([])
-        setbonusCorrect([])
+        
     },200)
 
     return (

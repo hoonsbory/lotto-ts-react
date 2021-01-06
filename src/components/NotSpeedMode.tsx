@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect , useRef} from 'react'
 import styled from 'styled-components'
 import Button from '../components/Button';
 import { List } from 'react-virtualized';
@@ -47,11 +47,9 @@ type props = {
     setUserResult: Function
 }
 
-
 const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUserResult, setDraw, setTrigger, setCorrect, setbonusCorrect }: props) => {
     //번호 선택 배열. 당첨번호 선택번호 등 state로 관리하는 이유는 스타일 컴포넌트의 props 변경을 위해서다.
     const [selectBtn, setSelectBtn] = useState<boolean[]>([])
-
 
     useEffect(() => {
         //로컬스토리지에 있는 유저의 로또 내역 state에 저장
@@ -111,7 +109,7 @@ const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, set
 
     //추첨 후에 버튼 조작 못하게
     const afterDraw = () => {
-        if (document.getElementById("resetBtn")?.nextElementSibling?.nextElementSibling?.firstChild?.nodeName === 'SPAN') {
+        if (document.getElementById('resetBtn')&&!document.getElementById("beforeDrawNotice")) {
             if (window.confirm("추첨이 시작된 로또이므로 번호를 추가할 수 없습니다. 초기화하시겠습니까?")) {
                 reset()
                 return true

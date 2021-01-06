@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import "chartjs-plugin-labels"
 import styled from 'styled-components'
 import { useSelector } from 'react-redux';
@@ -16,9 +16,9 @@ const ChartWrapper = styled.div`
 const PieChart = ({ rankList }) => {
 
     var size = useSelector((state) => state.Reducer.graphSize);
-    const [list2 ,setList2] = useState()
-    const [size2 ,setSize2] = useState()
-    const [chart ,setChart] = useState()
+    const chart = useRef()
+    const list2 = useRef()
+    const size2 = useRef()
 
 
     
@@ -32,10 +32,10 @@ const PieChart = ({ rankList }) => {
         else return result.toFixed(2)
     })
     useEffect(() => {
-        if(JSON.stringify(rankList)===JSON.stringify(list2)&&size===size2) return
-        setList2(rankList)
-        setSize2(size)
-        if(chart) chart.destroy()
+        if(JSON.stringify(rankList)===JSON.stringify(list2.current)&&size===size2.current) return
+        list2.current = rankList
+        size2.current = size
+        if(chart.current) chart.current.destroy()
         var ctx = document.getElementById('myChart').getContext('2d');
         // Chart.plugins.register({ 모든 툴팁 고정
         //     beforeRender: function (chart) {
@@ -160,7 +160,7 @@ const PieChart = ({ rankList }) => {
                 },
             }
         });
-        setChart(chartjs)
+        chart.current = chartjs
     }, [rankList, size])
 
 

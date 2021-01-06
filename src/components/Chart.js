@@ -18,6 +18,7 @@ const Chart = () => {
     var list = useSelector((state) => state.Reducer.accumulateList);
     var resize = useSelector((state) => state.Reducer.resizeOpt);
     var size = useSelector((state) => state.Reducer.graphSize);
+    const [chart ,setChart] = useState()
     const [list2 ,setList2] = useState()
     const [size2 ,setSize2] = useState()
 
@@ -46,7 +47,7 @@ const Chart = () => {
         if(list.length===0) return
         setList2(list)
         setSize2(size)
-        if(window.chartjs) chartjs.destroy()
+        if(chart) chart.destroy()
         
 
         var ctx = document.getElementById('chartFixedTooltips').getContext('2d');
@@ -135,6 +136,7 @@ const Chart = () => {
             } 
         });
 
+        setChart(chartjs)
     }, [list,resize])
 
 

@@ -40,10 +40,8 @@ const Draw = ({ trigger, setTrigger, list, setDraw, setCorrect, correct, setbonu
     let id: NodeJS.Timeout;
 
     useEffect(() => {
-        console.log(mode)
         if (mode) {
             random([])
-            console.log(result)
             stop(correct, bonusCorrect, result, list)
         }
     }, [])
@@ -66,8 +64,8 @@ const Draw = ({ trigger, setTrigger, list, setDraw, setCorrect, correct, setbonu
 
     //state가 변경되어 렌더링이 되면 이전에 시작된 interval값을 찾지 못하기 때문에 usecallback으로 함수 재생성을 막아줘야함.
     const stop = Debounce(useCallback((correct: Array<boolean>, bonusCorrect: Array<boolean>, result: Array<number>, list: Array<number[]>) => {
-
-        let num = parseInt(document.getElementById('num')!.innerText)
+        let text:any = document.getElementById('num')?.innerText
+        let num = parseInt(text)
         if (num === 0) return
         clearInterval(id)
         for (var i = 0; i < list.length; i++) {

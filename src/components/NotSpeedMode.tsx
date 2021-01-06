@@ -148,8 +148,6 @@ const NotSpeedMode = () => {
 
     const random = (tenReps: boolean) => {
         if (limit()) return
-        console.log(list)
-        console.log(line)
         var length: number = list[line].length
         for (var i = 0; i < 6 - length; i++) {
             while (true) {

@@ -71,10 +71,6 @@ const SpeedMode = () => {
     const [line, setLine] = useState<number>(0)
 
 
-    useEffect(() => {
-        var result = localStorage.getItem("userResult")
-        if (result) setUserResult(JSON.parse(result))
-    }, [])
 
     let allNum: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45]
 
@@ -189,7 +185,6 @@ const SpeedMode = () => {
         setbonusCorrect([])
         setDraw(false)
         var list: number[][] = []
-        console.log(count)
         for (var i = 0; i < count; i++) {
             list[i] = []
             for (var j = 0; j < 6; j++) {
@@ -238,19 +233,12 @@ const SpeedMode = () => {
         () => {
             return (
                 <ScrollList id="lottoList">
-                    {/* {list.map((i, idx) => <NumLineWrap content={list[idx].length === 0 ? (list.length > 1 ? <SmallDiv>새 번호를 선택해주세요<Button hoverBg="#EAEAEA" bg="none" content={<DeleteSvg></DeleteSvg>} click={() => deleteSelectLine(idx)}></Button></SmallDiv> : <SmallDiv>새 번호를 선택해주세요</SmallDiv>)
-
-                        : <div>{trigger ? <Rank setUserResult={setUserResult} rankResultNum={rankResultNum} rankResult={rankResult} listSize={list.length} idx={idx} list={list[idx]} correct={correct} bonusCorrect={bonusCorrect} trigger={trigger}></Rank> : ''}
-
-                            {list[idx].sort((a, b) => a - b).map(x => <ResultNum bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x}></ResultNum>)}
-
-                            {idx > 0 ? <Button float="right" hoverBg="#EAEAEA" bg="none" content={<DeleteSvg></DeleteSvg>} click={() => deleteSelectLine(idx)}></Button> : ''}</div>}></NumLineWrap>)} */}
                     {trigger ? list.map((i, idx) => {
                         var length = i.map((x, idx) => { if (correct[x]) return x }).filter(x => x)
                         
                         if (length.length > 3)
                             return (
-                        <NumLineWrap content={<div><Rank
+                        <NumLineWrap key={idx} content={<div><Rank
                             setUserResult={setUserResult}
                             rankResultNum={rankResultNum}
                             rankResult={rankResult}
@@ -261,12 +249,12 @@ const SpeedMode = () => {
                             correct={correct}
                             bonusCorrect={bonusCorrect}
                             trigger={trigger}></Rank>
-                            {list[idx].sort((a, b) => a - b).map(x =>
-                                <ResultNum bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x}></ResultNum>)}</div>
+                            {list[idx].sort((a, b) => a - b).map((x,idx) =>
+                                <ResultNum key={idx} bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x}></ResultNum>)}</div>
                         }></NumLineWrap>)
                         else{
                             return (
-                                <Rank
+                                <Rank key={idx}
                             setUserResult={setUserResult}
                             rankResultNum={rankResultNum}
                             rankResult={rankResult}
@@ -279,7 +267,7 @@ const SpeedMode = () => {
                             trigger={trigger}></Rank>
                             )
                         }
-                    }) : <SmallSpan>버튼을 눌러 로또를 구매하세요!</SmallSpan>}
+                    }) : ''}
                 </ScrollList>
             );
         })
@@ -294,7 +282,7 @@ const SpeedMode = () => {
             <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="1000만원" click={() => randomTest(10000)}></Button>
             {draw ? <Draw mode={true} bonusCorrect={bonusCorrect} setbonusCorrect={setbonusCorrect} trigger={trigger} setTrigger={setTrigger} list={list} setDraw={setDraw} setCorrect={setCorrect} correct={correct}></Draw> : ''}
             <LineDiv fontSize={15} content="4등 이상 당첨 번호"></LineDiv>
-            
+            <SmallSpan id="noticeNoWin">버튼을 눌러 로또를 구매하세요!</SmallSpan>
             <List
                 width={1}
                 height={1}

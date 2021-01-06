@@ -53,9 +53,7 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
-            console.log(hide)
             rankResult.setFourth()
-            rankResultNum.setFourthNums(list2)
             return ["4등", "darkgoldenrod"]
         }
         else if (correctList.length === 5 && !bonus) {
@@ -63,7 +61,6 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
-            console.log(123)
             rankResult.setThird()
             rankResultNum.setThirdNums(list2)
             return ["3등", "darkcyan"]
@@ -101,7 +98,7 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
         if (listSize - 1 === idx) {
             var rank = rankResult.getFirst > 0 ? 1 : (rankResult.getSecond > 0 ? 2 : (rankResult.getThird > 0 ? 3 : (rankResult.getFourth > 0 ? 4 : 0)))
             if (rank > 0 && rank < 4) {
-                var name = window.prompt(`축하합니다 ${rank}등에 당첨되셨습니다! 명예의 전당에 올릴 성함(닉네임)을 알려주세요! 취소를 누르시면 익명으로 등록됩니다.   **1글자 ~ 10글자**`)?.trim() || "익명"
+                var name = window.prompt(`축하합니다 ${rank}등에 당첨되셨습니다!\n명예의 전당에 올릴 성함(닉네임)을 알려주세요! \n취소를 누르시면 익명으로 등록됩니다.  ※최대 10글자`)?.trim() || "익명"
                 while (true) {
                     if (name.length > 10)
                         name = window.prompt("10글자 이하로 부탁드립니다 취소를 누르시면 익명으로 등록됩니다.") || "익명"
@@ -109,7 +106,6 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
                 }
                 rankResultNum.setWinnerName(name)
             }
-            console.log(rankResultNum)
             sendResult(rankResult, rankResultNum)
             var pastResult = localStorage.getItem("userResult")
             if (pastResult) {
@@ -129,8 +125,8 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             var footerBtn: any = document.getElementById("footerBtn")?.firstChild
             if (footerBtn.style.transform.indexOf("180") < 0)
                 document.getElementById("footerBtn")?.click()
-            if (rank === 0) alert("4등 이상 당첨된 로또가 없습니다 ㅜ_ㅜ")
-
+            if (rank === 0&&hide) document.getElementById("noticeNoWin")!.innerText = "4등 이상 당첨된 로또가 없습니다"
+            else document.getElementById("noticeNoWin")!.innerText = ""
         }
 
     }, [])

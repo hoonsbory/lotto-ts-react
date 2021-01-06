@@ -51,7 +51,6 @@ const HallOfFame = () => {
             }
         }
         `}).then(res => {
-            console.log(res.data)
                 setNumList(res.data.data.winDataByRank)
             })
     }

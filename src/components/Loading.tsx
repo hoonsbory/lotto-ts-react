@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import LoadingSvg from './LoadingSvg'
-
+//로딩 컴포넌트
 const Bg = styled.div`
     width : 100%;
     height : 130%;

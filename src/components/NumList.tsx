@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
+
+//1~45까지 번호 SPAN
 
 interface numSpanProps {
     selected?: boolean

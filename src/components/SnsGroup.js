@@ -7,7 +7,7 @@ import LineDiv from './LineDiv'
 import styled, { css } from 'styled-components'
 import KakaoStory from '../SnsIcon/KakaoStory'
 import { Debounce } from '../Debounce'
-
+//SNS공유하기 
 const BtnCss = css`
     border : 0;
     outline : 0;
@@ -120,8 +120,8 @@ const SnsGroup = () => {
             <Button onClick={naver} color="rgba(87, 192, 79, 0.19)"><NaverBlog></NaverBlog></Button>
             <Button id="kakao-link-btn" color="rgba(239, 219, 72, 0.48)"><Kakao></Kakao></Button>
             <RightButton onClick={urlCopy} color="rgba(153, 153, 153, 0.19)"><CopyURL></CopyURL></RightButton>
-            <ToastMsg readonly id="toast">클립보드에 주소가 복사되었습니다.</ToastMsg>
-            <HiddenTextArea id="copy" value="https://hoonsbory.github.io/lotto-ts-react/"></HiddenTextArea>
+            <ToastMsg id="toast">클립보드에 주소가 복사되었습니다.</ToastMsg>
+            <HiddenTextArea readOnly id="copy" value="https://hoonsbory.github.io/lotto-ts-react/"></HiddenTextArea>
         </div>
     )
 }

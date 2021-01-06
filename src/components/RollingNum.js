@@ -1,5 +1,6 @@
-import React from 'react'
 
+    //숫자 롤링 효과
+    
     export function numberCounter(target_frame, target_number, addString) {
         this.count = 0; this.diff = 0;
         this.target_count = parseInt(target_number);

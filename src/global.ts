@@ -1,12 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 const GlobalStyle = createGlobalStyle`
 
-  html{
-    scroll-behavior : smooth;
-    -webkit-overflow-scrolling: touch;
-    @import url('./App.css');
-    font-family : 'Noto Sans' !important;
-  }
   #root{
     box-sizing: border-box;
     padding: 12px 20px;
@@ -32,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
   @media(max-width : 325px){
     #root{
       width : 320px;
-      font-size : 10px;
+      font-size : 12px;
     }
   }
 `

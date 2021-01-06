@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+//당첨자 없을 때 보이는 컴포넌트
 
 
 const GoLotto = styled.span`

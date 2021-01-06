@@ -4,7 +4,8 @@ import SlideFooterBtn from '../components/SlideFooterBtn'
 import { useSelector } from 'react-redux'
 import { StoreState } from '../store/index'
 import { numberCounter } from '../components/RollingNum'
-
+//하단 슬라이드 footer
+//로컬스토리지에 저장된 유저의 로또 내역을 보여줌.
 type Props = {
     upDownBtn?: boolean
     bg?: string
@@ -112,44 +113,46 @@ const MainSmallSpanWrapper = styled.div`
 
 const UserResult = () => {
 
+    //슬라이드 버튼
     const [upDownBtn, setUpDownBtn] = useState<boolean>(false)
-    
-    const UserResult = useSelector((state:StoreState)=> state.Reducer.userResult)
+    //유저 로또 정보
+    const UserResult = useSelector((state: StoreState) => state.Reducer.userResult)
 
     useEffect(() => {
-        if(upDownBtn){
+        //footer slide up시 숫자 롤링
+        if (upDownBtn) {
             var sum = parseInt(UserResult.first) + parseInt(UserResult.second) + parseInt(UserResult.third) + parseInt(UserResult.fourth) + parseInt(UserResult.fifth) + parseInt(UserResult.last)
-            new numberCounter("roll1", sum*1000, "원")
+            new numberCounter("roll1", sum * 1000, "원")
             new numberCounter("roll2", sum, "개")
-        } 
-    }, [upDownBtn,UserResult])
+        }
+    }, [upDownBtn, UserResult])
 
     return (
         <div>
-            <SlideFooterBtn upDownBtn={upDownBtn} setUpDownBtn={setUpDownBtn}></SlideFooterBtn>
-        <FixedDiv upDownBtn={upDownBtn}>
-            <MainSmallSpanWrapper>
-            <div>
-                <Title>내 로또 내역</Title>
-            </div>
-            <MainDivWrap>
-                <LeftDiv>
-                    <SmallSpan>소비 금액</SmallSpan>
-                    <div><MainSpan id="roll1"></MainSpan></div>
-                </LeftDiv>
-                <RightDiv>
-                    <SmallSpan>구매 수</SmallSpan>
-                    <div><MainSpan2 id="roll2"></MainSpan2></div>
-                </RightDiv>
-            </MainDivWrap>
-                <MainSmallSpan bg="rgba(255,94,0,.12)" color="rgb(255,94,0)">1등 {UserResult.first}회</MainSmallSpan>
-                <MainSmallSpan bg="rgba(235,83,116,0.12)" color="rgb(235,83,116)">2등 {UserResult.second}회</MainSmallSpan>
-                <MainSmallSpan bg="rgb(224,230,251)" color="rgb(86,115,235)">3등 {UserResult.third}회</MainSmallSpan>
-                <MainSmallSpan>4등 {UserResult.fourth}회</MainSmallSpan>
-                <MainSmallSpan>5등 {UserResult.fifth}회</MainSmallSpan>
-                <MainSmallSpan>꽝 {UserResult.last}회</MainSmallSpan>
+            <SlideFooterBtn upDownBtn={upDownBtn} setUpDownBtn={setUpDownBtn}/>
+            <FixedDiv upDownBtn={upDownBtn}>
+                <MainSmallSpanWrapper>
+                    <div>
+                        <Title>내 로또 내역</Title>
+                    </div>
+                    <MainDivWrap>
+                        <LeftDiv>
+                            <SmallSpan>소비 금액</SmallSpan>
+                            <div><MainSpan id="roll1"></MainSpan></div>
+                        </LeftDiv>
+                        <RightDiv>
+                            <SmallSpan>구매 수</SmallSpan>
+                            <div><MainSpan2 id="roll2"></MainSpan2></div>
+                        </RightDiv>
+                    </MainDivWrap>
+                    <MainSmallSpan bg="rgba(255,94,0,.12)" color="rgb(255,94,0)">1등 {UserResult.first}회</MainSmallSpan>
+                    <MainSmallSpan bg="rgba(235,83,116,0.12)" color="rgb(235,83,116)">2등 {UserResult.second}회</MainSmallSpan>
+                    <MainSmallSpan bg="rgb(224,230,251)" color="rgb(86,115,235)">3등 {UserResult.third}회</MainSmallSpan>
+                    <MainSmallSpan>4등 {UserResult.fourth}회</MainSmallSpan>
+                    <MainSmallSpan>5등 {UserResult.fifth}회</MainSmallSpan>
+                    <MainSmallSpan>꽝 {UserResult.last}회</MainSmallSpan>
                 </MainSmallSpanWrapper>
-        </FixedDiv>
+            </FixedDiv>
         </div>
     )
 }

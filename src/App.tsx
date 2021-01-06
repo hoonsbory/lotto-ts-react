@@ -1,5 +1,4 @@
-import SelectNum from './sections/SelectNum';
-import styled from 'styled-components'
+import FakeLotto from './sections/FakeLotto';
 import ChartSelect from './sections/ChartSelect';
 import SearchLotto from './sections/SearchLotto';
 import { disableReactDevTools } from '@fvilers/disable-react-devtools';
@@ -15,9 +14,6 @@ if (process.env.NODE_ENV === 'production') {
   disableReactDevTools();
 }
 
-const HeadLine = styled.h2`
-position: relative;
-`
 
 
 let pcCheck:string = window.navigator.userAgent.indexOf("Mobile") > -1 ? "true" : "false"
@@ -31,10 +27,8 @@ function App() {
   return (
         <div className="App">
           <h1>{process.env.REACT_APP_API_KEY}</h1>
-          {/* <HeadLine>로또 추첨기 with TypeScript</HeadLine> */}
           <SearchLotto></SearchLotto>
-          <SelectNum></SelectNum>
-          {/* <Route path='/result' component={TsTest}></Route> */}
+          <FakeLotto></FakeLotto>
           <ChartSelect></ChartSelect>
           <HallOfFame></HallOfFame>
           <UserResult></UserResult>

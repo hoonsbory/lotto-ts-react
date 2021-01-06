@@ -1,8 +1,5 @@
-import { useSelector } from 'react-redux';
-import { StoreState } from '../store'
-import { useDispatch } from 'react-redux';
-import { actionCreators } from '../store/store';
-import React, { useState, useEffect, useCallback } from 'react'
+
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Button from '../components/Button';
 import { List } from 'react-virtualized';
@@ -14,109 +11,96 @@ import NumList from '../components/NumList';
 import NumLineWrap from '../components/NumLineWrap';
 import Rank from '../components/Rank';
 import DeleteSvg from '../components/DeleteSvg';
-import SubTitle from '../components/SubTitle';
 import { RankResultNum } from '../models/RankResultNum';
 import { RankResult } from '../models/RankResult';
 
-//ts에서 props를 사용하는 방법
-
-
-//이런 식으로 자주 쓰일 것 같은 css를 만들어놓고 편리하게 사용 가능.
-// const hoverForPC = css`
-//     &:hover{
-//         background : rgb(70, 77, 82);
-//         color : white;
-//     }
-// `
-const Section = styled.section`
-    ${props => props.theme.sectionCss}
-`
+//번호 리스트 스크롤 
 const ScrollList = styled.div`
     overflow-y : auto;
     max-height : ${window.innerHeight / 2}px;
 `
-const SmallDiv = styled.div`
+const ListIdxSpan = styled.span`
+    float : left;
+    margin-left : 10px;
+    font-weight : 600;
+    font-size : .9em;
+    margin-top : 4px;
+`
+
+const SmallSpan = styled.span`
     color : gray;
     font-size : 12px;
     display : flex;
     flex-direction : column-reverse;
 `
+type props = {
+    list: number[][]
+    draw: boolean
+    correct: boolean[]
+    bonusCorrect: boolean[]
+    trigger: boolean
+    setList: Function
+    setDraw: Function
+    setCorrect: Function
+    setbonusCorrect: Function
+    setTrigger: Function
+    setUserResult: Function
+}
 
-const NumDiv = styled.div`
-    `
-const NotSpeedMode = () => {
-    var list = useSelector((state: StoreState) => state.Reducer.list);
-    var draw = useSelector((state: StoreState) => state.Reducer.drawCheck);
-    var correct = useSelector((state: StoreState) => state.Reducer.corrected);
-    var bonusCorrect = useSelector((state: StoreState) => state.Reducer.bonusCorrect);
-    var trigger = useSelector((state: StoreState) => state.Reducer.resultTrigger);
 
-    const dispatch = useDispatch();
-
-    const setList = (list: number[][]) => {
-        dispatch(actionCreators.list(list))
-    }
-    const setDraw = (value: boolean) => {
-        dispatch(actionCreators.drawCheck(value))
-    }
-    const setCorrect = (value: boolean[]) => {
-        dispatch(actionCreators.corrected(value))
-    }
-    const setbonusCorrect = (value: boolean[]) => {
-        dispatch(actionCreators.bonusCorrect(value))
-    }
-    const setTrigger = (value: boolean) => {
-        dispatch(actionCreators.resultTrigger(value))
-    }
-    const setUserResult = (value: any) => {
-        dispatch(actionCreators.userResult(value))
-    }
+const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUserResult, setDraw, setTrigger, setCorrect, setbonusCorrect }: props) => {
+    //번호 선택 배열. 당첨번호 선택번호 등 state로 관리하는 이유는 스타일 컴포넌트의 props 변경을 위해서다.
     const [selectBtn, setSelectBtn] = useState<boolean[]>([])
-    const [line, setLine] = useState<number>(0)
 
 
     useEffect(() => {
+        //로컬스토리지에 있는 유저의 로또 내역 state에 저장
         var result = localStorage.getItem("userResult")
         if (result) setUserResult(JSON.parse(result))
     }, [])
-
-    let allNum: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45]
-
     //번호 선택 이벤트
     const select = (num: number) => {
         if (limit()) return
-        if (list[line].includes(num)) {
+        if (list[list.length - 1].includes(num)) {
             //번호 선택 해제. 배열에서 제거하고 스타일 변경을 위해 false로 변경.
-            list[line].splice(list[line].indexOf(num), 1)
+            list[list.length - 1].splice(list[list.length - 1].indexOf(num), 1)
             selectBtn[num - 1] = false
             setSelectBtn([...selectBtn])
             setList([...list])
         }
-        else if (list[line].length === 6) return
+        else if (list[list.length - 1].length === 6) return
         else {
             selectBtn[num - 1] = true
             setSelectBtn([...selectBtn])
-            list[line].push(num)
+            list[list.length - 1].push(num)
             setList([...list])
         }
     }
 
 
+    //로또 번호 버튼배열 생성
+    let allNum: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45]
+    let map = allNum.map((x, idx) => <NumList key={idx} content={x} selected={selectBtn[idx]} id={`btn${x}`} click={select}></NumList>)
 
-    let map = allNum.map((x, idx) => <NumList content={x} selected={selectBtn[idx]} id={`btn${x}`} click={select}></NumList>)
 
+
+
+
+
+
+    //전체 상태 초기화
     const reset = () => {
         setCorrect([])
         setbonusCorrect([])
         setTrigger(false)
         setDraw(false)
-        setLine(0)
         setSelectBtn([])
         setList([[]])
     }
 
+    //번호 확정 시 추첨기 ON
     const submit = () => {
-        if (list[line].length < 6) {
+        if (list[list.length - 1].length < 6) {
             alert("총 6개의 번호를 선택해주세요")
             return
         }
@@ -125,6 +109,7 @@ const NotSpeedMode = () => {
         }
     }
 
+    //추첨 후에 버튼 조작 못하게
     const afterDraw = () => {
         if (document.getElementById("resetBtn")?.nextElementSibling?.nextElementSibling?.firstChild?.nodeName === 'SPAN') {
             if (window.confirm("추첨이 시작된 로또이므로 번호를 추가할 수 없습니다. 초기화하시겠습니까?")) {
@@ -136,6 +121,7 @@ const NotSpeedMode = () => {
         else return false
     }
 
+    //최대 100장까지 구매제한
     const limit = () => {
         if (afterDraw()) return true
         var count: any = document.getElementById("lottoList")?.childElementCount
@@ -146,18 +132,21 @@ const NotSpeedMode = () => {
         return false
     }
 
+
+    //랜덤뽑기. 번호 선택 6개까지 남은 n개의 수를 랜덤으로 클릭. true를 파라미터로 10회 뽑기 여부 판단
     const random = (tenReps: boolean) => {
         if (limit()) return
-        var length: number = list[line].length
+        var length: number = list[list.length - 1].length
         for (var i = 0; i < 6 - length; i++) {
             while (true) {
                 var num: number = Math.floor((Math.random() * 45) + 1)
-                if (!list[line].includes(num)) {
+                if (!list[list.length - 1].includes(num)) {
                     document.getElementById(`btn${num}`)?.click()
                     break;
                 }
             }
         }
+        //랜덤 10회 뽑기 최대 100회까지 제한.
         if (tenReps) {
             var count: any = document.getElementById("lottoList")?.childElementCount
             if (count > 99) {
@@ -168,7 +157,7 @@ const NotSpeedMode = () => {
             if (count + 10 > 100)
                 random11(100)
             else
-                random11(count + 10)
+                random11(count < 10 ? count + 9 : count + 10)
         }
     }
 
@@ -187,62 +176,92 @@ const NotSpeedMode = () => {
 
 
 
+    //로또 한줄 추가
     const addLine = () => {
-        if (list[line].length < 6) return
+        if (list[list.length - 1].length < 6) return
         if (limit()) return
         list.push([])
         setList([...list])
-        setLine(line + 1)
         setSelectBtn([])
+        var node: any = document.getElementById("lottoList")
+        setTimeout(() => {
+            node.scrollTo(0, node.clientHeight + 10000)
+        }, 10);
     }
 
+    //한줄 초기화. 줄 자체를 제거하지는 않고 선택번호만 초기화
     const resetOneLine = () => {
-        list[line] = []
+        list[list.length - 1] = []
         setSelectBtn([])
         setList([...list])
     }
 
-    const deleteLine = (idx: number) => {
-        list.splice(idx, 1)
-        setList([...list])
-        setLine(line - 1)
-    }
-
+    //줄 삭제
     const deleteSelectLine = (idx: number) => {
         if (list.length === idx + 1) setSelectBtn([])
         deleteLine(idx)
     }
 
+    const deleteLine = (idx: number) => {
+        list.splice(idx, 1)
+        setList([...list])
+    }
+
+
+    //react virtualized 
     const rowRenderer = (
         () => {
             return (
                 <ScrollList id="lottoList">
-                    {list.map((i, idx) => <NumLineWrap content={list[idx].length === 0 ? (list.length > 1 ? <SmallDiv>새 번호를 선택해주세요<Button hoverBg="#EAEAEA" bg="none" content={<DeleteSvg></DeleteSvg>} click={() => deleteSelectLine(idx)}></Button></SmallDiv> : <SmallDiv>새 번호를 선택해주세요</SmallDiv>)
+                    {list.map((i, idx) => <NumLineWrap key={idx} idx={idx} content={list[idx].length === 0 ?
+                        (list.length > 1 ? //2개이상부터는 삭제가능하게 Btn추가
+                            <SmallSpan>새 번호를 선택해주세요
+                             <Button
+                                    hoverBg="#EAEAEA"
+                                    bg="none"
+                                    content={<DeleteSvg />}
+                                    click={() => deleteSelectLine(idx)} />
+                            </SmallSpan>
+                            : <SmallSpan >새 번호를 선택해주세요</SmallSpan>)
 
-                        : <div>{trigger ? <Rank setUserResult={setUserResult} rankResultNum={rankResultNum} rankResult={rankResult} listSize={list.length} idx={idx} list={list[idx]} correct={correct} bonusCorrect={bonusCorrect} trigger={trigger}></Rank> : ''}
+                        : <span>{trigger ? //추첨 끝나면 Rank계산
+                            <Rank
+                                setUserResult={setUserResult}
+                                rankResultNum={rankResultNum}
+                                rankResult={rankResult}
+                                listSize={list.length}
+                                idx={idx}
+                                list={list[idx]}
+                                correct={correct}
+                                bonusCorrect={bonusCorrect}
+                                trigger={trigger} /> : ''}
 
-                            {list[idx].sort((a, b) => a - b).map(x => <ResultNum bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x}></ResultNum>)}
+                            <ListIdxSpan>{idx + 1}번</ListIdxSpan>
+                            {list[idx].sort((a, b) => a - b).map((x, idx2) =>
+                                //번호 6개
+                                <ResultNum key={idx2} bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x} />)}
 
-                            {idx > 0 ? <Button float="right" hoverBg="#EAEAEA" bg="none" content={<DeleteSvg></DeleteSvg>} click={() => deleteSelectLine(idx)}></Button> : ''}</div>}></NumLineWrap>)}
+                            {idx > 0 ?
+                                <Button float="right" hoverBg="#EAEAEA" bg="none" content={<DeleteSvg />} click={() => deleteSelectLine(idx)} />
+                                : ''}</span>} />)}
                 </ScrollList>
             );
         })
 
+    //계산에 쓰일 클래스 private
     var rankResult = new RankResult()
     var rankResultNum = new RankResultNum()
     return (
         <div>
-            <NumDiv>
-                {map}
-            </NumDiv>
-            <Button id="randomBtn" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="나머지 랜덤" click={() => random(false)}></Button>
-            <Button id="lineAdd" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="한 줄 추가" click={addLine}></Button>
-            <Button fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="현재 줄 초기화" click={resetOneLine}></Button>
-            <Button fontSize={"1.0em"} color="rgb(235, 83, 116)" bg="rgba(235, 83, 116, 0.12)" hoverBg="rgb(235, 83, 116)" content="전체초기화" click={reset}></Button>
-            <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="추첨하기" click={submit}></Button>
-            <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="만원 어치" click={() => random(true)}></Button>
-            {draw ? <Draw mode={false} bonusCorrect={bonusCorrect} setbonusCorrect={setbonusCorrect} trigger={trigger} setTrigger={setTrigger} list={list} setDraw={setDraw} setCorrect={setCorrect} correct={correct}></Draw> : ''}
-            <LineDiv fontSize={15} content="내가 뽑은 로또 번호"></LineDiv>
+            {map}
+            <Button id="randomBtn" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="나머지 랜덤" click={() => random(false)} />
+            <Button id="lineAdd" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="한 줄 추가" click={addLine} />
+            <Button fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="현재 줄 초기화" click={resetOneLine} />
+            <Button fontSize={"1.0em"} color="rgb(235, 83, 116)" bg="rgba(235, 83, 116, 0.12)" hoverBg="rgb(235, 83, 116)" content="전체초기화" click={reset} />
+            <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="추첨하기" click={submit} />
+            <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="만원 어치" click={() => random(true)} />
+            {draw ? <Draw mode={false} bonusCorrect={bonusCorrect} setbonusCorrect={setbonusCorrect} trigger={trigger} setTrigger={setTrigger} list={list} setDraw={setDraw} setCorrect={setCorrect} correct={correct} /> : ''}
+            <LineDiv fontSize={15} content="내가 뽑은 로또 번호" />
             <List
                 width={1}
                 height={1}
@@ -260,8 +279,7 @@ const NotSpeedMode = () => {
                     width: "100%",
                     height: "100%"
                 }}
-            >
-            </List>
+            />
         </div>
     )
 }

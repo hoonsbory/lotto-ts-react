@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+//서브타이틀
 const Head = styled.h3`
     background : rgb(86,115,235);
     color : white;

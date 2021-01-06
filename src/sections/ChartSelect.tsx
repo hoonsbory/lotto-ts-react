@@ -9,7 +9,7 @@ import ButtonGroup from '../components/ButtonGroup';
 import UserChart from '../components/UserChart';
 import styled from 'styled-components'
 import { Debounce } from '../Debounce'
-
+//실제 로또 통계와 가상로또 통계를 담고 있는 섹션
 const FlexDiv = styled.div`
     display : inline-flex;
     line-height : 1;
@@ -22,49 +22,55 @@ const ChartSelect = () => {
 
     const dispatch = useDispatch(); // 디스패치 함수를 가져옵니다
 
+    //공통으로 쓰일 리스트 액션
     const addAList = (newList: number[]) => {
         dispatch(actionCreators.accumulateList(newList))
     }
-    const resizeOpt = () => {
-        dispatch(actionCreators.resizeOpt())
-    }
+    //차트 사이즈업 액션
     const graphSizeUp = (size: number) => {
         dispatch(actionCreators.graphSizeUp(size))
     }
+    //차트 사이즈다운 액션
     const graphSizeDown = (size: number) => {
         dispatch(actionCreators.graphSizeDown(size))
     }
 
+    //차트 사이즈
     var size = useSelector((state: StoreState) => state.Reducer.graphSize);
 
+    //차트 사이즈업
     const sizeUp = (idx: number) => {
-        selected(idx)
+        btnStateChange(idx)
         graphSizeUp(size + 400)
-        document.body.getElementsByTagName("canvas")[0].style.width = `${size + 400}px`
-        resizeOpt()
+        document.getElementById("myChart")!.style.width = `${size + 400}px`
         
 
     }
+
+    //차트 사이즈다운
     const sizeDown = (idx: number) => {
         if (size < 361) return
-        selected(idx)
+        btnStateChange(idx)
         graphSizeDown(size - 400)
-        document.body.getElementsByTagName("canvas")[0].style.width = `${size - 400}px`
-        resizeOpt()
+        document.getElementById("myChart")!.style.width = `${size - 400}px`
     }
 
+    //토글 버튼
     const [btnSelect, setBtnSelect] = useState<any[]>([])
     const [graphSelect, setGraphSelect] = useState<any[]>([true, false])
 
-    const selected = Debounce((idx: number) => {
+    //버튼 그룹이 3개이상일 때를 대비해서 반복을 통해 선택된 버튼만 true로 만듦. 근데 버튼을 두개씩만 써서 사실 필요없음 ...
+    const btnStateChange = Debounce((idx: number) => {
         btnSelect[idx] = true
         setBtnSelect(btnSelect.map((i, idx2) => {
             if (idx2 === idx) return true
             else return false;
         }))
     }, 200)
+
+    //차트 전환
     const selected2 = Debounce((idx: number) => {
-        addAList([])
+        addAList([]) //값을 초기화하지 않고 그래프를 바꾸면 이전 값의 잔상이 남는다.
         graphSelect[idx] = true
         setGraphSelect(graphSelect.map((i, idx2) => {
             if (idx2 === idx) return true

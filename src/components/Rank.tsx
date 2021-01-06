@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { RankResult } from '../models/RankResult.js'
 import { RankResultNum } from '../models/RankResultNum'
 import Axios from 'axios'
-
+//결과를 출력하는 컴포넌트. 도출부터 전송까지 여기서 다 함.
 type props = {
     trigger?: boolean
     list: number[]
@@ -25,23 +25,30 @@ type RankProps = {
 const RankSpan = styled.span<RankProps>`
     background: ${props => props.bg || 'none'};
     border-radius: 5px;
-    padding: 5px;
+    padding: .3em;
     color: white;
     float : left;
-    display : ${props => props.hide ? "none" : "block"}
 `
 
 
 const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, correct, bonusCorrect, setUserResult, trigger }: props) => {
     const [rankColor, setRankColor] = useState<string[]>(["", ""])
+    //당첨 결과에 따른 bg를 담을 state
 
 
     const result = () => {
-        var correctList: any = list.map((x, idx) => { if (correct[x]) return idx }).filter((x: any) => x >= 0)
+        //맞은 개수 계산
+        var correctList: any = list.map((x, idx) => { if (correct[x]) return idx; else return undefined}).filter((x: any) => x >= 0)
+        //이번 회차의 보너스 번호
         var bonusNum: number = bonusCorrect.indexOf(true)
+        //보너스 번호를 맞췄는지 검증
         var bonus: boolean = list.includes(bonusNum)
+
+        
         if (correctList.length < 3) {
+            //각 결과마다 +1을 해주는 set 실행
             rankResult.setLast()
+            //text와 색깔 리턴
             return ["꽝", "black"]
         }
         else if (correctList.length === 3) {
@@ -49,15 +56,11 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             return ["5등", "darkslateblue"]
         }
         else if (correctList.length === 4) {
-            var list2: any = [...list]
-            correctList.forEach((i: any) => {
-                list2[i] = [list2[i], 1]
-            })
             rankResult.setFourth()
             return ["4등", "darkgoldenrod"]
         }
         else if (correctList.length === 5 && !bonus) {
-            var list2: any = [...list]
+            let list2: any = [...list]
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
@@ -66,7 +69,8 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             return ["3등", "darkcyan"]
         }
         else if (correctList.length === 5) {
-            var list2: any = [...list]
+            //3등부터는 결과를 저장할거라서 맞춘 일반번호는 1, 보너스 번호는 2로 배열에 추가한다.
+            let list2: any = [...list]
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
@@ -76,7 +80,7 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             return ["2등", "cornflowerblue"]
         }
         else {
-            var list2: any = [...list]
+            let list2: any = [...list]
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
@@ -86,6 +90,7 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
         }
     }
 
+    //db에 저장
     const sendResult = async (sumResult: RankResult, resultNums: RankResultNum) => {
         await Axios.post(`${process.env.REACT_APP_URL}/winData`, { sumResult: sumResult, resultNums: resultNums })
             .then(res => console.log(res.data))
@@ -93,9 +98,10 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
     }
 
     useEffect(() => {
-        // if (hide) document.getElementById("rankSpan" + idx)?.remove()
         setRankColor(result())
+        //추첨이 끝나고 마지막에 실행
         if (listSize - 1 === idx) {
+            //3등 이상은 이름을 입력받아서 저장
             var rank = rankResult.getFirst > 0 ? 1 : (rankResult.getSecond > 0 ? 2 : (rankResult.getThird > 0 ? 3 : (rankResult.getFourth > 0 ? 4 : 0)))
             if (rank > 0 && rank < 4) {
                 var name = window.prompt(`축하합니다 ${rank}등에 당첨되셨습니다!\n명예의 전당에 올릴 성함(닉네임)을 알려주세요! \n취소를 누르시면 익명으로 등록됩니다.  ※최대 10글자`)?.trim() || "익명"
@@ -107,6 +113,8 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
                 rankResultNum.setWinnerName(name)
             }
             sendResult(rankResult, rankResultNum)
+
+            //로컬스토리지에 있는 데이터를 가져와서 새 데이터와 합쳐서 다시 저장
             var pastResult = localStorage.getItem("userResult")
             if (pastResult) {
                 var newResult = JSON.parse(pastResult);
@@ -122,11 +130,11 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
                 localStorage.setItem("userResult", JSON.stringify(rankResult))
                 setUserResult(rankResult)
             }
+            //결과 나온 후 로또내역 보여주기 위해 footer up
             var footerBtn: any = document.getElementById("footerBtn")?.firstChild
             if (footerBtn.style.transform.indexOf("180") < 0)
                 document.getElementById("footerBtn")?.click()
             if (rank === 0&&hide) document.getElementById("noticeNoWin")!.innerText = "4등 이상 당첨된 로또가 없습니다"
-            else if(hide) document.getElementById("noticeNoWin")!.innerText = ""
         }
 
     }, [])
@@ -135,7 +143,7 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
         // <RankSpan id={"rankSpan" + idx} hide={hide} bg={rankColor[1]}>
         //     {rankColor[0]}
         // </RankSpan>
-        hide ? '' : <RankSpan id={"rankSpan" + idx} hide={hide} bg={rankColor[1]}>
+        hide ? '' : <RankSpan id={"rankSpan" + idx} bg={rankColor[1]}>
             {rankColor[0]}
         </RankSpan>
     )

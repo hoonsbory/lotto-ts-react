@@ -2,14 +2,9 @@ import { useState, useEffect } from 'react'
 import "chartjs-plugin-labels"
 import styled from 'styled-components'
 import { useSelector } from 'react-redux';
-import Chart, { Tooltip } from 'chart.js';
-// type wrapperProps = {
-//     size: number
-// }
-// type props = {
-//     rankList?:RankResult
-// }
+import Chart from 'chart.js';
 
+//Line차트
 const ScrollDiv = styled.div`
     overflow-x : auto;
 `
@@ -20,26 +15,14 @@ const ChartWrapper = styled.div`
 
 const PieChart = ({ rankList }) => {
 
-    var resize = useSelector((state) => state.Reducer.resizeOpt);
     var size = useSelector((state) => state.Reducer.graphSize);
     const [list2 ,setList2] = useState()
     const [size2 ,setSize2] = useState()
     const [chart ,setChart] = useState()
 
 
-    const expData = {
-        labels: ["1등", "2등", "3등", "4등", "5등", "꽝"],
-        datasets: [
-            {
-                data: [rankList?.getFirst, rankList?.getFirst, rankList?.getThird, rankList?.getFourth, rankList?.getFifth, rankList?.getLast],
-                borderWidth: 2,
-                hoverBorderWidth: 3,
-                backgroundColor:
-                    ["#fbc400", "#69c8f2", "#ff7272", "#b0d840", "rgb(255,94,0)", "#aaa"]
-                ,
-            }
-        ]
-    };
+    
+    
     var labels = ["1등", "2등", "3등", "4등", "5등", "꽝"]
     var data = [rankList?.getFirst, rankList?.getFirst, rankList?.getThird, rankList?.getFourth, rankList?.getFifth, rankList?.getLast]
     var sum = data.reduce((a, b) => a + b)
@@ -53,8 +36,8 @@ const PieChart = ({ rankList }) => {
         setList2(rankList)
         setSize2(size)
         if(chart) chart.destroy()
-        var ctx = document.getElementById('chartFixedTooltips').getContext('2d');
-        // Chart.plugins.register({
+        var ctx = document.getElementById('myChart').getContext('2d');
+        // Chart.plugins.register({ 모든 툴팁 고정
         //     beforeRender: function (chart) {
         //         if (chart.config.options.showAllTooltips) {
         //             // create an array of tooltips
@@ -98,6 +81,7 @@ const PieChart = ({ rankList }) => {
         //         }
         //     }
         // });
+        //차트 gradient 설정
         var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
         gradientStroke.addColorStop(0, '#80b6f4');
         gradientStroke.addColorStop(1, '#f49080');
@@ -116,7 +100,6 @@ const PieChart = ({ rankList }) => {
                     pointBackgroundColor: gradientStroke,
                     pointHoverBackgroundColor: gradientStroke,
                     pointHoverBorderColor: gradientStroke,
-                    pointBorderWidth: 10,
                     pointHoverRadius: 10,
                     pointHoverBorderWidth: 1,
                     pointRadius: 3,
@@ -136,22 +119,22 @@ const PieChart = ({ rankList }) => {
                 easing: "easeInOutBack"
             },
             options: {
-                maintainAspectRatio: false,
+                maintainAspectRatio: false, //차트 상위 div에 구속
                 legend: {
-                    display: false,
+                    display: false, //범례 안보이게.
                 },
                 scales: {
-                    yAxes: [{
+                    yAxes: [{ //y축 설정
                         ticks: {
                             fontColor: "rgba(0,0,0,0.5)",
                             fontStyle: "bold",
-                            beginAtZero: true,
+                            beginAtZero: true, //데이터 0부터 시작
                             stepSize : 20
                         },
                         
 
                     }],
-                    xAxes: [{
+                    xAxes: [{ //x축 설정
                         gridLines: {
                             zeroLineColor: "transparent"
                         },
@@ -167,10 +150,10 @@ const PieChart = ({ rankList }) => {
                 tooltips: {
                     displayColors: false,
                     callbacks: {
-                        title: function (tooltipItem, data) {
+                        title: function () { //값을 리턴안해주기때문에 툴팁에 title이 안나온다. 안나오는 것이 깔끔해서 뺐음.
                             return;
                         },
-                        label: function (tooltipItem, data) {
+                        label: function (tooltipItem, data) { //라벨 커스텀. 확률과 횟수.
                             return data['labels'][tooltipItem['index']] + " - " + data['datasets'][0]['data2'][tooltipItem['index']] + "번 , 확률 - " + data['datasets'][0]['data'][tooltipItem['index']] + "%";
                         },
                     }
@@ -178,7 +161,7 @@ const PieChart = ({ rankList }) => {
             }
         });
         setChart(chartjs)
-    }, [rankList, resize])
+    }, [rankList, size])
 
 
 
@@ -226,7 +209,7 @@ const PieChart = ({ rankList }) => {
                     height={95}
                     width={100}
                 /> */}
-                    <canvas height="300px" id="chartFixedTooltips"></canvas>
+                    <canvas height="300px" id="myChart"></canvas>
                 </ChartWrapper>
             </ScrollDiv>
         </div>

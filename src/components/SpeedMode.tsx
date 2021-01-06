@@ -1,8 +1,3 @@
-import { useSelector } from 'react-redux';
-import { StoreState } from '../store'
-import { useDispatch } from 'react-redux';
-import { actionCreators } from '../store/store';
-import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import Button from '../components/Button';
 import { List } from 'react-virtualized';
@@ -10,25 +5,14 @@ import ResultNum from '../components/ResultNum';
 import LineDiv from '../components/LineDiv';
 import { Debounce } from '../Debounce'
 import Draw from '../sections/Draw';
-import NumList from '../components/NumList';
 import NumLineWrap from '../components/NumLineWrap';
 import Rank from '../components/Rank';
 import { RankResultNum } from '../models/RankResultNum';
 import { RankResult } from '../models/RankResult';
 
-//ts에서 props를 사용하는 방법
+//스피드모드
 
 
-//이런 식으로 자주 쓰일 것 같은 css를 만들어놓고 편리하게 사용 가능.
-// const hoverForPC = css`
-//     &:hover{
-//         background : rgb(70, 77, 82);
-//         color : white;
-//     }
-// `
-const Section = styled.section`
-    ${props => props.theme.sectionCss}
-`
 const ScrollList = styled.div`
     overflow-y : auto;
     max-height : ${window.innerHeight / 2}px;
@@ -37,147 +21,26 @@ const SmallSpan = styled.span`
     color : gray;
     font-size : 12px;
 `
+type props = {
+    list:number[][]
+    draw: boolean
+    correct: boolean[]
+    bonusCorrect:boolean[]
+    trigger:boolean
+    setList:Function
+    setDraw:Function
+    setCorrect:Function
+    setbonusCorrect:Function
+    setTrigger:Function
+    setUserResult:Function
+}
 
-const NumDiv = styled.div`
-    `
-const SpeedMode = () => {
-    var list = useSelector((state: StoreState) => state.Reducer.list);
-    var draw = useSelector((state: StoreState) => state.Reducer.drawCheck);
-    var correct = useSelector((state: StoreState) => state.Reducer.corrected);
-    var bonusCorrect = useSelector((state: StoreState) => state.Reducer.bonusCorrect);
-    var trigger = useSelector((state: StoreState) => state.Reducer.resultTrigger);
+const SpeedMode = ({list,draw,correct,bonusCorrect,trigger,setList,setUserResult,setDraw,setTrigger,setCorrect,setbonusCorrect}:props) => {
 
-    const dispatch = useDispatch();
-
-    const setList = (list: number[][]) => {
-        dispatch(actionCreators.list(list))
-    }
-    const setDraw = (value: boolean) => {
-        dispatch(actionCreators.drawCheck(value))
-    }
-    const setCorrect = (value: boolean[]) => {
-        dispatch(actionCreators.corrected(value))
-    }
-    const setbonusCorrect = (value: boolean[]) => {
-        dispatch(actionCreators.bonusCorrect(value))
-    }
-    const setTrigger = (value: boolean) => {
-        dispatch(actionCreators.resultTrigger(value))
-    }
-    const setUserResult = (value: any) => {
-        dispatch(actionCreators.userResult(value))
-    }
-    const [selectBtn, setSelectBtn] = useState<boolean[]>([])
-    const [line, setLine] = useState<number>(0)
-
-
-
-    let allNum: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45]
-
-    //번호 선택 이벤트
-    const select = (num: number) => {
-        if (limit()) return
-        if (list[line].includes(num)) {
-            //번호 선택 해제. 배열에서 제거하고 스타일 변경을 위해 false로 변경.
-            list[line].splice(list[line].indexOf(num), 1)
-            selectBtn[num - 1] = false
-            setSelectBtn([...selectBtn])
-            setList([...list])
-        }
-        else if (list[line].length === 6) return
-        else {
-            selectBtn[num - 1] = true
-            setSelectBtn([...selectBtn])
-            list[line].push(num)
-            setList([...list])
-        }
-    }
-
-
-
-    let map = allNum.map((x, idx) => <NumList content={x} selected={selectBtn[idx]} id={`btn${x}`} click={select}></NumList>)
-
-    const reset = () => {
-        setCorrect([])
-        setbonusCorrect([])
-        setTrigger(false)
-        setDraw(false)
-        setLine(0)
-        setSelectBtn([])
-        setList([[]])
-    }
-
-    const submit = () => {
-        if (list[line].length < 6) {
-            alert("총 6개의 번호를 선택해주세요")
-            return
-        }
-        if (window.confirm(`선택한 로또번호로 추첨하시겠습니까?`)) {
-            setDraw(true)
-        }
-    }
-
-    const afterDraw = () => {
-        if (document.getElementById("resetBtn")?.nextElementSibling?.nextElementSibling?.firstChild?.nodeName === 'SPAN') {
-            if (window.confirm("추첨이 시작된 로또이므로 번호를 추가할 수 없습니다. 초기화하시겠습니까?")) {
-                reset()
-                return true
-            }
-            else return true
-        }
-        else return false
-    }
-
-    const limit = () => {
-        if (afterDraw()) return true
-        var count: any = document.getElementById("lottoList")?.childElementCount
-        if (count > 5000) {
-            alert("1회 10만원까지만 제공됩니다.")
-            return true
-        }
-        return false
-    }
-
-    const random = (tenReps: boolean) => {
-        if (limit()) return
-        var length: number = list[line].length
-        for (var i = 0; i < 6 - length; i++) {
-            while (true) {
-                var num: number = Math.floor((Math.random() * 45) + 1)
-                if (!list[line].includes(num)) {
-                    document.getElementById(`btn${num}`)?.click()
-                    break;
-                }
-            }
-        }
-        if (tenReps) {
-            // var count:any = document.getElementById("lottoList")?.childElementCount
-            // if (count > 199) {
-            //     alert("1회 10만원까지만 제공됩니다.")
-            //     return
-            // }
-            document.getElementById("loadingBg")!.style.display = "block";
-            // if(count+10>200)
-            // random11(200)
-            // else
-            random11(0)
-        }
-    }
-
-    const random11 = (count: number) => {
-        if (5000 === count) {
-            document.getElementById("loadingBg")!.style.display = "none";
-            return
-        }
-        document.getElementById("lineAdd")?.click()
-        setTimeout(() => {
-            document.getElementById(`randomBtn`)?.click()
-            random11(count + 1)
-        }, 1);
-
-    }
-
-
+   
+    //랜덤으로 뽑기 
+    //일반모드에 있는 랜덤은 실제로 버튼을 클릭하는 것을 10회 반복한 것 뿐이다.
+    //스피드모드는 속도를 위해 반복문으로 배열을 만들어서 list에 추가함. 보여주기식이 아니라 그냥 결과만을 도출하기 위한 모드
     const randomTest = Debounce((count: number) => {
         document.getElementById("loadingBg")!.style.display = "block";
         setTrigger(false)
@@ -201,70 +64,45 @@ const SpeedMode = () => {
         setTimeout(() => {
             setDraw(true)
         }, 100);
-    },400)
+    }, 400)
 
-    const addLine = () => {
-        if (list[line].length < 6) return
-        if (limit()) return
-        list.push([])
-        setList([...list])
-        setLine(line + 1)
-        setSelectBtn([])
-    }
 
-    const resetOneLine = () => {
-        list[line] = []
-        setSelectBtn([])
-        setList([...list])
-    }
-
-    const deleteLine = (idx: number) => {
-        list.splice(idx, 1)
-        setList([...list])
-        setLine(line - 1)
-    }
-
-    const deleteSelectLine = (idx: number) => {
-        if (list.length === idx + 1) setSelectBtn([])
-        deleteLine(idx)
-    }
-
+    //리스트 내용은 일반모드랑 거의 같음.
     const rowRenderer = (
         () => {
             return (
                 <ScrollList id="lottoList">
                     {trigger ? list.map((i, idx) => {
-                        var length = i.map((x, idx) => { if (correct[x]) return x }).filter(x => x)
-                        
+                        var length = i.map(x => { if (correct[x]) return x; return undefined }).filter(x => x)
+
                         if (length.length > 3)
                             return (
-                        <NumLineWrap key={idx} content={<div><Rank
-                            setUserResult={setUserResult}
-                            rankResultNum={rankResultNum}
-                            rankResult={rankResult}
-                            listSize={list.length}
-                            idx={idx}
-                            hide={false}
-                            list={list[idx]}
-                            correct={correct}
-                            bonusCorrect={bonusCorrect}
-                            trigger={trigger}></Rank>
-                            {list[idx].sort((a, b) => a - b).map((x,idx) =>
-                                <ResultNum key={idx} bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x}></ResultNum>)}</div>
-                        }></NumLineWrap>)
-                        else{
+                                <NumLineWrap hide={true} idx={idx} key={idx} content={<div><Rank
+                                    setUserResult={setUserResult}
+                                    rankResultNum={rankResultNum}
+                                    rankResult={rankResult}
+                                    listSize={list.length}
+                                    idx={idx}
+                                    hide={false}
+                                    list={list[idx]}
+                                    correct={correct}
+                                    bonusCorrect={bonusCorrect}
+                                    trigger={trigger}></Rank>
+                                    {list[idx].sort((a, b) => a - b).map((x, idx) =>
+                                        <ResultNum key={idx} bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x}></ResultNum>)}</div>
+                                }></NumLineWrap>)
+                        else {
                             return (
-                                <Rank key={idx}
-                            setUserResult={setUserResult}
-                            rankResultNum={rankResultNum}
-                            rankResult={rankResult}
-                            listSize={list.length}
-                            idx={idx}
-                            list={list[idx]}
-                            hide={true}
-                            correct={correct}
-                            bonusCorrect={bonusCorrect}
-                            trigger={trigger}></Rank>
+                                <Rank idx={idx} key={idx}
+                                    setUserResult={setUserResult}
+                                    rankResultNum={rankResultNum}
+                                    rankResult={rankResult}
+                                    listSize={list.length}
+                                    list={list[idx]}
+                                    hide={true}
+                                    correct={correct}
+                                    bonusCorrect={bonusCorrect}
+                                    trigger={trigger}></Rank>
                             )
                         }
                     }) : ''}

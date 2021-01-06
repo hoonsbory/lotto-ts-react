@@ -1,5 +1,5 @@
 import React from 'react'
-
+//로딩 움짤
 const LoadingSvg = () => {
     return (
         <svg style={{margin: "auto", background: "white", display: "block", shapeRendering: "auto"}} width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">

@@ -26,6 +26,7 @@ margin-right : 10px;
 const btnCss = css<btnProps>`
     margin-left: 0;
     margin-right: 0;
+    font-weight : 600;
     white-space: nowrap;
     ${props => props.theme.noneOutline}
     border : 1px solid rgba(193,193,193,0.565);
@@ -65,12 +66,12 @@ const ButtonGroup = ({ click, color, bg, hover, content, selected, selectColor, 
     var map = content.map((x, idx) => {
         switch (idx) {
             case 0:
-                return <FirstBtn selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</FirstBtn>
+                return <FirstBtn key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</FirstBtn>
             case content.length - 1:
-                return <LastBtn selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</LastBtn>
+                return <LastBtn key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</LastBtn>
 
             default:
-                return <Btn selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</Btn>
+                return <Btn key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</Btn>
         }
     })
 

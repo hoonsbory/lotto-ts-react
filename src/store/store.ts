@@ -1,12 +1,9 @@
 // types
 
-import { RankResult } from "../models/RankResult";
-
 //interface를 통해 타입을 정해준다.
 export interface State {
   list: number[][];
   accumulateList: number[][];
-  resizeOpt: boolean;
   graphSize: number;
   drawCheck: boolean;
   corrected: boolean[];
@@ -44,10 +41,6 @@ interface AccumulateListAction {
   type: typeof ALIST;
 }
 
-interface ResizeOpt {
-  value: boolean;
-  type: typeof RESIZE;
-}
 interface GraphSize {
   size: number;
   type: typeof GRAPHSIZE;
@@ -88,7 +81,7 @@ interface UserResult {
 
 type ActionTypes = ListAction |
   AccumulateListAction |
-  ResizeOpt | GraphSize |
+  GraphSize |
   DrawCheck | Corrected |
   RecentRound |
   ResultTrigger |
@@ -115,11 +108,6 @@ function accumulateList(newList: number[]) {
   return {
     type: ALIST,
     newList: newList
-  };
-}
-function resizeOpt() {
-  return {
-    type: RESIZE
   };
 }
 function graphSizeUp(size: number) {
@@ -185,14 +173,13 @@ function userResult(value: any) {
 
 //액션 함수 export
 export const actionCreators = {
-  list, accumulateList, resizeOpt, graphSizeUp, graphSizeDown, drawCheck, corrected, recentRound, resultTrigger, bonusCorrect, roundSelect1, roundSelect2, userResult
+  list, accumulateList, graphSizeUp, graphSizeDown, drawCheck, corrected, recentRound, resultTrigger, bonusCorrect, roundSelect1, roundSelect2, userResult
 };
 
 //초기값 선언 타입은 가장 위에서 선언한 인터페이스
 const initialState: State = {
   list: [[]],
   accumulateList: [],
-  resizeOpt: false,
   graphSize: 1160,
   drawCheck: false,
   corrected: [],
@@ -226,11 +213,6 @@ export function Reducer(
       return {
         ...state,
         accumulateList: action.newList
-      };
-    case RESIZE:
-      return {
-        ...state,
-        resizeOpt: state.resizeOpt ? false : true
       };
     case GRAPHSIZE:
       return {

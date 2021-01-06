@@ -5,9 +5,9 @@ import ButtonGroup from './ButtonGroup';
 import styled from 'styled-components'
 import LineDiv from './LineDiv';
 import { Debounce } from '../Debounce'
-import PieChart from './PieChart';
+import PieChart from './LineChart';
 import { RankResult } from '../models/RankResult';
-
+//유저들의 로또 결과를 보여주는 그래프
 type props = {
     addAList: Function
 }
@@ -49,6 +49,7 @@ const UserChart = ({addAList}:props) => {
 
 
     useEffect(() => {
+        //디폴트 차트인 rankdata 가져옴
         getRankData()
     }, [])
 

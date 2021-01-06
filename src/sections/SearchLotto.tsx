@@ -7,7 +7,8 @@ import LineDiv from '../components/LineDiv'
 import Axios from 'axios'
 import ResultNum from '../components/ResultNum';
 import styled from 'styled-components'
-
+//가장 상단에 위치한 섹션
+//처음에 로드되기때문에 로또의 회차 수를 가져오고 가장 최신회차의 번호를 출력한다.
 const Div = styled.div`
     margin-bottom : 30px;
 `
@@ -27,8 +28,11 @@ const SearchLotto = () => {
     const setRoundSelect1 = (value:number) => {
         dispatch(actionCreators.roundSelect1(value))
     }
+
+    //회차
     var roundSize = useSelector((state:StoreState)=> state.Reducer.recentRound)
 
+    //최신 회차가 몇인지 가져옴.
     const getSize = async () => {
         await Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
         query{
@@ -46,7 +50,7 @@ const SearchLotto = () => {
         })
     }
 
-
+    //선택한 회차 정보를 가져옴
     const getNum = async (num : number) => {
         await Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
             query{
@@ -66,13 +70,16 @@ const SearchLotto = () => {
 
 
     useEffect(() => {
+        //회차정보는 하단에 차트에서도 쓰이기때문에 처음에 가져와서 state로 관리한다.
         getSize()
     }, [])
 
+    //select 옵션 최신회차까지 생성
     var arr = new Array(roundSize).fill(0)
     var map = arr.map((x, idx: number) => <option key={idx} value={idx + 1}>{idx + 1}</option>)
 
 
+    //select onChange
     const handleChange = (e:any) => {
         setSelect(e.target.value)
         getNum(e.target.value)

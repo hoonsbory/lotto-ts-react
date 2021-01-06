@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import DoubleArrow from './DoubleArrow'
 
-
+//slide footer 버튼
 type props={
     upDownBtn:boolean
     setUpDownBtn:Function

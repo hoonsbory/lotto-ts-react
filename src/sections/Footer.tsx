@@ -1,6 +1,6 @@
 import SnsGroup from "../components/SnsGroup"
 import styled from 'styled-components'
-
+//Footer
 const P = styled.p`
     color : #262626;
     margin-top : 50px;

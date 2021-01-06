@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react'
 import SubTitle from '../components/SubTitle'
 import Axios from 'axios'
 import ButtonGroup from '../components/ButtonGroup'
-import NumLineWrap from '../components/NumLineWrap'
 import ResultNum from '../components/ResultNum'
 import LineDiv from '../components/LineDiv'
 import { Debounce } from '../Debounce'
 import NobodyWin from '../components/NobodyWin'
 import styled from 'styled-components'
-
+//명예의 전당
 type props ={
     check: boolean
 }
@@ -54,13 +53,17 @@ const HallOfFame = () => {
                 setNumList(res.data.data.winDataByRank)
             })
     }
+    //토글 버튼
     const [selectBtn, setSelectBtn] = useState<boolean[]>([true, false, false])
+    //받아온 win데이터
     const [numList, setNumList] = useState<any[]>([])
 
     useEffect(() => {
+        //초기값은 1등한 사람
         getWinData("first")
     }, [])
 
+    //토글 버튼 state변경 및 데이터 가져오기
     const selected = Debounce((idx: number) => {
         if(selectBtn[idx]) return
         setSelectBtn(selectBtn.map((i, idx2) => {
@@ -97,11 +100,12 @@ const HallOfFame = () => {
                 var numCheck = idx%2===0 ? true : false
                 return (
 
-                    <NumWrapper check={numCheck}>
+                    <NumWrapper key={idx} check={numCheck}>
                     <NameSpan>{obj.name}</NameSpan>
-                    {Object.keys(obj).map(x => {
-                        if (x !== "name")
-                            return <ResultNum num={obj[x][0]} bonusCorrect={obj[x][1] === 2 ? true : false} correct={obj[x][1] === 1 ? true : false}></ResultNum>
+                    {Object.keys(obj).map((x,idx) => {
+                        if (x !== "name") //이름은 위에서 출력하기 때문에 건너뛰어준다. 1과 2는 맞춘 번호와 맞춘 보너스 번호를 검증하기 위함이다. 
+                            return <ResultNum key={idx} num={obj[x][0]} bonusCorrect={obj[x][1] === 2 ? true : false} correct={obj[x][1] === 1 ? true : false}></ResultNum> 
+                        return undefined
                     })}
                     </NumWrapper>
                 )

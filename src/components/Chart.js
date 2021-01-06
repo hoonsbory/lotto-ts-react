@@ -14,7 +14,6 @@ const ScrollDiv = styled.div`
 
 const Chart = () => {
     var list = useSelector((state) => state.Reducer.accumulateList);
-    var resize = useSelector((state) => state.Reducer.resizeOpt);
     var size = useSelector((state) => state.Reducer.graphSize);
     const [chart ,setChart] = useState()
     const [list2 ,setList2] = useState()
@@ -32,7 +31,7 @@ const Chart = () => {
         if(chart) chart.destroy()
         
 
-        var ctx = document.getElementById('chartFixedTooltips').getContext('2d');
+        var ctx = document.getElementById('myChart').getContext('2d');
         
         var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
         gradientStroke.addColorStop(0, '#80b6f4');
@@ -52,7 +51,6 @@ const Chart = () => {
                     pointBackgroundColor: gradientStroke,
                     pointHoverBackgroundColor: gradientStroke,
                     pointHoverBorderColor: gradientStroke,
-                    pointBorderWidth: 10,
                     pointHoverRadius: 10,
                     pointHoverBorderWidth: 1,
                     pointRadius: 3,
@@ -119,7 +117,7 @@ const Chart = () => {
         });
 
         setChart(chartjs)
-    }, [list,resize])
+    }, [list,size])
 
 
     return (
@@ -127,7 +125,7 @@ const Chart = () => {
 
             <ScrollDiv>
                 <ChartWrapper size={size}>
-                    <canvas  height="300px" id="chartFixedTooltips"></canvas>
+                    <canvas  height="300px" id="myChart"></canvas>
                 </ChartWrapper>
             </ScrollDiv>
         </div>

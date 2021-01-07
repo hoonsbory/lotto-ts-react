@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import AccumulateChart from '../components/AccumulateChart'
 import { useDispatch } from 'react-redux';
-import { actionCreators } from '../store/store';
+import { actionCreators } from '../store/ChartStore';
 import { useSelector } from 'react-redux';
 import { StoreState } from '../store'
 import SubTitle from '../components/SubTitle';
@@ -24,7 +24,7 @@ const ChartSelect = () => {
 
     //공통으로 쓰일 리스트 액션
     const addAList = (newList: number[]) => {
-        dispatch(actionCreators.accumulateList(newList))
+        dispatch(actionCreators.chartList(newList))
     }
     //차트 사이즈업 액션
     const graphSizeUp = (size: number) => {
@@ -34,7 +34,10 @@ const ChartSelect = () => {
     const graphSizeDown = (size: number) => {
         dispatch(actionCreators.graphSizeDown(size))
     }
-
+    
+    const setMainList = (value:any) => {
+        dispatch(actionCreators.chartMainData(value))
+    }
     //차트 사이즈
     var size = useSelector((state: StoreState) => state.Reducer.graphSize);
 
@@ -68,7 +71,7 @@ const ChartSelect = () => {
 
     //차트 전환
     const selected2 = Debounce((idx: number) => {
-        addAList([]) //값을 초기화하지 않고 그래프를 바꾸면 이전 값의 잔상이 남는다.
+        setMainList([]) //값을 초기화하지 않고 그래프를 바꾸면 이전 값의 잔상이 남는다.
         graphSelect[idx] = true
         setGraphSelect(graphSelect.map((i, idx2) => {
             if (idx2 === idx) return true
@@ -83,7 +86,7 @@ const ChartSelect = () => {
                 <ButtonGroup selected={btnSelect} content={["확대", "축소"]} click={[sizeUp, sizeDown]}></ButtonGroup>
             </FlexDiv>
 
-            {graphSelect[0] ? <AccumulateChart addAList={addAList}></AccumulateChart> : <UserChart addAList={addAList}></UserChart>}
+            {graphSelect[0] ? <AccumulateChart/>: <UserChart/>}
 
         </Section>
     )

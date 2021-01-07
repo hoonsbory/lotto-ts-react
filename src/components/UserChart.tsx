@@ -7,10 +7,13 @@ import LineDiv from './LineDiv';
 import { Debounce } from '../Debounce'
 import PieChart from './LineChart';
 import { RankResult } from '../models/RankResult';
+import { useSelector } from 'react-redux';
+import { StoreState } from '../store'
+import { useDispatch } from 'react-redux';
+import { actionCreators } from '../store/ChartStore';
+import Button from './Button';
+import Arrow from './Arrow';
 //유저들의 로또 결과를 보여주는 그래프
-type props = {
-    addAList: Function
-}
 
 const FlexDiv = styled.div`
     display : inline-flex;
@@ -26,36 +29,59 @@ const Span = styled.span`
     word-break : keep-all;
 `
 
-const UserChart = ({addAList}:props) => {
+const UserChart = () => {
 
 
-    const getRankData = async () => {
-        Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
-        query{
-            resultSum(_id:"id"){
-                first second third fourth fifth last
+    // const getRankData = async () => {
+    //     Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
+    //     query{
+    //         resultSum(_id:"id"){
+    //             first second third fourth fifth last
+    //         }
+    //     }
+    //     `}).then(res => {
+    //         setRankList(new RankResult(res.data.data.resultSum))
+    //     })
+    // }
+
+    // const getWinData = async () => {
+    //     Axios.get(`${process.env.REACT_APP_URL}/userWinNum`).then(res => {
+    //         addAList(res.data)
+    //     })
+    // }
+    const MainList = useSelector((state: StoreState) => state.ChartReducer.chartMainData)
+    const userChartList = useSelector((state: StoreState) => state.ChartReducer.userChartList)
+    const userChartSum = useSelector((state: StoreState) => state.ChartReducer.userChartSum)
+    const sortBtn = useSelector((state: StoreState) => state.ChartReducer.sortBtn)
+
+    const dispatch = useDispatch()
+
+    const setMainList = (value: any) => {
+        dispatch(actionCreators.chartMainData(value))
+    }
+    const setSortBtn = () => {
+        dispatch(actionCreators.sortBtn())
+    }
+    useEffect(() => {
+        if (btnSelect[0]) {
+            if (sortBtn){
+            if(JSON.stringify(userChartSum.sort((a: any, b: any) => a[1] - b[1]))!==JSON.stringify(MainList))  setMainList([...userChartSum.sort((a: any, b: any) => a[1] - b[1])])
+            }
+            else{
+                if(JSON.stringify(userChartSum)!==JSON.stringify(MainList))  setMainList([...userChartSum])
             }
         }
-        `}).then(res => {
-            setRankList(new RankResult(res.data.data.resultSum))
-        })
-    }
-
-    const getWinData = async () => {
-        Axios.get(`${process.env.REACT_APP_URL}/userWinNum`).then(res => {
-            addAList(res.data)
-        })
-    }
-
-
-    useEffect(() => {
-        //디폴트 차트인 rankdata 가져옴
-        getRankData()
-    }, [])
+        else {
+            if (sortBtn){
+            if(JSON.stringify(userChartList.sort((a: any, b: any) => a[1] - b[1]))!==JSON.stringify(MainList))  setMainList([...userChartList.sort((a: any, b: any) => a[1] - b[1])])
+            }
+            else
+            if(JSON.stringify(userChartList)!==JSON.stringify(MainList))  setMainList([...userChartList])
+        }
+    }, [userChartSum])
 
     //버튼 토글 
     const [btnSelect, setBtnSelect] = useState<boolean[]>([true, false])
-    const [rankList,setRankList] = useState<RankResult>()
 
     //버튼 클릭 이벤트
     const selected = (idx: number) => {
@@ -66,35 +92,50 @@ const UserChart = ({addAList}:props) => {
         }))
     }
 
-   
 
-  
 
-   
+
+
+
 
     const rankChart = Debounce((idx: number) => {
         if (btnSelect[idx]) return
-        getRankData()
         selected(idx)
+        if (sortBtn)
+            setMainList([...userChartSum.sort((a: any, b: any) => a[1] - b[1])])
+        else
+            setMainList([...userChartSum.sort((a: any, b: any) => b[1] - a[1])])
+        setMainList(userChartSum)
+        
     }, 200)
 
     const winNumChart = Debounce((idx: number) => {
         if (btnSelect[idx]) return
-        getWinData()
+        if (sortBtn)
+            setMainList([...userChartList.sort((a: any, b: any) => a[1] - b[1])])
+        else
+            setMainList([...userChartList.sort((a: any, b: any) => b[1] - a[1])])
         selected(idx)
     }, 200)
 
+    //정렬
+    const sort = Debounce(() => {
+        if (sortBtn) {
+            setMainList([...MainList.sort((a: any, b: any) => b[1] - a[1])])
+            setSortBtn()
+        } else {
+            setMainList([...MainList.sort((a: any, b: any) => a[1] - b[1])])
+            setSortBtn()
+        }
+    }, 200)
 
-    
 
 
     return (
         <div>
-            
+            <LineDiv content={<FlexDiv><Span>가상 로또</Span><ButtonGroup content={["당첨 비율", "당첨 번호(3등 ↑)"]} selected={btnSelect} click={[rankChart, winNumChart]}></ButtonGroup><Button border={true} click={sort} hoverBg="rgb(224,230,251)" bg="white" content={<Arrow fill="rgb(86,115,235)" upDown={sortBtn}></Arrow>}></Button></FlexDiv>}></LineDiv>
 
-            <LineDiv content={<FlexDiv><Span>유저들의 가상 로또</Span><ButtonGroup content={["당첨 비율", "당첨 번호(3등 이상)"]} selected={btnSelect} click={[rankChart,winNumChart]}></ButtonGroup></FlexDiv>}></LineDiv>
-            
-            {btnSelect[0] ? <PieChart rankList={rankList}></PieChart> : <Chart></Chart>}
+            {btnSelect[0] ? <PieChart></PieChart> : <Chart></Chart>}
         </div>
     )
 }

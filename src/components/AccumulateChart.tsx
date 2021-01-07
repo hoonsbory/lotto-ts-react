@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import { StoreState } from '../store'
 import Axios from 'axios'
 import Chart from './Chart'
 import ButtonGroup from './ButtonGroup';
@@ -9,13 +7,12 @@ import LineDiv from './LineDiv';
 import { Debounce } from '../Debounce'
 import Arrow from './Arrow';
 import Button from './Button';
+import { useSelector } from 'react-redux';
+import { StoreState } from '../store'
 import { useDispatch } from 'react-redux';
-import { actionCreators } from '../store/store';
+import { actionCreators } from '../store/ChartStore';
 //실제 로또 통계 차트 선택 섹션
 
-type props = {
-    addAList: Function
-}
 
 const FlexDiv = styled.div`
     display : inline-flex;
@@ -31,41 +28,63 @@ const Span = styled.span`
     font-weight : 600;
     white-space: nowrap;
 `
-const AccumulateChart = ({ addAList }: props) => {
+const AccumulateChart = () => {
 
     //로또 회차정보
     const roundSize = useSelector((state: StoreState) => state.Reducer.recentRound)
-    const select1 = useSelector((state:StoreState) => state.Reducer.roundSelect1)
-    const select2 = useSelector((state:StoreState) => state.Reducer.roundSelect2)
+    const select1 = useSelector((state: StoreState) => state.Reducer.roundSelect1)
+    const select2 = useSelector((state: StoreState) => state.Reducer.roundSelect2)
+    const MainList = useSelector((state: StoreState) => state.ChartReducer.chartMainData)
+    const chartList = useSelector((state: StoreState) => state.ChartReducer.chartList)
+    const chartBonusList = useSelector((state: StoreState) => state.ChartReducer.chartBonusList)
+    const sortBtn = useSelector((state: StoreState) => state.ChartReducer.sortBtn)
 
     const dispatch = useDispatch()
 
-    const setSelect1 = (value:number) => {
+    const setSelect1 = (value: number) => {
         dispatch(actionCreators.roundSelect1(value))
     }
-    const setSelect2 = (value:number) => {
+    const setSelect2 = (value: number) => {
         dispatch(actionCreators.roundSelect2(value))
+    }
+    const setMainList = (value: any) => {
+        dispatch(actionCreators.chartMainData(value))
+    }
+    const setSortBtn = () => {
+        dispatch(actionCreators.sortBtn())
     }
 
     const winGraph = (skip: number, limit: number, bonus: boolean, sort: boolean) => {
         if (roundSize === 0) return
         Axios.post(`${process.env.REACT_APP_URL}/winGraph`, { skip: skip, limit: limit !== 0 ? limit : 1, bonus: bonus, sort: sort })
             .then(res => {
-                addAList(res.data)
+                setMainList(res.data)
             })
     }
 
 
     useEffect(() => {
-        //처음 그래프 정보 로드
-        var [big, small] = bigSmall(select1, select2)
-        winGraph(small - 1, big - small + 1, false, false)
-    }, [roundSize])
+        if (btnSelect[0]) {
+            if (sortBtn){
+            if(JSON.stringify(chartList.sort((a: any, b: any) => a[1] - b[1]))!==JSON.stringify(MainList))  setMainList([...chartList.sort((a: any, b: any) => a[1] - b[1])])
+            }
+            else{
+                if(JSON.stringify(chartList)!==JSON.stringify(MainList))  setMainList([...chartList])
+            }
+        }
+        else {
+            if (sortBtn){
+            if(JSON.stringify(chartBonusList.sort((a: any, b: any) => a[1] - b[1]))!==JSON.stringify(MainList))  setMainList([...chartBonusList.sort((a: any, b: any) => a[1] - b[1])])
+            }
+            else
+            if(JSON.stringify(chartBonusList)!==JSON.stringify(MainList))  setMainList([...chartBonusList])
+        }
+    }, [chartList])
 
+    
     //버튼 토글 
     const [btnSelect, setBtnSelect] = useState<boolean[]>([true, false])
     //sort버튼 토글
-    const [sortBtn, setSortBtn] = useState<boolean>(false)
 
     //버튼 클릭 이벤트
     const selected = (idx: number) => {
@@ -106,28 +125,31 @@ const AccumulateChart = ({ addAList }: props) => {
     const noBonus = Debounce((idx: number) => {
         if (btnSelect[idx]) return
         selected(idx)
-        var [big, small] = bigSmall(select2, select1)
-        winGraph(small - 1, big - small + 1, false, sortBtn)
+        if (sortBtn)
+            setMainList([...chartList.sort((a: any, b: any) => a[1] - b[1])])
+        else
+            setMainList([...chartList.sort((a: any, b: any) => b[1] - a[1])])
     }, 200)
 
     //보너스 포함 그래프
     const bonus = Debounce((idx: number) => {
         if (btnSelect[idx]) return
         selected(idx)
-        var [big, small] = bigSmall(select2, select1)
-        winGraph(small - 1, big - small + 1, true, sortBtn)
+        if (sortBtn)
+            setMainList([...chartBonusList.sort((a: any, b: any) => a[1] - b[1])])
+        else
+            setMainList([...chartBonusList.sort((a: any, b: any) => b[1] - a[1])])
     }, 200)
 
 
     //정렬
     const sort = Debounce(() => {
-        var [big, small] = bigSmall(select2, select1)
         if (sortBtn) {
-            winGraph(small - 1, big - small + 1, btnSelect[1], false)
-            setSortBtn(false)
+            setMainList([...MainList.sort((a: any, b: any) => b[1] - a[1])])
+            setSortBtn()
         } else {
-            winGraph(small - 1, big - small + 1, btnSelect[1], true)
-            setSortBtn(true)
+            setMainList([...MainList.sort((a: any, b: any) => a[1] - b[1])])
+            setSortBtn()
         }
     }, 200)
 
@@ -144,10 +166,11 @@ const AccumulateChart = ({ addAList }: props) => {
             </div>}></LineDiv>
 
             <FlexDiv><Span>가장 많이 뽑힌</Span><ButtonGroup selected={btnSelect} content={["번호(보너스X)", "보너스번호"]} click={[noBonus, bonus]}></ButtonGroup><Button border={true} click={sort} hoverBg="rgb(224,230,251)" bg="white" content={<Arrow fill="rgb(86,115,235)" upDown={sortBtn}></Arrow>}></Button></FlexDiv>
-            
+
             <Chart></Chart>
         </div>
     )
 }
 
 export default AccumulateChart
+

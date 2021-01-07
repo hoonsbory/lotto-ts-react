@@ -13,29 +13,31 @@ const ChartWrapper = styled.div`
 `
 
 
-const PieChart = ({ rankList }) => {
+const PieChart = () => {
 
-    var size = useSelector((state) => state.Reducer.graphSize);
+    var size = useSelector((state) => state.ChartReducer.graphSize);
+    var rankList = useSelector((state) => state.ChartReducer.chartMainData);
     const chart = useRef()
-    const list2 = useRef()
-    const size2 = useRef()
 
 
-    
-    
-    var labels = ["1등", "2등", "3등", "4등", "5등", "꽝"]
-    var data = [rankList?.getFirst, rankList?.getFirst, rankList?.getThird, rankList?.getFourth, rankList?.getFifth, rankList?.getLast]
-    var sum = data.reduce((a, b) => a + b)
-    var data2 = data.map(x => {
-        var result = ((x / sum) * 100)
-        if(Math.round(result)===0) return result.toFixed(5)
-        else return result.toFixed(2)
-    })
+
+
+
     useEffect(() => {
-        if(JSON.stringify(rankList)===JSON.stringify(list2.current)&&size===size2.current) return
-        list2.current = rankList
-        size2.current = size
-        if(chart.current) chart.current.destroy()
+        // if (JSON.stringify(rankList) === JSON.stringify(list2.current) && size === size2.current) return
+        if(rankList.length===0)return
+
+        var labels = rankList.map(i => i[0])
+        var data = rankList.map(i => i[1])
+        var sum = data.reduce((a, b) => a + b)
+        var data2 = data.map(x => {
+            var result = ((x / sum) * 100)
+            if (Math.round(result) === 0) return result.toFixed(5)
+            else return result.toFixed(2)
+        })
+
+        if (chart.current) chart.current.destroy()
+
         var ctx = document.getElementById('myChart').getContext('2d');
         // Chart.plugins.register({ 모든 툴팁 고정
         //     beforeRender: function (chart) {
@@ -106,7 +108,7 @@ const PieChart = ({ rankList }) => {
                     fill: true,
                     backgroundColor: gradientFill,
                     data: data2,
-                    pointBorderWidth: 10,
+                    pointBorderWidth: 5,
                     hoverBorderWidth: 13,
                     data2: data
 
@@ -129,9 +131,9 @@ const PieChart = ({ rankList }) => {
                             fontColor: "rgba(0,0,0,0.5)",
                             fontStyle: "bold",
                             beginAtZero: true, //데이터 0부터 시작
-                            stepSize : 20
+                            stepSize: 20
                         },
-                        
+
 
                     }],
                     xAxes: [{ //x축 설정

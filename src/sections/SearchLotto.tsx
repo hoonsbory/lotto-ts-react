@@ -33,22 +33,22 @@ const SearchLotto = () => {
     var roundSize = useSelector((state:StoreState)=> state.Reducer.recentRound)
 
     //최신 회차가 몇인지 가져옴.
-    const getSize = async () => {
-        await Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
-        query{
-            roundSize
-        }
-        `}).then(res => {
-            var data = res.data.data.roundSize
-            setSelect(data)
-            setRoundSelect2(data)
-            setRoundSelect1(data-30)
-            setRoundSize(data)
-            document.getElementById("root")!.style.display = "block"
-            getNum(data)
+    // const getSize = async () => {
+    //     await Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
+    //     query{
+    //         roundSize
+    //     }
+    //     `}).then(res => {
+    //         var data = res.data.data.roundSize
+    //         setSelect(data)
+    //         setRoundSelect2(data)
+    //         setRoundSelect1(data-30)
+    //         setRoundSize(data)
+    //         document.getElementById("root")!.style.display = "block"
+    //         getNum(data)
 
-        })
-    }
+    //     })
+    // }
 
     //선택한 회차 정보를 가져옴
     const getNum = async (num : number) => {
@@ -71,8 +71,11 @@ const SearchLotto = () => {
 
     useEffect(() => {
         //회차정보는 하단에 차트에서도 쓰이기때문에 처음에 가져와서 state로 관리한다.
-        getSize()
-    }, [])
+        if(roundSize>0){
+            setSelect(roundSize)
+            getNum(roundSize)
+        }
+    }, [roundSize])
 
     //select 옵션 최신회차까지 생성
     var arr = new Array(roundSize).fill(0)

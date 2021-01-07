@@ -131,7 +131,10 @@ const PieChart = () => {
                             fontColor: "rgba(0,0,0,0.5)",
                             fontStyle: "bold",
                             beginAtZero: true, //데이터 0부터 시작
-                            stepSize: 20
+                            stepSize: 20,
+                            callback: function(value) { //y축 라벨 커스텀
+                                return  value + "%";
+                            }
                         },
 
 

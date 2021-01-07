@@ -252,12 +252,14 @@ const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, set
     return (
         <div>
             {map}
+            <div>
             <Button id="randomBtn" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="나머지 랜덤" click={() => random(false)} />
             <Button id="lineAdd" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="한 줄 추가" click={addLine} />
             <Button fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="현재 줄 초기화" click={resetOneLine} />
+            </div>
             <Button fontSize={"1.0em"} color="rgb(235, 83, 116)" bg="rgba(235, 83, 116, 0.12)" hoverBg="rgb(235, 83, 116)" content="전체초기화" click={reset} />
-            <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="추첨하기" click={submit} />
             <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="만원 어치" click={() => random(true)} />
+            <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="추첨하기" click={submit} />
             {draw ? <Draw mode={false} bonusCorrect={bonusCorrect} setbonusCorrect={setbonusCorrect} trigger={trigger} setTrigger={setTrigger} list={list} setDraw={setDraw} setCorrect={setCorrect} correct={correct} /> : ''}
             <LineDiv fontSize={15} content="내가 뽑은 로또 번호" />
             <List

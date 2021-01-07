@@ -25,7 +25,7 @@ const Span = styled.span`
     font-size : .8em;
     color : gray;
     margin-right : 10px;
-    margin-top : 7px;
+    margin-top : 9px;
     word-break : keep-all;
 `
 

@@ -57,8 +57,9 @@ const HallOfFame = () => {
                 page.current = pageData
                 var data = res.data.data.winDataByRank
 
-                if(data.length===0) return
-                if(data.length<10){
+                if(data.length===0&&pageData!==0) return
+
+                else if(data.length<10){
                     document.getElementById("loadingIcon")?.remove()
                 } 
                 if (pageData === 0)

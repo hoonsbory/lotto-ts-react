@@ -24,7 +24,7 @@ const Span = styled.span`
     font-size : .8em;
     color : gray;
     margin-right : 10px;
-    margin-top : 7px;
+    margin-top : 9px;
     font-weight : 600;
     white-space: nowrap;
 `
@@ -81,7 +81,7 @@ const AccumulateChart = () => {
         }
     }, [chartList])
 
-    
+
     //버튼 토글 
     const [btnSelect, setBtnSelect] = useState<boolean[]>([true, false])
     //sort버튼 토글

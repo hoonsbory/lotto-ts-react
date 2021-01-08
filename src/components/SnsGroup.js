@@ -64,7 +64,7 @@ const SnsGroup = () => {
                 title: '로또 맛있게 하는 집 - 로또맛집',
                 description: "실제같은 가상로또부터 천만개가 넘는 로또데이터까지",
                 imageUrl: "https://lottozip.site/Thumbnail.png",
-                imageWidth: 800,
+                imageWidth: 600,
                 imageHeight: 400,
                 link: {
                     mobileWebUrl: "https://lottozip.site",
@@ -97,7 +97,7 @@ const SnsGroup = () => {
         window.open('https://story.kakao.com/share?url=' + url, "name", size)
     }, 200)
     const  naver = Debounce(() => {
-        window.open('http://share.naver.com/web/shareView.nhn?url=' + url + "&title=퍼스널컬러", "name", size)
+        window.open('http://share.naver.com/web/shareView.nhn?url=' + url + "&title=로또맛집", "name", size)
     }, 200)
     const urlCopy = Debounce(() => {
         var toast = document.getElementById("toast")

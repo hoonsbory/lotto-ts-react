@@ -85,7 +85,7 @@ const Chart = () => {
                             }
                         },
                         
-
+ 
                     }],
                     xAxes: [{
                         gridLines: {

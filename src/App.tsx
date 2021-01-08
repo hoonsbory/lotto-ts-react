@@ -14,7 +14,7 @@ import LottoLogo from './components/LottoLogo';
 if (process.env.NODE_ENV === 'production') {
   disableReactDevTools();
 }
-
+ 
 
 
 let pcCheck:string = window.navigator.userAgent.indexOf("Mobile") > -1 ? "true" : "false"

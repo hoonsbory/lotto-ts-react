@@ -86,8 +86,8 @@ const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUse
                                 <NumLineWrap hide={true} idx={idx} key={idx} content={<span><Rank
                                     setRank={setRank}
                                     setUserResult={setUserResult}
-                                    rankResultNum={rankResultNum}
-                                    rankResult={rankResult}
+                                    rankResultNum={rankResultNum.current}
+                                    rankResult={rankResult.current}
                                     listSize={list.length}
                                     idx={idx}
                                     hide={false}
@@ -103,8 +103,8 @@ const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUse
                                 <Rank idx={idx} key={idx}
                                     setRank={setRank}
                                     setUserResult={setUserResult}
-                                    rankResultNum={rankResultNum}
-                                    rankResult={rankResult}
+                                    rankResultNum={rankResultNum.current}
+                                    rankResult={rankResult.current}
                                     listSize={list.length}
                                     list={list[idx]}
                                     hide={true}

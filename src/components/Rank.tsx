@@ -47,16 +47,16 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
         
         if (correctList.length < 3) {
             //각 결과마다 +1을 해주는 set 실행
-            rankResult.current.setLast()
+            rankResult.setLast()
             //text와 색깔 리턴
             return ["꽝", "black"]
         }
         else if (correctList.length === 3) {
-            rankResult.current.setFifth()
+            rankResult.setFifth()
             return ["5등", "darkslateblue"]
         }
         else if (correctList.length === 4) {
-            rankResult.current.setFourth()
+            rankResult.setFourth()
             return ["4등", "darkgoldenrod"]
         }
         else if (correctList.length === 5 && !bonus) {
@@ -64,8 +64,8 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
-            rankResult.current.setThird()
-            rankResultNum.current.setThirdNums(list2)
+            rankResult.setThird()
+            rankResultNum.setThirdNums(list2)
             return ["3등", "darkcyan"]
         }
         else if (correctList.length === 5) {
@@ -75,8 +75,8 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
                 list2[i] = [list2[i], 1]
             })
             list2[list.indexOf(bonusNum)] = [list2[list.indexOf(bonusNum)], 2]
-            rankResult.current.setSecond()
-            rankResultNum.current.setSecondNums(list2)
+            rankResult.setSecond()
+            rankResultNum.setSecondNums(list2)
             return ["2등", "cornflowerblue"]
         }
         else {
@@ -84,8 +84,8 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
-            rankResult.current.setFirst()
-            rankResultNum.current.setFirstNums(list2)
+            rankResult.setFirst()
+            rankResultNum.setFirstNums(list2)
             return ["1등", "coral"]
         }
     }
@@ -102,7 +102,7 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
         //추첨이 끝나고 마지막에 실행
         if (listSize - 1 === idx) {
             //3등 이상은 이름을 입력받아서 저장
-            var rank = rankResult.current.getFirst > 0 ? 1 : (rankResult.current.getSecond > 0 ? 2 : (rankResult.current.getThird > 0 ? 3 : (rankResult.current.getFourth > 0 ? 4 : 0)))
+            var rank = rankResult.getFirst > 0 ? 1 : (rankResult.getSecond > 0 ? 2 : (rankResult.getThird > 0 ? 3 : (rankResult.getFourth > 0 ? 4 : 0)))
             if (rank > 0 && rank < 4) {
                 setRank(rank)
                 // alert(`축하합니다 ${rank}등에 당첨되셨습니다!`)
@@ -116,32 +116,35 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
                 // rankResultNum.setWinnerName(name.trim())
             }
             else{
-                sendResult(rankResult.current, rankResultNum.current)
+                sendResult(rankResult, rankResultNum)
             }
             if (rank === 0&&hide) document.getElementById("noticeNoWin")!.innerText = "4등 이상 당첨된 로또가 없습니다"
             else if(rank>0&&hide) document.getElementById("noticeNoWin")!.innerText = ""
             // sendResult(rankResult, rankResultNum)
 
             // //로컬스토리지에 있는 데이터를 가져와서 새 데이터와 합쳐서 다시 저장
-            // var pastResult = localStorage.getItem("userResult")
-            // if (pastResult) {
-            //     var newResult = JSON.parse(pastResult);
-            //     newResult.first += rankResult.getFirst
-            //     newResult.second += rankResult.getSecond
-            //     newResult.third += rankResult.getThird
-            //     newResult.fourth += rankResult.getFourth
-            //     newResult.fifth += rankResult.getFifth
-            //     newResult.last += rankResult.getLast
-            //     setUserResult(newResult)
-            //     localStorage.setItem("userResult", JSON.stringify(newResult))
-            // } else {
-            //     localStorage.setItem("userResult", JSON.stringify(rankResult))
-            //     setUserResult(rankResult)
-            // }
-            // //결과 나온 후 로또내역 보여주기 위해 footer up
-            // var footerBtn: any = document.getElementById("footerBtn")?.firstChild
-            // if (footerBtn.style.transform.indexOf("180") < 0)
-            //     document.getElementById("footerBtn")?.click()
+            var pastResult = localStorage.getItem("userResult")
+            console.log(rankResult)
+            console.log(rankResult.getLast)
+            console.log(pastResult)
+            if (pastResult) {
+                var newResult = JSON.parse(pastResult);
+                newResult.first += rankResult.getFirst
+                newResult.second += rankResult.getSecond
+                newResult.third += rankResult.getThird
+                newResult.fourth += rankResult.getFourth
+                newResult.fifth += rankResult.getFifth
+                newResult.last += rankResult.getLast 
+                setUserResult(newResult)
+                localStorage.setItem("userResult", JSON.stringify(newResult))
+            } else {
+                localStorage.setItem("userResult", JSON.stringify(rankResult))
+                setUserResult(rankResult)
+            }
+            //결과 나온 후 로또내역 보여주기 위해 footer up
+            var footerBtn: any = document.getElementById("footerBtn")?.firstChild
+            if (footerBtn.style.transform.indexOf("180") < 0)
+                document.getElementById("footerBtn")?.click()
             
         }
 

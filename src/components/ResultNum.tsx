@@ -22,7 +22,7 @@ const NumSpan = styled.span<spanProps>`
     display : inline-block;
     width : 2em;
     border : 1px solid rgba(86, 115, 235, 0.19);
-    padding : .3em 0px;
+    padding : .25em 0px;
     margin-right : 5px;
     background : ${props => props.bonusCorrect || props.bonus ? "rgb(224,230,251)" : (props.corrected ? "rgba(235, 83, 116,.12)" :  "white")};
     color : ${props => props.corrected ? "rgb(235, 83, 116)" : "rgb(70, 77, 82)"};

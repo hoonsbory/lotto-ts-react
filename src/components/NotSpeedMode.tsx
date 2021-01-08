@@ -225,8 +225,8 @@ const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, set
                         : <span>{trigger ? //추첨 끝나면 Rank계산
                             <Rank
                                 setUserResult={setUserResult}
-                                rankResultNum={rankResultNum}
-                                rankResult={rankResult}
+                                rankResultNum={rankResultNum.current}
+                                rankResult={rankResult.current}
                                 listSize={list.length}
                                 idx={idx}
                                 list={list[idx]}
@@ -246,9 +246,9 @@ const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, set
             );
         })
 
-    //계산에 쓰일 클래스 private
-    var rankResult = new RankResult()
-    var rankResultNum = new RankResultNum()
+    //계산에 쓰일 클래스 
+    var rankResult = useRef(new RankResult())
+    var rankResultNum = useRef(new RankResultNum())
     return (
         <div>
             {map}

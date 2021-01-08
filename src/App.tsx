@@ -9,6 +9,7 @@ import Footer from './sections/Footer';
 import {useEffect} from 'react'
 import Loading from './components/Loading';
 import UpdateInterval from './components/UpdateInterval'
+import LottoLogo from './components/LottoLogo';
 
 if (process.env.NODE_ENV === 'production') {
   disableReactDevTools();
@@ -24,7 +25,7 @@ function App() {
   
   return (
         <div className="App">
-          <h1>{process.env.REACT_APP_API_KEY}</h1>
+          <LottoLogo></LottoLogo>
           <SearchLotto></SearchLotto>
           <FakeLotto></FakeLotto>
           <ChartSelect></ChartSelect>

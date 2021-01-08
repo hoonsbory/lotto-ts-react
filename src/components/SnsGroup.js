@@ -61,22 +61,22 @@ const SnsGroup = () => {
             container: '#kakao-link-btn',
             objectType: 'feed',
             content: {
-                title: '테스트 타이틀',
-                description: "테스트",
-                imageUrl: "https://mycolor.kr/images/personalColor/springLip.png",
+                title: '로또 맛있게 하는 집 - 로또맛집',
+                description: "실제같은 가상로또부터 천만개가 넘는 로또데이터까지",
+                imageUrl: "https://lottozip.site/Thumbnail.png",
                 imageWidth: 800,
                 imageHeight: 400,
                 link: {
-                    mobileWebUrl: "https://hoonsbory.github.io/lotto-ts-react/",
-                    webUrl: "https://hoonsbory.github.io/lotto-ts-react/"
+                    mobileWebUrl: "https://lottozip.site",
+                    webUrl: "https://lottozip.site"
                 }
             },
             buttons: [
                 {
-                    title: '테스트 하러가기',
+                    title: '번호 뽑으러 가기',
                     link: {
-                        mobileWebUrl: "https://hoonsbory.github.io/lotto-ts-react/",
-                        webUrl: "https://hoonsbory.github.io/lotto-ts-react/"
+                        mobileWebUrl: "https://lottozip.site",
+                        webUrl: "https://lottozip.site/"
                     }
                 }
             ]

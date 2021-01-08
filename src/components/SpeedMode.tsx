@@ -9,6 +9,9 @@ import NumLineWrap from '../components/NumLineWrap';
 import Rank from '../components/Rank';
 import { RankResultNum } from '../models/RankResultNum';
 import { RankResult } from '../models/RankResult';
+import { useState, useRef } from 'react'
+import Axios from 'axios'
+import InsertHOF from './InsertHOF';
 
 //스피드모드
 
@@ -21,23 +24,26 @@ const SmallSpan = styled.span`
     color : gray;
     font-size : 12px;
 `
+
 type props = {
-    list:number[][]
+    list: number[][]
     draw: boolean
     correct: boolean[]
-    bonusCorrect:boolean[]
-    trigger:boolean
-    setList:Function
-    setDraw:Function
-    setCorrect:Function
-    setbonusCorrect:Function
-    setTrigger:Function
-    setUserResult:Function
+    bonusCorrect: boolean[]
+    trigger: boolean
+    setList: Function
+    setDraw: Function
+    setCorrect: Function
+    setbonusCorrect: Function
+    setTrigger: Function
+    setUserResult: Function
 }
 
-const SpeedMode = ({list,draw,correct,bonusCorrect,trigger,setList,setUserResult,setDraw,setTrigger,setCorrect,setbonusCorrect}:props) => {
+const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUserResult, setDraw, setTrigger, setCorrect, setbonusCorrect }: props) => {
 
-   
+    const [rank, setRank] = useState<number>(0)
+    const [nameCheck, setCheck] = useState<boolean>(false)
+
     //랜덤으로 뽑기 
     //일반모드에 있는 랜덤은 실제로 버튼을 클릭하는 것을 10회 반복한 것 뿐이다.
     //스피드모드는 속도를 위해 반복문으로 배열을 만들어서 list에 추가함. 보여주기식이 아니라 그냥 결과만을 도출하기 위한 모드
@@ -77,7 +83,8 @@ const SpeedMode = ({list,draw,correct,bonusCorrect,trigger,setList,setUserResult
 
                         if (length.length > 3)
                             return (
-                                <NumLineWrap hide={true} idx={idx} key={idx} content={<div><Rank
+                                <NumLineWrap hide={true} idx={idx} key={idx} content={<span><Rank
+                                    setRank={setRank}
                                     setUserResult={setUserResult}
                                     rankResultNum={rankResultNum}
                                     rankResult={rankResult}
@@ -89,11 +96,12 @@ const SpeedMode = ({list,draw,correct,bonusCorrect,trigger,setList,setUserResult
                                     bonusCorrect={bonusCorrect}
                                     trigger={trigger}></Rank>
                                     {list[idx].sort((a, b) => a - b).map((x, idx) =>
-                                        <ResultNum key={idx} bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x}></ResultNum>)}</div>
+                                        <ResultNum key={idx} bonusCorrect={bonusCorrect[x]} correct={correct[x]} num={x}></ResultNum>)}</span>
                                 }></NumLineWrap>)
                         else {
                             return (
                                 <Rank idx={idx} key={idx}
+                                    setRank={setRank}
                                     setUserResult={setUserResult}
                                     rankResultNum={rankResultNum}
                                     rankResult={rankResult}
@@ -110,10 +118,43 @@ const SpeedMode = ({list,draw,correct,bonusCorrect,trigger,setList,setUserResult
             );
         })
 
-    var rankResult = new RankResult()
-    var rankResultNum = new RankResultNum()
+    //최종 데이터 전송. 원래 rank 컴포넌트에서 전송했었는데, 명예의전당의 이름을 prompt로 받을때, 유저가 해당탭을 최상위로 사용중이지 않다면 
+    //prompt가 cancel된다. 결국 모달을 만들어서 이름을 받게 됐다.
+    const sendResult = async () => {
+        var name = input.current.trim()
+        console.log(name)
+        if(name.length<2||name.length>15){
+            alert("최소 2글자에서 최대 15글자까지 입력해주세요.")
+            return
+        }
+        rankResultNum.current.setWinnerName(name)
+
+        await Axios.post(`${process.env.REACT_APP_URL}/winData`, { sumResult: rankResult.current, resultNums: rankResultNum.current })
+            .then(res => {
+                if(window.confirm("명예의 전당에 등록되었습니다! 확인하시겠습니까?")){
+                    document.getElementById(`HOF${rank===1? rank+1 : rank-1}`)?.click()
+                    setTimeout(() => {
+                        document.getElementById(`HOF${rank}`)?.click()
+                        window.scrollTo(0,document.documentElement.scrollHeight-600)
+                    }, 200);
+                }
+                setRank(0)
+                rankResult.current = new RankResult()
+                rankResultNum.current = new RankResultNum()
+            })
+            .catch(err => console.log(err))
+    }
+
+    const input = useRef('')
+    const handleChange = (e: any) => {
+        input.current = e.target.value
+    }
+
+    var rankResult = useRef(new RankResult())
+    var rankResultNum = useRef(new RankResultNum())
     return (
         <div>
+            {rank > 0 && rank < 4 ? <InsertHOF rank={rank} handleChange={handleChange} sendResult={sendResult}></InsertHOF> : ''}
             <Button id="randomBtn" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="50만원" click={() => randomTest(200)}></Button>
             <Button id="lineAdd" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="100만원" click={() => randomTest(1000)}></Button>
             <Button fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="500만원" click={() => randomTest(5000)}></Button>

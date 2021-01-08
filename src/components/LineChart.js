@@ -39,14 +39,16 @@ const PieChart = () => {
         if (chart.current) chart.current.destroy()
 
         var ctx = document.getElementById('myChart').getContext('2d');
-        // Chart.plugins.register({ 모든 툴팁 고정
+        // Chart.plugins.register({
         //     beforeRender: function (chart) {
         //         if (chart.config.options.showAllTooltips) {
         //             // create an array of tooltips
         //             // we can't use the chart tooltip because there is only one tooltip per chart
         //             chart.pluginTooltips = [];
+        //             console.log(chart.data)
         //             chart.config.data.datasets.forEach(function (dataset, i) {
         //                 chart.getDatasetMeta(i).data.forEach(function (sector, j) {
+        //                     if(j!=0) return
         //                     chart.pluginTooltips.push(new Chart.Tooltip({
         //                         _chart: chart.chart,
         //                         _chartInstance: chart,
@@ -83,15 +85,50 @@ const PieChart = () => {
         //         }
         //     }
         // });
+      
         //차트 gradient 설정
         var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
         gradientStroke.addColorStop(0, '#80b6f4');
         gradientStroke.addColorStop(1, '#f49080');
 
+        
+
         var gradientFill = ctx.createLinearGradient(500, 0, 100, 0);
-        gradientFill.addColorStop(0, "rgba(128, 182, 244, 0.6)");
-        gradientFill.addColorStop(1, "rgba(244, 144, 128, 0.6)");
+        gradientFill.addColorStop(0, "rgba(128, 182, 244, 0.5)");
+        gradientFill.addColorStop(1, "rgba(244, 144, 128, 0.5)");
+
+        var gradientFillPoint = ctx.createLinearGradient(500, 0, 100, 0);
+        gradientFillPoint.addColorStop(0, "rgba(128, 182, 244, 0.4)");
+        gradientFillPoint.addColorStop(1, "rgba(244, 144, 128, 0.4)");
+        
         var chartjs = new Chart(ctx, {
+            plugins : [{
+                afterDatasetDraw : function(chart, easing) {
+                    // To only draw at the end of animation, check for easing === 1
+                    var ctx = chart.ctx;
+                    chart.data.datasets.forEach(function (dataset, i) {
+                        var meta = chart.getDatasetMeta(i);
+                        if (!meta.hidden) {
+                            meta.data.forEach(function(element, index) {
+                                // Draw the text in black, with the specified font
+                                ctx.fillStyle = 'rgb(0, 0, 0)';
+                                var fontSize = 10;
+                                var fontStyle = 'normal';
+                                var fontFamily = 'Helvetica Neue';
+                                ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+                                // Just naively convert to string for now
+                                var dataString = dataset.data[index].toString()+"%";
+                                // Make sure alignment settings are correct
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'top';
+                                var padding = 5;
+                                var position = element.tooltipPosition();
+                                ctx.fillText(dataString, position.x-20, (position.y - (fontSize / 2) - padding)+20);
+                            });
+                        }
+                    });
+                }
+            }],
             type: 'line',
             data: {
                 labels: labels,
@@ -101,14 +138,15 @@ const PieChart = () => {
                     pointBorderColor: gradientStroke,
                     pointBackgroundColor: gradientStroke,
                     pointHoverBackgroundColor: gradientStroke,
-                    pointHoverBorderColor: gradientStroke,
-                    pointHoverRadius: 10,
-                    pointHoverBorderWidth: 1,
+                    pointHoverBorderColor : gradientFillPoint,
+                    pointHoverRadius: 5,
+                    pointHoverBorderWidth: 15,
                     pointRadius: 3,
+                    pointHitRadius: 10, //hover 범위
                     fill: true,
                     backgroundColor: gradientFill,
                     data: data2,
-                    pointBorderWidth: 5,
+                    pointBorderWidth: 3,
                     hoverBorderWidth: 13,
                     data2: data
 
@@ -165,6 +203,19 @@ const PieChart = () => {
                 },
             }
         });
+        // document.getElementById("myChart").onclick = function(event) { 
+        //     var activePoint = chartjs.getElementAtEvent(event);
+        //     console.log(activePoint)
+        //     // make sure click was on an actual point
+        //     if (activePoint.length > 0) {
+        //       var clickedDatasetIndex = activePoint[0]._datasetIndex;
+        //       var clickedElementindex = activePoint[0]._index;
+        //       var label = chartjs.data.labels[clickedElementindex];
+        //       var value = chartjs.data.datasets[clickedDatasetIndex].data[clickedElementindex];   
+        //     //   activePoint[0]._options.hoverRadius = 20
+        //     //   alert("Clicked: " + label + " - " + value);
+        //     }
+        //   };
         chart.current = chartjs
     }, [rankList, size])
 

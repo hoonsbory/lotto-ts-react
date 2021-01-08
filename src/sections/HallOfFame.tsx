@@ -116,10 +116,10 @@ const HallOfFame = () => {
 
 
     return (
-        <Section>
+        <Section id="HOF">
             <SubTitle content={"명예의 전당"}></SubTitle>
             <GroupWrapper>
-                <LineDiv content={<ButtonGroup content={["1등", "2등", "3등"]} selected={selectBtn} click={[selected, selected, selected]}></ButtonGroup>}></LineDiv>
+                <LineDiv content={<ButtonGroup id={["HOF1","HOF2","HOF3"]} content={["1등", "2등", "3등"]} selected={selectBtn} click={[selected, selected, selected]}></ButtonGroup>}></LineDiv>
             </GroupWrapper>
             <ScrollList id="scrollDiv" onScroll={scrollEvent}>
                 {numList.length === 0 ? <NobodyWin content="당첨된 사람이 없습니다. 당첨에 도전해보세요!"></NobodyWin> : ''}

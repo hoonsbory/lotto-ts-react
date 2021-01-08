@@ -80,7 +80,8 @@ const Chart = () => {
                             beginAtZero: true,
                             suggestedMax: list.length >0 ? list[0][1] + list[0][1]*0.1 : 0,
                             callback: function(value) { //y축 라벨 커스텀
-                                return  value + "회";
+                                if(Math.floor(value) === value) //소수점 제거
+                                return  value  + "회";
                             }
                         },
                         

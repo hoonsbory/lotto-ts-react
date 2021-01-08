@@ -118,12 +118,16 @@ const UpdateInterval = () => {
         winGraph(small - 1, big - small + 1, false, false)
         winGraph(small - 1, big - small + 1, true, false)
         getRankData()
+        console.log(1)
         getWinData()
     }, [roundSize])
 
     const id = useRef<any>()
+
     useEffect(() => {
+        if(roundSize===0) return
         if(id) clearInterval(id.current)
+        interval() //유저가 회차 셀렉트 시 즉각적으로 정보가져오고 다시 인터벌 시작
         id.current = setInterval(() => {
             interval()
         }, 15000);

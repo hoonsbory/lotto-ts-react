@@ -9,6 +9,7 @@ type props = {
     selected: boolean[]
     selectColor?: string
     selectBg?: string
+    id:string[]
 }
 type btnProps = {
     hover?: string
@@ -61,17 +62,17 @@ const Btn = styled.button`
 `
 
 
-const ButtonGroup = ({ click, color, bg, hover, content, selected, selectColor, selectBg }: props) => {
+const ButtonGroup = ({id, click, color, bg, hover, content, selected, selectColor, selectBg }: props) => {
 
     var map = content.map((x, idx) => {
         switch (idx) {
             case 0:
-                return <FirstBtn key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</FirstBtn>
+                return <FirstBtn id={id[idx]} key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</FirstBtn>
             case content.length - 1:
-                return <LastBtn key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</LastBtn>
+                return <LastBtn id={id[idx]} key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</LastBtn>
 
             default:
-                return <Btn key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</Btn>
+                return <Btn id={id[idx]} key={idx} selected={selected[idx]} color={color} bg={bg} hover={hover} selectBg={selectBg} selectColor={selectColor} onClick={() => click[idx](idx)}>{x}</Btn>
         }
     })
 

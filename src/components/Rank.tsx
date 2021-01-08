@@ -11,10 +11,11 @@ type props = {
     correct: boolean[]
     listSize: number
     idx: number
-    rankResult: RankResult
-    rankResultNum: RankResultNum
+    rankResult: any
+    rankResultNum: any
     setUserResult: Function
     hide?: boolean
+    setRank:Function
 }
 
 type RankProps = {
@@ -30,8 +31,7 @@ const RankSpan = styled.span<RankProps>`
     float : left;
 `
 
-
-const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, correct, bonusCorrect, setUserResult, trigger }: props) => {
+const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx, correct, bonusCorrect, setUserResult, trigger }: props) => {
     const [rankColor, setRankColor] = useState<string[]>(["", ""])
     //당첨 결과에 따른 bg를 담을 state
 
@@ -47,16 +47,16 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
         
         if (correctList.length < 3) {
             //각 결과마다 +1을 해주는 set 실행
-            rankResult.setLast()
+            rankResult.current.setLast()
             //text와 색깔 리턴
             return ["꽝", "black"]
         }
         else if (correctList.length === 3) {
-            rankResult.setFifth()
+            rankResult.current.setFifth()
             return ["5등", "darkslateblue"]
         }
         else if (correctList.length === 4) {
-            rankResult.setFourth()
+            rankResult.current.setFourth()
             return ["4등", "darkgoldenrod"]
         }
         else if (correctList.length === 5 && !bonus) {
@@ -64,8 +64,8 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
-            rankResult.setThird()
-            rankResultNum.setThirdNums(list2)
+            rankResult.current.setThird()
+            rankResultNum.current.setThirdNums(list2)
             return ["3등", "darkcyan"]
         }
         else if (correctList.length === 5) {
@@ -75,8 +75,8 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
                 list2[i] = [list2[i], 1]
             })
             list2[list.indexOf(bonusNum)] = [list2[list.indexOf(bonusNum)], 2]
-            rankResult.setSecond()
-            rankResultNum.setSecondNums(list2)
+            rankResult.current.setSecond()
+            rankResultNum.current.setSecondNums(list2)
             return ["2등", "cornflowerblue"]
         }
         else {
@@ -84,8 +84,8 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
             correctList.forEach((i: any) => {
                 list2[i] = [list2[i], 1]
             })
-            rankResult.setFirst()
-            rankResultNum.setFirstNums(list2)
+            rankResult.current.setFirst()
+            rankResultNum.current.setFirstNums(list2)
             return ["1등", "coral"]
         }
     }
@@ -102,39 +102,47 @@ const Rank: any = ({ rankResultNum, rankResult, hide, list, listSize, idx, corre
         //추첨이 끝나고 마지막에 실행
         if (listSize - 1 === idx) {
             //3등 이상은 이름을 입력받아서 저장
-            var rank = rankResult.getFirst > 0 ? 1 : (rankResult.getSecond > 0 ? 2 : (rankResult.getThird > 0 ? 3 : (rankResult.getFourth > 0 ? 4 : 0)))
+            var rank = rankResult.current.getFirst > 0 ? 1 : (rankResult.current.getSecond > 0 ? 2 : (rankResult.current.getThird > 0 ? 3 : (rankResult.current.getFourth > 0 ? 4 : 0)))
             if (rank > 0 && rank < 4) {
-                var name = window.prompt(`축하합니다 ${rank}등에 당첨되셨습니다!\n명예의 전당에 올릴 성함(닉네임)을 알려주세요! \n취소를 누르시면 익명으로 등록됩니다.  ※최대 10글자`)?.trim() || "익명"
-                while (true) {
-                    if (name.length > 10)
-                        name = window.prompt("10글자 이하로 부탁드립니다 취소를 누르시면 익명으로 등록됩니다.") || "익명"
-                    else break;
-                }
-                rankResultNum.setWinnerName(name)
+                setRank(rank)
+                // alert(`축하합니다 ${rank}등에 당첨되셨습니다!`)
+                // var name:any = window.prompt(`명예의 전당에 올릴 성함(닉네임)을 알려주세요! \n취소를 누르시면 익명으로 등록됩니다.  ※최대 10글자`) || "익명"
+                // while (true) {
+                //     console.log(name)
+                //     if (name.length > 10)
+                //         name = window.prompt("10글자 이하로 부탁드립니다 취소를 누르시면 익명으로 등록됩니다.") || "익명"
+                //     else break;
+                // }
+                // rankResultNum.setWinnerName(name.trim())
             }
-            sendResult(rankResult, rankResultNum)
-
-            //로컬스토리지에 있는 데이터를 가져와서 새 데이터와 합쳐서 다시 저장
-            var pastResult = localStorage.getItem("userResult")
-            if (pastResult) {
-                var newResult = JSON.parse(pastResult);
-                newResult.first += rankResult.getFirst
-                newResult.second += rankResult.getSecond
-                newResult.third += rankResult.getThird
-                newResult.fourth += rankResult.getFourth
-                newResult.fifth += rankResult.getFifth
-                newResult.last += rankResult.getLast
-                setUserResult(newResult)
-                localStorage.setItem("userResult", JSON.stringify(newResult))
-            } else {
-                localStorage.setItem("userResult", JSON.stringify(rankResult))
-                setUserResult(rankResult)
+            else{
+                sendResult(rankResult.current, rankResultNum.current)
             }
-            //결과 나온 후 로또내역 보여주기 위해 footer up
-            var footerBtn: any = document.getElementById("footerBtn")?.firstChild
-            if (footerBtn.style.transform.indexOf("180") < 0)
-                document.getElementById("footerBtn")?.click()
             if (rank === 0&&hide) document.getElementById("noticeNoWin")!.innerText = "4등 이상 당첨된 로또가 없습니다"
+            else if(rank>0&&hide) document.getElementById("noticeNoWin")!.innerText = ""
+            // sendResult(rankResult, rankResultNum)
+
+            // //로컬스토리지에 있는 데이터를 가져와서 새 데이터와 합쳐서 다시 저장
+            // var pastResult = localStorage.getItem("userResult")
+            // if (pastResult) {
+            //     var newResult = JSON.parse(pastResult);
+            //     newResult.first += rankResult.getFirst
+            //     newResult.second += rankResult.getSecond
+            //     newResult.third += rankResult.getThird
+            //     newResult.fourth += rankResult.getFourth
+            //     newResult.fifth += rankResult.getFifth
+            //     newResult.last += rankResult.getLast
+            //     setUserResult(newResult)
+            //     localStorage.setItem("userResult", JSON.stringify(newResult))
+            // } else {
+            //     localStorage.setItem("userResult", JSON.stringify(rankResult))
+            //     setUserResult(rankResult)
+            // }
+            // //결과 나온 후 로또내역 보여주기 위해 footer up
+            // var footerBtn: any = document.getElementById("footerBtn")?.firstChild
+            // if (footerBtn.style.transform.indexOf("180") < 0)
+            //     document.getElementById("footerBtn")?.click()
+            
         }
 
     }, [])

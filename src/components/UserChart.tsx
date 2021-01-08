@@ -25,7 +25,7 @@ const Span = styled.span`
     font-size : .8em;
     color : gray;
     margin-right : 10px;
-    margin-top : 9px;
+    margin-top : 10px;
     word-break : keep-all;
 `
 
@@ -133,7 +133,7 @@ const UserChart = () => {
 
     return (
         <div>
-            <LineDiv content={<FlexDiv><Span>가상 로또</Span><ButtonGroup content={["당첨 비율", "당첨 번호(3등 ↑)"]} selected={btnSelect} click={[rankChart, winNumChart]}></ButtonGroup><Button border={true} click={sort} hoverBg="rgb(224,230,251)" bg="white" content={<Arrow fill="rgb(86,115,235)" upDown={sortBtn}></Arrow>}></Button></FlexDiv>}></LineDiv>
+            <LineDiv content={<FlexDiv><Span>가상 로또</Span><ButtonGroup id={["userGraphBtn1","userGraphBtn2"]} content={["당첨 비율", "당첨 번호(3등 ↑)"]} selected={btnSelect} click={[rankChart, winNumChart]}></ButtonGroup><Button border={true} click={sort} hoverBg="rgb(224,230,251)" bg="white" content={<Arrow fill="rgb(86,115,235)" upDown={sortBtn}></Arrow>}></Button></FlexDiv>}></LineDiv>
 
             {btnSelect[0] ? <PieChart></PieChart> : <Chart></Chart>}
         </div>

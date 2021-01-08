@@ -79,7 +79,7 @@ const FakeLotto = () => {
     return (
         <Section>
             <SubTitle content="가상 로또 추첨"></SubTitle>
-            <LineDiv content={<ButtonGroup content={["일반모드","스피드모드"]} selected={modeBtn} click={[()=> modeChange(true), ()=> modeChange(false)]}></ButtonGroup>}></LineDiv>
+            <LineDiv content={<ButtonGroup id={["normalMode","speedMode"]} content={["일반모드","스피드모드"]} selected={modeBtn} click={[()=> modeChange(true), ()=> modeChange(false)]}></ButtonGroup>}></LineDiv>
             {modeBtn[0] ? <NotSpeedMode list={list} draw={draw} correct={correct} bonusCorrect={bonusCorrect} trigger={trigger} setList={setList} setDraw={setDraw} setCorrect={setCorrect} setbonusCorrect={setbonusCorrect} setTrigger={setTrigger} setUserResult={setUserResult}></NotSpeedMode> : <SpeedMode list={list} draw={draw} correct={correct} bonusCorrect={bonusCorrect} trigger={trigger} setList={setList} setDraw={setDraw} setCorrect={setCorrect} setbonusCorrect={setbonusCorrect} setTrigger={setTrigger} setUserResult={setUserResult}></SpeedMode>}
         </Section>
     )

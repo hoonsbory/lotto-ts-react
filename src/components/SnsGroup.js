@@ -36,10 +36,10 @@ const RightButton = styled.button`
     ${BtnCss}
 `
 const HiddenTextArea = styled.textarea`
-    position : relative;
-    top : -60px;
-    z-index: -999;
-    opacity : 0;
+opacity: 0;
+    position: absolute;
+    left: -999px;
+    top: -999px;
 ` 
 const ToastMsg = styled.p`
     color : gray;

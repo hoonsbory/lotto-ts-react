@@ -24,7 +24,7 @@ const Span = styled.span`
     font-size : .8em;
     color : gray;
     margin-right : 10px;
-    margin-top : 9px;
+    margin-top : 10px;
     font-weight : 600;
     white-space: nowrap;
 `
@@ -53,6 +53,10 @@ const AccumulateChart = () => {
     const setSortBtn = () => {
         dispatch(actionCreators.sortBtn())
     }
+    const setRoundSize = (value:number) => {
+        dispatch(actionCreators.recentRound(value))
+    }
+
 
     const winGraph = (skip: number, limit: number, bonus: boolean, sort: boolean) => {
         if (roundSize === 0) return
@@ -165,7 +169,7 @@ const AccumulateChart = () => {
                 </select>  회차까지
             </div>}></LineDiv>
 
-            <FlexDiv><Span>가장 많이 뽑힌</Span><ButtonGroup selected={btnSelect} content={["번호(보너스X)", "보너스번호"]} click={[noBonus, bonus]}></ButtonGroup><Button border={true} click={sort} hoverBg="rgb(224,230,251)" bg="white" content={<Arrow fill="rgb(86,115,235)" upDown={sortBtn}></Arrow>}></Button></FlexDiv>
+            <FlexDiv><Span>가장 많이 뽑힌</Span><ButtonGroup id={["chartBtn1","chartBtn2"]} selected={btnSelect} content={["번호(보너스X)", "보너스번호"]} click={[noBonus, bonus]}></ButtonGroup><Button border={true} click={sort} hoverBg="rgb(224,230,251)" bg="white" content={<Arrow fill="rgb(86,115,235)" upDown={sortBtn}></Arrow>}></Button></FlexDiv>
 
             <Chart></Chart>
         </div>

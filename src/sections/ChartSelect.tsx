@@ -82,8 +82,8 @@ const ChartSelect = () => {
         <Section>
             <SubTitle content="로또 분석 그래프"></SubTitle>
             <FlexDiv>
-                <ButtonGroup selectBg="rgba(235, 83, 116,.12)" selectColor="rgb(235, 83, 116)" selected={graphSelect} content={["실제 로또 통계", "가상 로또 통계"]} click={[selected2, selected2]}></ButtonGroup>
-                <ButtonGroup selected={btnSelect} content={["확대", "축소"]} click={[sizeUp, sizeDown]}></ButtonGroup>
+                <ButtonGroup id={["graphBtn1","graphBtn2"]} selectBg="rgba(235, 83, 116,.12)" selectColor="rgb(235, 83, 116)" selected={graphSelect} content={["실제 로또 통계", "가상 로또 통계"]} click={[selected2, selected2]}></ButtonGroup>
+                <ButtonGroup id={["sizeUpBtn","sizeDownBtn"]} selected={btnSelect} content={["확대", "축소"]} click={[sizeUp, sizeDown]}></ButtonGroup>
             </FlexDiv>
 
             {graphSelect[0] ? <AccumulateChart/>: <UserChart/>}

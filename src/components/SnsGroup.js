@@ -89,7 +89,7 @@ const SnsGroup = () => {
 
     var popupY = (window.screen.height / 2) - (popupHeight / 2);
     var size = 'status=no, height=' + popupHeight + ', width=' + popupWidth + ', left=' + popupX + ', top=' + popupY;
-    var url = "https://hoonsbory.github.io/lotto-ts-react/"
+    var url = "https://lottozip.site"
     const  facebook = Debounce(() => {
         window.open('http://www.facebook.com/sharer/sharer.php?u=' + url, "name", size)
     }, 200)

@@ -32,8 +32,15 @@ const Input = styled.input`
     border : 0;
     background : rgb(224,230,251);
     font-size : .9em;
-    border-bottom : 2px solid rgb(86,115,235)
+    border-bottom : 2px solid rgb(86,115,235);
+    width : 70%;
+
 `
+
+const Div = styled.div`
+    display : flex;
+`
+
 type props ={
     sendResult:Function
     handleChange:any

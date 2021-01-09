@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { actionCreators } from '../store/ChartStore';
 import { useSelector } from 'react-redux';
 import { StoreState } from '../store'
-import { RankResult } from '../models/RankResult';
 
 const UpdateInterval = () => {
     const roundSize = useSelector((state: StoreState) => state.Reducer.recentRound)
@@ -43,10 +42,17 @@ const UpdateInterval = () => {
             roundSize
         }
         `}).then(res => {
+
                 var data = res.data.data.roundSize
+                var [big, small] = bigSmall(data - 30, data)
+                winGraph(small - 1, big - small + 1, false, false)
+                winGraph(small - 1, big - small + 1, true, false)
+                getRankData()
+                getWinData()
+
                 setRoundSelect2(data)
-                setRoundSelect1(data - 30)
                 setRoundSize(data)
+                setRoundSelect1(data - 30)
                 document.getElementById("root")!.style.display = "block"
 
             })
@@ -112,28 +118,23 @@ const UpdateInterval = () => {
 
     useEffect(() => {
         //처음 그래프 정보 로드
-        getSize()
-        if(roundSize===0) return
-        var [big, small] = bigSmall(select1, select2)
-        winGraph(small - 1, big - small + 1, false, false)
-        winGraph(small - 1, big - small + 1, true, false)
-        getRankData()
-        console.log(1)
-        getWinData()
+        if (roundSize === 0)
+            getSize()
     }, [roundSize])
 
     const id = useRef<any>()
 
     useEffect(() => {
-        if(roundSize===0) return
-        if(id) clearInterval(id.current)
+        if (roundSize === 0) return
+        if (id) clearInterval(id.current)
         interval() //유저가 회차 셀렉트 시 즉각적으로 정보가져오고 다시 인터벌 시작
         id.current = setInterval(() => {
             interval()
         }, 15000);
-    }, [select1,select2])
+    }, [select1, select2])
 
     function interval() {
+        console.log("Data Updated!")
         var [big, small] = bigSmall(select1, select2)
         winGraph(small - 1, big - small + 1, false, false)
         winGraph(small - 1, big - small + 1, true, false)

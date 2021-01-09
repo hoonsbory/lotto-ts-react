@@ -64,7 +64,7 @@ const SnsGroup = () => {
                 title: '로또 맛있게 하는 집 - 로또맛집',
                 description: "실제같은 가상로또부터 천만개가 넘는 로또데이터까지",
                 imageUrl: "https://lottozip.site/Thumbnail.png",
-                imageWidth: 600,
+                imageWidth: 800,
                 imageHeight: 400,
                 link: {
                     mobileWebUrl: "https://lottozip.site",

@@ -9,6 +9,8 @@ import { throttling } from '../Throttle'
 import NobodyWin from '../components/NobodyWin'
 import styled from 'styled-components'
 import LoadingSvg from '../components/LoadingSvg'
+import { List } from 'react-virtualized';
+
 //명예의 전당
 type props = {
     check: boolean
@@ -113,15 +115,10 @@ const HallOfFame = () => {
         }
 
     }, 800)
-
-
-    return (
-        <Section id="HOF">
-            <SubTitle content={"명예의 전당"}></SubTitle>
-            <GroupWrapper>
-                <LineDiv content={<ButtonGroup id={["HOF1","HOF2","HOF3"]} content={["1등", "2등", "3등"]} selected={selectBtn} click={[selected, selected, selected]}></ButtonGroup>}></LineDiv>
-            </GroupWrapper>
-            <ScrollList id="scrollDiv" onScroll={scrollEvent}>
+    const rowRenderer = (
+        () => {
+            return (
+                <ScrollList id="scrollDiv" onScroll={scrollEvent}>
                 {numList.length === 0 ? <NobodyWin content="당첨된 사람이 없습니다. 당첨에 도전해보세요!"></NobodyWin> : ''}
                 {numList.map((obj, idx) => {
                     var numCheck = idx % 2 === 0 ? true : false
@@ -139,6 +136,36 @@ const HallOfFame = () => {
                 })}
                 {numList.length>9 ? <div><LoadingSvg id="loadingIcon"></LoadingSvg></div> : ""}
             </ScrollList>
+            );
+        })
+
+
+    return (
+        <Section id="HOF">
+            <SubTitle content={"명예의 전당"}></SubTitle>
+            <GroupWrapper>
+                <LineDiv content={<ButtonGroup id={["HOF1","HOF2","HOF3"]} content={["1등", "2등", "3등"]} selected={selectBtn} click={[selected, selected, selected]}></ButtonGroup>}></LineDiv>
+            </GroupWrapper>
+            
+            <List
+                width={1}
+                height={1}
+                overscanRowsCount={1}
+                rowCount={1}
+                rowHeight={40}
+                rowRenderer={rowRenderer}
+                containerStyle={{
+                    width: "100%",
+                    maxWidth: "100%",
+                    height: "100%",
+                    maxHeight: "100%"
+                }}
+                style={{
+                    width: "100%",
+                    height: "100%"
+                }}
+            >
+            </List>
         </Section>
     )
 }

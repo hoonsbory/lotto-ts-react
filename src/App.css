@@ -5,9 +5,11 @@
   src: local('Noto Sans'),
   url("https://jaehoon-bucket.s3.ap-northeast-2.amazonaws.com/NotoSansCJKkr-DemiLight.woff") format('woff')
 }
-*{
-  font-family: 'Noto Sans';
+html{
   scroll-behavior : smooth;
     -webkit-overflow-scrolling: touch;
+}
+*{
+  font-family: 'Noto Sans';
 }
 /* styled component 글로벌 설정에서 font face 설정이 안돼서 폰트만 따로 */

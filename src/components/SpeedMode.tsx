@@ -42,7 +42,6 @@ type props = {
 const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUserResult, setDraw, setTrigger, setCorrect, setbonusCorrect }: props) => {
 
     const [rank, setRank] = useState<number>(0)
-    const [nameCheck, setCheck] = useState<boolean>(false)
 
     //랜덤으로 뽑기 
     //일반모드에 있는 랜덤은 실제로 버튼을 클릭하는 것을 10회 반복한 것 뿐이다.
@@ -120,9 +119,8 @@ const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUse
 
     //최종 데이터 전송. 원래 rank 컴포넌트에서 전송했었는데, 명예의전당의 이름을 prompt로 받을때, 유저가 해당탭을 최상위로 사용중이지 않다면 
     //prompt가 cancel된다. 결국 모달을 만들어서 이름을 받게 됐다.
-    const sendResult = async () => {
+    const sendResult = Debounce(async () => {
         var name = input.current.trim()
-        console.log(name)
         if(name.length<2||name.length>15){
             alert("최소 2글자에서 최대 15글자까지 입력해주세요.")
             return
@@ -135,7 +133,7 @@ const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUse
                     document.getElementById(`HOF${rank===1? rank+1 : rank-1}`)?.click()
                     setTimeout(() => {
                         document.getElementById(`HOF${rank}`)?.click()
-                        window.scrollTo(0,document.documentElement.scrollHeight-600)
+                        document.getElementById("HOF")?.scrollIntoView()
                     }, 200);
                 }
                 setRank(0)
@@ -143,7 +141,7 @@ const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUse
                 rankResultNum.current = new RankResultNum()
             })
             .catch(err => console.log(err))
-    }
+    },300)
 
     const input = useRef('')
     const handleChange = (e: any) => {

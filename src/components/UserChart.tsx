@@ -65,18 +65,18 @@ const UserChart = () => {
     useEffect(() => {
         if (btnSelect[0]) {
             if (sortBtn){
-            if(JSON.stringify(userChartSum.sort((a: any, b: any) => a[1] - b[1]))!==JSON.stringify(MainList))  setMainList([...userChartSum.sort((a: any, b: any) => a[1] - b[1])])
+             setMainList([...userChartSum.sort((a: any, b: any) => a[1] - b[1])])
             }
             else{
-                if(JSON.stringify(userChartSum)!==JSON.stringify(MainList))  setMainList([...userChartSum])
+                setMainList([...userChartSum.sort((a: any, b: any) => b[1] - a[1])])
             }
         }
         else {
             if (sortBtn){
-            if(JSON.stringify(userChartList.sort((a: any, b: any) => a[1] - b[1]))!==JSON.stringify(MainList))  setMainList([...userChartList.sort((a: any, b: any) => a[1] - b[1])])
+             setMainList([...userChartList.sort((a: any, b: any) => a[1] - b[1])])
             }
             else
-            if(JSON.stringify(userChartList)!==JSON.stringify(MainList))  setMainList([...userChartList])
+            setMainList([...userChartList.sort((a: any, b: any) => b[1] - a[1])])
         }
     }, [userChartSum])
 

@@ -12,7 +12,11 @@ import styled from 'styled-components'
 const Div = styled.div`
     margin-bottom : 30px;
 `
-
+const Select = styled.select`
+    border-radius : 5px;
+    outline : 0;
+    background : none;
+`
 const SearchLotto = () => {
     const [select,setSelect] = useState<number>(0)
     const [numList,setNumList] = useState<number[]>([])
@@ -90,7 +94,7 @@ const SearchLotto = () => {
 
     return (
         <Div>
-            <LineDiv fontSize={15} content={<div>지난 로또 조회  <select value={select} onChange={handleChange}>{map}</select>회차</div>}></LineDiv>
+            <LineDiv fontSize={15} content={<div>지난 로또 조회  <Select value={select} onChange={handleChange}>{map}</Select>회차</div>}></LineDiv>
             <p>{numList.map((x, idx) => {
                 if (idx === 6)
                     return (

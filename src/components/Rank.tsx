@@ -93,8 +93,8 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
     //db에 저장
     const sendResult = async (sumResult: RankResult, resultNums: RankResultNum) => {
         await Axios.post(`${process.env.REACT_APP_URL}/winData`, { sumResult: sumResult, resultNums: resultNums })
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err))
+            .then()
+            .catch()
     }
 
     useEffect(() => {
@@ -124,9 +124,6 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
 
             // //로컬스토리지에 있는 데이터를 가져와서 새 데이터와 합쳐서 다시 저장
             var pastResult = localStorage.getItem("userResult")
-            console.log(rankResult)
-            console.log(rankResult.getLast)
-            console.log(pastResult)
             if (pastResult) {
                 var newResult = JSON.parse(pastResult);
                 newResult.first += rankResult.getFirst

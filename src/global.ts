@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
     width: 430px;
     overflow: hidden;
     min-height: 100vh;
+    display : none;
     margin-bottom : 20vh;
   }
   .afterload{

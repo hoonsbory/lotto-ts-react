@@ -12,6 +12,17 @@ const theme = {
       transform : translateY(0px);
     }
   `,
+  fadeUp2: keyframes`
+    0% {
+      opacity: 0;
+      transform : translateY(20px);
+    }
+    
+    100% {
+      opacity: 1;
+      transform : translateY(0px);
+    }
+  `,
   flexDiv: css`
       display: flex;
       flex-direction: row;
@@ -25,7 +36,6 @@ const theme = {
     `,
   sectionCss: css`
     margin-bottom : 60px;
-    animation: ${props => props.theme.fadeUp} .5s linear alternate;
   `
 }
 

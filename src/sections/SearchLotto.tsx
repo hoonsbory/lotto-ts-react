@@ -11,6 +11,8 @@ import styled from 'styled-components'
 //처음에 로드되기때문에 로또의 회차 수를 가져오고 가장 최신회차의 번호를 출력한다.
 const Div = styled.div`
     margin-bottom : 30px;
+    display : none;
+    animation: ${props => props.theme.fadeUp2} .4s linear alternate;
 `
 const Select = styled.select`
     border-radius : 5px;
@@ -93,7 +95,7 @@ const SearchLotto = () => {
     }
 
     return (
-        <Div>
+        <Div id="searchLottoSec">
             <LineDiv fontSize={15} content={<div>지난 로또 조회  <Select value={select} onChange={handleChange}>{map}</Select>회차</div>}></LineDiv>
             <p>{numList.map((x, idx) => {
                 if (idx === 6)

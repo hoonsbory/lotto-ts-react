@@ -14,7 +14,8 @@ const ScrollDiv = styled.div`
 
 const Chart = () => {
     var list = useSelector((state) => state.ChartReducer.chartMainData);
-    var size = useSelector((state) => state.Reducer.graphSize);
+    var size = useSelector((state) => state.ChartReducer.graphSize);
+    var sort = useSelector((state) => state.ChartReducer.sortBtn);
     const chart = useRef()
 
     
@@ -78,7 +79,8 @@ const Chart = () => {
                             fontColor: "rgba(0,0,0,0.5)",
                             fontStyle: "bold",
                             beginAtZero: true,
-                            suggestedMax: list.length >0 ? list[0][1] + list[0][1]*0.1 : 0,
+                            //y축 데이터 최대치 설정. sort 상태에 따라서 최대치 설정. 막대 그래프 위에 데이터수치가 보이기때문에 최대치를 늘려줘야 데이터가 안가려짐
+                            suggestedMax: list.length >0 ? (sort ? list[list.length-1][1] + list[list.length-1][1]*0.1 : list[0][1] + list[0][1]*0.1) : 0,
                             callback: function(value) { //y축 라벨 커스텀
                                 if(Math.floor(value) === value) //소수점 제거
                                 return  value  + "회";

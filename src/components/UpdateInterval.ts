@@ -44,16 +44,14 @@ const UpdateInterval = () => {
         `}).then(res => {
 
                 var data = res.data.data.roundSize
-                var [big, small] = bigSmall(data - 30, data)
-                winGraph(small - 1, big - small + 1, false, false)
-                winGraph(small - 1, big - small + 1, true, false)
+                
                 getRankData()
                 getWinData()
 
                 setRoundSelect2(data)
                 setRoundSize(data)
                 setRoundSelect1(data - 30)
-                document.getElementById("root")!.style.display = "block"
+                document.getElementById("searchLottoSec")!.style.display = "block"
 
             })
     }
@@ -120,24 +118,28 @@ const UpdateInterval = () => {
         //처음 그래프 정보 로드
         if (roundSize === 0)
             getSize()
+        else {
+            //회차정보가져온 후 인터벌 시작
+            id.current = setInterval(() => {
+                interval()
+            }, 15000);
+        }
     }, [roundSize])
 
     const id = useRef<any>()
 
     useEffect(() => {
         if (roundSize === 0) return
-        if (id) clearInterval(id.current)
-        interval() //유저가 회차 셀렉트 시 즉각적으로 정보가져오고 다시 인터벌 시작
-        id.current = setInterval(() => {
-            interval()
-        }, 15000);
+        //실제로또 회차 셀렉트 옵션 변경시 데이터 가져옴
+        var [big, small] = bigSmall(select1, select2)
+        winGraph(small - 1, big - small + 1, false, false)
+        winGraph(small - 1, big - small + 1, true, false)
+
     }, [select1, select2])
 
     function interval() {
         console.log("Data Updated!")
-        var [big, small] = bigSmall(select1, select2)
-        winGraph(small - 1, big - small + 1, false, false)
-        winGraph(small - 1, big - small + 1, true, false)
+        //실제로또 데이터는 15초주기로 업데이트할 필요가 없기 때문에 유저들 통계 자료만 업데이트.
         getRankData()
         getWinData()
     }

@@ -180,7 +180,7 @@ const initialState: ChartState = {
   recentRound: 0,
   roundSelect1: 1,
   roundSelect2: 1,
-  sortBtn: false
+  sortBtn: false //false가 내림차순
 };
 
 // reducers

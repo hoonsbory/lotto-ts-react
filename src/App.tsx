@@ -30,6 +30,10 @@ function App() {
           <LottoLogo></LottoLogo>
           <SearchLotto></SearchLotto>
           <FakeLotto></FakeLotto>
+          <ins className="kakao_ad_area" style={{display: "none"}}
+ data-ad-unit    = "DAN-dWQoWGSa7fy6ZEos" 
+ data-ad-width   = "320" 
+ data-ad-height  = "100"></ins> 
           <ChartSelect></ChartSelect>
           <HallOfFame></HallOfFame>
           <UserResult></UserResult>

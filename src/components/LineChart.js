@@ -197,7 +197,7 @@ const PieChart = () => {
                             return;
                         },
                         label: function (tooltipItem, data) { //라벨 커스텀. 확률과 횟수.
-                            return data['labels'][tooltipItem['index']] + " - " + data['datasets'][0]['data2'][tooltipItem['index']] + "번 , 확률 - " + data['datasets'][0]['data'][tooltipItem['index']] + "%";
+                            return data['labels'][tooltipItem['index']] + " - " + data['datasets'][0]['data2'][tooltipItem['index']].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "번 , 확률 - " + data['datasets'][0]['data'][tooltipItem['index']] + "%";
                         },
                     }
                 },

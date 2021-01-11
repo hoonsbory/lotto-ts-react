@@ -121,11 +121,11 @@ const UserChart = () => {
     //정렬
     const sort = Debounce(() => {
         if (sortBtn) {
+            setSortBtn()
             setMainList([...MainList.sort((a: any, b: any) => b[1] - a[1])])
-            setSortBtn()
         } else {
-            setMainList([...MainList.sort((a: any, b: any) => a[1] - b[1])])
             setSortBtn()
+            setMainList([...MainList.sort((a: any, b: any) => a[1] - b[1])])
         }
     }, 200)
 

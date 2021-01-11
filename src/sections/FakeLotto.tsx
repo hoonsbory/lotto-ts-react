@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { StoreState } from '../store'
 import { useDispatch } from 'react-redux';
 import { actionCreators } from '../store/store';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import LineDiv from '../components/LineDiv';
 import { Debounce } from '../Debounce'
@@ -51,35 +51,39 @@ const FakeLotto = () => {
         dispatch(actionCreators.userResult(value))
     }
     //토글 버튼
-    const [modeBtn, setModeBtn] = useState<boolean[]>([true,false])
+    const [modeBtn, setModeBtn] = useState<boolean[]>([true, false])
+
+
+    useEffect(() => {
+        //로컬스토리지에 있는 유저의 로또 내역 state에 저장
+        var result = localStorage.getItem("userResult")
+        if (result) setUserResult(JSON.parse(result))
+    }, [])
 
 
 
-  
-
- 
 
 
-    const modeChange = Debounce((check:boolean) => {
+    const modeChange = Debounce((check: boolean) => {
         setTrigger(false) //모드 체인지시에 남아있던 List가 새 모드에서 생성되면서 계산을 또 하기 때문에 false를 줘서 Rank생성 막음
         setDraw(false) //추첨기를 미리 false를 줘서 없애줘야 새 모드에서 인터벌이 겹치지 않는다.
         setCorrect([])
         setbonusCorrect([])
-        if(check){ //스피드모드로 변경 후 추첨을 안하고 다시 일반모드로 올 때 리스트 남겨둠. 
-            if(list.length>100) setList([[]])
-            setModeBtn([true,false])
-            
+        if (check) { //스피드모드로 변경 후 추첨을 안하고 다시 일반모드로 올 때 리스트 남겨둠. 
+            if (list.length > 100) setList([[]])
+            setModeBtn([true, false])
+
         }
-        else{
-            setModeBtn([false,true])
+        else {
+            setModeBtn([false, true])
         }
-        
-    },200)
+
+    }, 200)
 
     return (
         <Section>
             <SubTitle content="가상 로또 추첨"></SubTitle>
-            <LineDiv content={<ButtonGroup id={["normalMode","speedMode"]} content={["일반모드","스피드모드"]} selected={modeBtn} click={[()=> modeChange(true), ()=> modeChange(false)]}></ButtonGroup>}></LineDiv>
+            <LineDiv content={<ButtonGroup id={["normalMode", "speedMode"]} content={["일반모드", "스피드모드"]} selected={modeBtn} click={[() => modeChange(true), () => modeChange(false)]}></ButtonGroup>}></LineDiv>
             {modeBtn[0] ? <NotSpeedMode list={list} draw={draw} correct={correct} bonusCorrect={bonusCorrect} trigger={trigger} setList={setList} setDraw={setDraw} setCorrect={setCorrect} setbonusCorrect={setbonusCorrect} setTrigger={setTrigger} setUserResult={setUserResult}></NotSpeedMode> : <SpeedMode list={list} draw={draw} correct={correct} bonusCorrect={bonusCorrect} trigger={trigger} setList={setList} setDraw={setDraw} setCorrect={setCorrect} setbonusCorrect={setbonusCorrect} setTrigger={setTrigger} setUserResult={setUserResult}></SpeedMode>}
         </Section>
     )

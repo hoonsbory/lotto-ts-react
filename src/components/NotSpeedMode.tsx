@@ -51,11 +51,7 @@ const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, set
     //번호 선택 배열. 당첨번호 선택번호 등 state로 관리하는 이유는 스타일 컴포넌트의 props 변경을 위해서다.
     const [selectBtn, setSelectBtn] = useState<boolean[]>([])
 
-    useEffect(() => {
-        //로컬스토리지에 있는 유저의 로또 내역 state에 저장
-        var result = localStorage.getItem("userResult")
-        if (result) setUserResult(JSON.parse(result))
-    }, [])
+    
     //번호 선택 이벤트
     const select = (num: number) => {
         if (limit()) return

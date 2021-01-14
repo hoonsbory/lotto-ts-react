@@ -125,7 +125,7 @@ const HallOfFame = () => {
                     return (
 
                         <NumWrapper key={idx} check={numCheck}>
-                            <NameSpan>{obj.name}-{obj.time.substr(0,4)}년 {obj.time.substr(4,2)}월 {obj.time.substr(6,2)}일</NameSpan>
+                            <NameSpan className="HOFName">{obj.name}-{obj.time.substr(0,4)}년 {obj.time.substr(4,2)}월 {obj.time.substr(6,2)}일</NameSpan>
                             {Object.keys(obj).map((x, idx) => {
                                 if (x !== "name"&& x!=="time") //이름은 위에서 출력하기 때문에 건너뛰어준다. 1과 2는 맞춘 번호와 맞춘 보너스 번호를 검증하기 위함이다. 
                                     return <ResultNum key={idx} num={obj[x][0]} bonusCorrect={obj[x][1] === 2 ? true : false} correct={obj[x][1] === 1 ? true : false}></ResultNum>

@@ -15,7 +15,7 @@ const Div = styled.div<styleProps>`
     margin-top : 10px;
     margin-bottom : 5px;
     color : ${props => props.color || 'unset'};
-    font-size : ${props => props.fontSize+"px" || 'unset'};
+    font-size : ${props => props.fontSize+"px" || '1em'};
     font-weight : 600;
     display: flex;
     align-items: center;

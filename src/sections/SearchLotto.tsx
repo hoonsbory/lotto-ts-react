@@ -18,6 +18,7 @@ const Select = styled.select`
     border-radius : 5px;
     outline : 0;
     background : none;
+    font-size : .9em;
 `
 const SearchLotto = () => {
     const [select,setSelect] = useState<number>(0)
@@ -96,7 +97,7 @@ const SearchLotto = () => {
 
     return (
         <Div id="searchLottoSec">
-            <LineDiv fontSize={15} content={<div>지난 로또 조회  <Select value={select} onChange={handleChange}>{map}</Select>회차</div>}></LineDiv>
+            <LineDiv  content={<div>지난 로또 조회  <Select value={select} onChange={handleChange}>{map}</Select>회차</div>}></LineDiv>
             <p>{numList.map((x, idx) => {
                 if (idx === 6)
                     return (

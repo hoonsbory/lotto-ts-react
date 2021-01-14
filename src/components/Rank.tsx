@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { RankResult } from '../models/RankResult.js'
-import { RankResultNum } from '../models/RankResultNum'
+import { RankResultNum } from '../models/RankResultNum';
+import { RankResult } from '../models/RankResult';
 import Axios from 'axios'
 //결과를 출력하는 컴포넌트. 도출부터 전송까지 여기서 다 함.
 type props = {
@@ -12,7 +12,7 @@ type props = {
     listSize: number
     idx: number
     rankResult: any
-    rankResultNum: any
+    rankResultNum: any 
     setUserResult: Function
     hide?: boolean
     setRank:Function
@@ -93,7 +93,8 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
     //db에 저장
     const sendResult = async (sumResult: RankResult, resultNums: RankResultNum) => {
         await Axios.post(`${process.env.REACT_APP_URL}/winData`, { sumResult: sumResult, resultNums: resultNums })
-            .then()
+            .then(res=> {
+            })
             .catch()
     }
 
@@ -133,6 +134,9 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
                 newResult.fifth += rankResult.getFifth
                 newResult.last += rankResult.getLast 
                 setUserResult(newResult)
+                console.log(pastResult)
+                console.log(newResult)
+                console.log(rankResult)
                 localStorage.setItem("userResult", JSON.stringify(newResult))
             } else {
                 localStorage.setItem("userResult", JSON.stringify(rankResult))

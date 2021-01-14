@@ -13,6 +13,9 @@ import Rank from '../components/Rank';
 import DeleteSvg from '../components/DeleteSvg';
 import { RankResultNum } from '../models/RankResultNum';
 import { RankResult } from '../models/RankResult';
+import InsertHOF from './InsertHOF';
+import Axios from 'axios'
+import { Debounce } from '../Debounce'
 
 //번호 리스트 스크롤 
 const ScrollList = styled.div`
@@ -50,6 +53,7 @@ type props = {
 const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUserResult, setDraw, setTrigger, setCorrect, setbonusCorrect }: props) => {
     //번호 선택 배열. 당첨번호 선택번호 등 state로 관리하는 이유는 스타일 컴포넌트의 props 변경을 위해서다.
     const [selectBtn, setSelectBtn] = useState<boolean[]>([])
+    const [rank, setRank] = useState<number>(0)
 
     
     //번호 선택 이벤트
@@ -200,7 +204,34 @@ const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, set
         list.splice(idx, 1)
         setList([...list])
     }
+    const sendResult = Debounce(async () => {
+        var name = input.current.trim()
+        if(name.length<2||name.length>15){
+            alert("최소 2글자에서 최대 15글자까지 입력해주세요.")
+            return
+        }
+        rankResultNum.current.setWinnerName(name)
 
+        await Axios.post(`${process.env.REACT_APP_URL}/winData`, { sumResult: rankResult.current, resultNums: rankResultNum.current })
+            .then(res => {
+                if(window.confirm("명예의 전당에 등록되었습니다! 확인하시겠습니까?")){
+                    document.getElementById(`HOF${rank===1? rank+1 : rank-1}`)?.click()
+                    setTimeout(() => {
+                        document.getElementById(`HOF${rank}`)?.click()
+                        document.getElementById("HOF")?.scrollIntoView()
+                    }, 200);
+                }
+                setRank(0)
+                rankResult.current = new RankResult()
+                rankResultNum.current = new RankResultNum()
+            })
+            .catch(err => console.log(err))
+    },300)
+
+    const input = useRef('')
+    const handleChange = (e: any) => {
+        input.current = e.target.value
+    }
 
     //react virtualized 
     const rowRenderer = (
@@ -245,6 +276,10 @@ const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, set
     //계산에 쓰일 클래스 
     var rankResult = useRef(new RankResult())
     var rankResultNum = useRef(new RankResultNum())
+    const refReset = () => {
+        rankResult.current = new RankResult()
+        rankResultNum.current = new RankResultNum()
+    }
     return (
         <div>
             {map}
@@ -256,8 +291,9 @@ const NotSpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, set
             <Button fontSize={"1.0em"} color="rgb(235, 83, 116)" bg="rgba(235, 83, 116, 0.12)" hoverBg="rgb(235, 83, 116)" content="전체초기화" click={reset} />
             <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="만원 어치" click={() => random(true)} />
             <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="추첨하기" click={submit} />
+            {rank > 0 && rank < 4 ? <InsertHOF rank={rank} handleChange={handleChange} sendResult={sendResult}></InsertHOF> : refReset()}
             {draw ? <Draw mode={false} bonusCorrect={bonusCorrect} setbonusCorrect={setbonusCorrect} trigger={trigger} setTrigger={setTrigger} list={list} setDraw={setDraw} setCorrect={setCorrect} correct={correct} /> : ''}
-            <LineDiv fontSize={15} content="내가 뽑은 로또 번호" />
+            <LineDiv  content="내가 뽑은 로또 번호" />
             <List
                 width={1}
                 height={1}

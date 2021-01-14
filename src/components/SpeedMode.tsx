@@ -150,15 +150,19 @@ const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUse
 
     var rankResult = useRef(new RankResult())
     var rankResultNum = useRef(new RankResultNum())
+    const refReset = () => {
+        rankResult.current = new RankResult()
+        rankResultNum.current = new RankResultNum()
+    }
     return (
         <div>
-            {rank > 0 && rank < 4 ? <InsertHOF rank={rank} handleChange={handleChange} sendResult={sendResult}></InsertHOF> : ''}
+            {rank > 0 && rank < 4 ? <InsertHOF rank={rank} handleChange={handleChange} sendResult={sendResult}></InsertHOF> : refReset()}
             <Button id="randomBtn" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="50만원" click={() => randomTest(200)}></Button>
             <Button id="lineAdd" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="100만원" click={() => randomTest(1000)}></Button>
             <Button fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="500만원" click={() => randomTest(5000)}></Button>
             <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="1000만원" click={() => randomTest(10000)}></Button>
             {draw ? <Draw mode={true} bonusCorrect={bonusCorrect} setbonusCorrect={setbonusCorrect} trigger={trigger} setTrigger={setTrigger} list={list} setDraw={setDraw} setCorrect={setCorrect} correct={correct}></Draw> : ''}
-            <LineDiv fontSize={15} content="4등 이상 당첨 번호"></LineDiv>
+            <LineDiv content="4등 이상 당첨 번호"></LineDiv>
             <SmallSpan id="noticeNoWin">버튼을 눌러 로또를 구매하세요!</SmallSpan>
             <List
                 width={1}

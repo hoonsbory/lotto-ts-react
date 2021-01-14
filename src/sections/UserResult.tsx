@@ -128,7 +128,7 @@ const UserResult = () => {
     }, [upDownBtn, UserResult])
 
     return (
-        <div>
+        <div >
             <SlideFooterBtn upDownBtn={upDownBtn} setUpDownBtn={setUpDownBtn}/>
             <FixedDiv upDownBtn={upDownBtn}>
                 <MainSmallSpanWrapper>
@@ -136,21 +136,21 @@ const UserResult = () => {
                         <Title>내 로또 내역</Title>
                     </div>
                     <MainDivWrap>
-                        <LeftDiv>
-                            <SmallSpan>소비 금액</SmallSpan>
-                            <div><MainSpan id="roll1"></MainSpan></div>
+                        <LeftDiv> 
+                            <SmallSpan className="slideFooterSmall">소비 금액</SmallSpan>
+                            <div><MainSpan className="slideFooter"   id="roll1"></MainSpan></div>
                         </LeftDiv>
                         <RightDiv>
-                            <SmallSpan>구매 수</SmallSpan>
-                            <div><MainSpan2 id="roll2"></MainSpan2></div>
+                            <SmallSpan className="slideFooterSmall">구매 수</SmallSpan>
+                            <div><MainSpan2 className="slideFooter" id="roll2"></MainSpan2></div>
                         </RightDiv>
                     </MainDivWrap>
-                    <MainSmallSpan bg="rgba(255,94,0,.12)" color="rgb(255,94,0)">1등 {UserResult.first}회</MainSmallSpan>
-                    <MainSmallSpan bg="rgba(235,83,116,0.12)" color="rgb(235,83,116)">2등 {UserResult.second}회</MainSmallSpan>
-                    <MainSmallSpan bg="rgb(224,230,251)" color="rgb(86,115,235)">3등 {UserResult.third}회</MainSmallSpan>
-                    <MainSmallSpan>4등 {UserResult.fourth}회</MainSmallSpan>
-                    <MainSmallSpan>5등 {UserResult.fifth}회</MainSmallSpan>
-                    <MainSmallSpan>꽝 {UserResult.last}회</MainSmallSpan>
+                    <MainSmallSpan className="slideFooterSmall" bg="rgba(255,94,0,.12)" color="rgb(255,94,0)">1등 {UserResult.first}회</MainSmallSpan>
+                    <MainSmallSpan className="slideFooterSmall" bg="rgba(235,83,116,0.12)" color="rgb(235,83,116)">2등 {UserResult.second}회</MainSmallSpan>
+                    <MainSmallSpan className="slideFooterSmall" bg="rgb(224,230,251)" color="rgb(86,115,235)">3등 {UserResult.third}회</MainSmallSpan>
+                    <MainSmallSpan className="slideFooterSmall"> 4등 {UserResult.fourth}회</MainSmallSpan>
+                    <MainSmallSpan className="slideFooterSmall">5등 {UserResult.fifth}회</MainSmallSpan>
+                    <MainSmallSpan className="slideFooterSmall">꽝 {UserResult.last}회</MainSmallSpan>
                 </MainSmallSpanWrapper>
             </FixedDiv>
         </div>

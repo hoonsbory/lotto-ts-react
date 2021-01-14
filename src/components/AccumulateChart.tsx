@@ -32,6 +32,7 @@ const Select = styled.select`
     border-radius : 5px;
     outline : 0;
     background : none;
+    font-size : .9em;
 `
 
 const AccumulateChart = () => {

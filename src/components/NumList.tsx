@@ -23,7 +23,7 @@ const NumSpan = styled.button<numSpanProps>`
         @media(max-width : 414px){
             padding : 6px 0px;
             width : 30px;
-            font-size : 12px;
+            font-size : 13px;
         }
         width : 35px;
         outline : 0;

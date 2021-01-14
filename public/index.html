@@ -2,15 +2,16 @@
 <html lang="en">
 
 <head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-01R0CRQBBL"></script>
-<script data-ad-client="ca-pub-9106671749645972" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-01R0CRQBBL"></script>
+  <script data-ad-client="ca-pub-9106671749645972" async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-01R0CRQBBL');
-</script>
+    gtag('config', 'G-01R0CRQBBL');
+  </script>
   <meta charset="utf-8" />
   <meta name="naver-site-verification" content="aa419a41f4a7972363711a57269536aed0622234" />
 
@@ -55,6 +56,12 @@
 
 <body>
   <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+  <script type="text/javascript">
+    let ua = window.navigator.userAgent.toUpperCase()
+    if (ua.indexOf("MSIE") > -1 || ua.indexOf("TRIDENT") > -1)
+      alert("현재 사용 중인 브라우저는 지원되지 않습니다. 엣지나 크롬, 사파리로 접속해주세요.")
+
+  </script>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
   <!--

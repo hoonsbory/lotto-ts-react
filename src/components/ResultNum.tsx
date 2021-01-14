@@ -20,9 +20,9 @@ interface resultProps {
 const NumSpan = styled.span<spanProps>`
     animation: ${props=> props.theme.fadeUp} .4s linear alternate;
     display : inline-block;
-    width : 2em;
-    height : 2em;
-    line-height : 2em;
+    width : 2.2em;
+    height : 2.2em;
+    line-height : 2.2em;
     border : 1px solid rgba(86, 115, 235, 0.19);
     margin-right : 5px;
     background : ${props => props.bonusCorrect || props.bonus ? "rgb(224,230,251)" : (props.corrected ? "rgba(235, 83, 116,.12)" :  "white")};
@@ -31,10 +31,9 @@ const NumSpan = styled.span<spanProps>`
     font-size : .9em !important;
     font-weight : 600;
 `
-
 const ResultNum = ({num,correct,bonusCorrect,bonus}:resultProps) => {
     return (
-        <NumSpan bonusCorrect={bonusCorrect} corrected={correct} bonus={bonus}>
+        <NumSpan className="resultNum" bonusCorrect={bonusCorrect} corrected={correct} bonus={bonus}>
             {num}
         </NumSpan>
     )

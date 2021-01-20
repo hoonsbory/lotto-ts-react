@@ -1,7 +1,5 @@
 
     //숫자 롤링 효과
-    
-    //숫자 롤링 효과
 export class numberCounter {
     count: number;
     diff: number;
@@ -9,6 +7,7 @@ export class numberCounter {
     target_frame: Element;
     timer!: NodeJS.Timeout;
     addString: string;
+
     constructor(target_frame: string, target_number: any, addString: string) {
         this.count = 0; this.diff = 0;
         this.target_count = parseInt(target_number);

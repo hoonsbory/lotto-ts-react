@@ -134,9 +134,6 @@ const Rank:any = ({setRank, rankResultNum, rankResult, hide, list, listSize, idx
                 newResult.fifth += rankResult.getFifth
                 newResult.last += rankResult.getLast 
                 setUserResult(newResult)
-                console.log(pastResult)
-                console.log(newResult)
-                console.log(rankResult)
                 localStorage.setItem("userResult", JSON.stringify(newResult))
             } else {
                 localStorage.setItem("userResult", JSON.stringify(rankResult))

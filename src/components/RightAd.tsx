@@ -8,7 +8,7 @@ const RightAdDiv = styled.div`
 `
 
 window.addEventListener('resize', ()=>{
-    document.getElementById("rightAd")!.style.right = (window.innerWidth /2 -440) + "px"
+    if(document.getElementById("rightAd")) document.getElementById("rightAd")!.style.right = (window.innerWidth /2 -440) + "px"
 })
 
 const RightAd = () => {

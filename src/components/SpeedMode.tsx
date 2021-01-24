@@ -125,10 +125,15 @@ const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUse
             alert("최소 2글자에서 최대 15글자까지 입력해주세요.")
             return
         }
+        var loading = document.getElementById("loadingBg")
+        var text = loading!.firstElementChild!.firstElementChild!.nextElementSibling!
+        text.innerHTML = "이름을 등록 중입니다"
+        loading!.style.display = "block"
         rankResultNum.current.setWinnerName(name)
-
         await Axios.post(`${process.env.REACT_APP_URL}/winData`, { sumResult: rankResult.current, resultNums: rankResultNum.current })
             .then(res => {
+                loading!.style.display = "none"
+                text.innerHTML = "번호를 조합 중입니다"
                 if(window.confirm("명예의 전당에 등록되었습니다! 확인하시겠습니까?")){
                     document.getElementById(`HOF${rank===1? rank+1 : rank-1}`)?.click()
                     setTimeout(() => {

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Axios from 'axios'
 import Chart from './Chart'
 import ButtonGroup from './ButtonGroup';
 import styled from 'styled-components'
 import LineDiv from './LineDiv';
 import { Debounce } from '../Debounce'
 import PieChart from './LineChart';
-import { RankResult } from '../models/RankResult';
 import { useSelector } from 'react-redux';
 import { StoreState } from '../store'
 import { useDispatch } from 'react-redux';
@@ -31,37 +29,15 @@ const Span = styled.span`
 
 const UserChart = () => {
 
-
-    // const getRankData = async () => {
-    //     Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
-    //     query{
-    //         resultSum(_id:"id"){
-    //             first second third fourth fifth last
-    //         }
-    //     }
-    //     `}).then(res => {
-    //         setRankList(new RankResult(res.data.data.resultSum))
-    //     })
-    // }
-
-    // const getWinData = async () => {
-    //     Axios.get(`${process.env.REACT_APP_URL}/userWinNum`).then(res => {
-    //         addAList(res.data)
-    //     })
-    // }
-    const MainList = useSelector((state: StoreState) => state.ChartReducer.chartMainData)
-    const userChartList = useSelector((state: StoreState) => state.ChartReducer.userChartList)
-    const userChartSum = useSelector((state: StoreState) => state.ChartReducer.userChartSum)
-    const sortBtn = useSelector((state: StoreState) => state.ChartReducer.sortBtn)
+   
+    const {sortBtn,userChartSum,userChartList,chartMainData} = useSelector((state: StoreState) => state.ChartReducer)
 
     const dispatch = useDispatch()
 
-    const setMainList = (value: any) => {
-        dispatch(actionCreators.chartMainData(value))
-    }
-    const setSortBtn = () => {
-        dispatch(actionCreators.sortBtn())
-    }
+    const setMainList = (value: any) => dispatch(actionCreators.setChartMainData(value))
+    
+    const setSortBtn = () => dispatch(actionCreators.setSortBtn())
+    
     useEffect(() => {
         if (btnSelect[0]) {
             if (sortBtn){
@@ -105,8 +81,6 @@ const UserChart = () => {
             setMainList([...userChartSum.sort((a: any, b: any) => a[1] - b[1])])
         else
             setMainList([...userChartSum.sort((a: any, b: any) => b[1] - a[1])])
-        setMainList(userChartSum)
-        
     }, 200)
 
     const winNumChart = Debounce((idx: number) => {
@@ -122,10 +96,10 @@ const UserChart = () => {
     const sort = Debounce(() => {
         if (sortBtn) {
             setSortBtn()
-            setMainList([...MainList.sort((a: any, b: any) => b[1] - a[1])])
+            setMainList([...chartMainData.sort((a: any, b: any) => b[1] - a[1])])
         } else {
             setSortBtn()
-            setMainList([...MainList.sort((a: any, b: any) => a[1] - b[1])])
+            setMainList([...chartMainData.sort((a: any, b: any) => a[1] - b[1])])
         }
     }, 200)
 

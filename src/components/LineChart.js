@@ -15,8 +15,7 @@ const ChartWrapper = styled.div`
 
 const PieChart = () => {
 
-    var size = useSelector((state) => state.ChartReducer.graphSize);
-    var rankList = useSelector((state) => state.ChartReducer.chartMainData);
+    const {graphSize,chartMainData} = useSelector((state) => state.ChartReducer);
     const chart = useRef()
 
 
@@ -25,10 +24,10 @@ const PieChart = () => {
 
     useEffect(() => {
         // if (JSON.stringify(rankList) === JSON.stringify(list2.current) && size === size2.current) return
-        if(rankList.length===0)return
+        if(chartMainData.length===0)return
 
-        var labels = rankList.map(i => i[0])
-        var data = rankList.map(i => i[1])
+        var labels = chartMainData.map(i => i[0])
+        var data = chartMainData.map(i => i[1])
         var sum = data.reduce((a, b) => a + b)
         var data2 = data.map(x => {
             var result = ((x / sum) * 100)
@@ -153,11 +152,6 @@ const PieChart = () => {
 
                 }]
             },
-            animation: {
-                animateScale: true,
-                animateRotate: true,
-                easing: "easeInOutBack"
-            },
             options: {
                 maintainAspectRatio: false, //차트 상위 div에 구속
                 legend: {
@@ -217,7 +211,7 @@ const PieChart = () => {
         //     }
         //   };
         chart.current = chartjs
-    }, [rankList, size])
+    }, [chartMainData, graphSize])
 
 
 
@@ -225,7 +219,7 @@ const PieChart = () => {
         <div>
 
             <ScrollDiv>
-                <ChartWrapper size={size - 1170}>
+                <ChartWrapper size={graphSize - 1170}>
                     {/* <Line
                     options={{
                         responsive: true,

@@ -1,6 +1,6 @@
 import { useEffect , useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { actionCreators } from '../store/store';
+import { actionCreators } from '../store/FakeLottoStore';
 import { useSelector } from 'react-redux';
 import { StoreState } from '../store'
 import LineDiv from '../components/LineDiv'
@@ -24,38 +24,11 @@ const SearchLotto = () => {
     const [select,setSelect] = useState<number>(0)
     const [numList,setNumList] = useState<number[]>([])
 
-    const dispatch = useDispatch()
-
-    const setRoundSize = (value:number) => {
-        dispatch(actionCreators.recentRound(value))
-    }
-    const setRoundSelect2 = (value:number) => {
-        dispatch(actionCreators.roundSelect2(value))
-    }
-    const setRoundSelect1 = (value:number) => {
-        dispatch(actionCreators.roundSelect1(value))
-    }
 
     //회차
-    var roundSize = useSelector((state:StoreState)=> state.Reducer.recentRound)
+    var roundSize = useSelector((state:StoreState)=> state.ChartReducer.recentRound)
 
-    //최신 회차가 몇인지 가져옴.
-    // const getSize = async () => {
-    //     await Axios.post(`${process.env.REACT_APP_URL}/`, {query : `
-    //     query{
-    //         roundSize
-    //     }
-    //     `}).then(res => {
-    //         var data = res.data.data.roundSize
-    //         setSelect(data)
-    //         setRoundSelect2(data)
-    //         setRoundSelect1(data-30)
-    //         setRoundSize(data)
-    //         document.getElementById("root")!.style.display = "block"
-    //         getNum(data)
-
-    //     })
-    // }
+  
 
     //선택한 회차 정보를 가져옴
     const getNum = async (num : number) => {

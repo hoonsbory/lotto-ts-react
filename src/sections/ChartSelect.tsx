@@ -22,24 +22,20 @@ const ChartSelect = () => {
 
     const dispatch = useDispatch(); // 디스패치 함수를 가져옵니다
 
-    //공통으로 쓰일 리스트 액션
-    const addAList = (newList: number[]) => {
-        dispatch(actionCreators.chartList(newList))
-    }
     //차트 사이즈업 액션
     const graphSizeUp = (size: number) => {
-        dispatch(actionCreators.graphSizeUp(size))
+        dispatch(actionCreators.setGraphSizeUp(size))
     }
     //차트 사이즈다운 액션
     const graphSizeDown = (size: number) => {
-        dispatch(actionCreators.graphSizeDown(size))
+        dispatch(actionCreators.setGraphSizeDown(size))
     }
     
     const setMainList = (value:any) => {
-        dispatch(actionCreators.chartMainData(value))
+        dispatch(actionCreators.setChartMainData(value))
     }
     //차트 사이즈
-    var size = useSelector((state: StoreState) => state.Reducer.graphSize);
+    var size = useSelector((state: StoreState) => state.ChartReducer.graphSize);
 
     //차트 사이즈업
     const sizeUp = (idx: number) => {

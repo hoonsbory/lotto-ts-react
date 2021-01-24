@@ -13,9 +13,7 @@ const ScrollDiv = styled.div`
 `
 
 const Chart = () => {
-    var list = useSelector((state) => state.ChartReducer.chartMainData);
-    var size = useSelector((state) => state.ChartReducer.graphSize);
-    var sort = useSelector((state) => state.ChartReducer.sortBtn);
+    const {chartMainData,graphSize,sortBtn} = useSelector((state) => state.ChartReducer);
     const chart = useRef()
 
     
@@ -38,7 +36,7 @@ const Chart = () => {
         var chartjs = new Chart2(ctx, {
             type: 'bar',
             data: {
-                labels: list.map(x => `${x[0]}번`),
+                labels: chartMainData.map(x => `${x[0]}번`),
                 datasets: [{
                     label: 'Chart Graph',
                     borderColor: gradientStroke,
@@ -51,17 +49,12 @@ const Chart = () => {
                     pointRadius: 3,
                     fill: true,
                     backgroundColor: gradientFill,
-                    data: list.map(x => x[1]),
+                    data: chartMainData.map(x => x[1]),
                     pointBorderWidth: 10,
                     hoverBorderWidth: 13,
 
 
                 }]
-            },
-            animation: {
-                animateScale: true,
-                animateRotate: true,
-                easing: "easeInOutBack"
             },
             options: {
                 maintainAspectRatio: false,
@@ -80,7 +73,7 @@ const Chart = () => {
                             fontStyle: "bold",
                             beginAtZero: true,
                             //y축 데이터 최대치 설정. sort 상태에 따라서 최대치 설정. 막대 그래프 위에 데이터수치가 보이기때문에 최대치를 늘려줘야 데이터가 안가려짐
-                            suggestedMax: list.length >0 ? (sort ? list[list.length-1][1] + list[list.length-1][1]*0.1 : list[0][1] + list[0][1]*0.1) : 0,
+                            suggestedMax: chartMainData.length >0 ? (sortBtn ? chartMainData[chartMainData.length-1][1] + chartMainData[chartMainData.length-1][1]*0.1 : chartMainData[0][1] + chartMainData[0][1]*0.1) : 0,
                             callback: function(value) { //y축 라벨 커스텀
                                 if(Math.floor(value) === value) //소수점 제거
                                 return  value  + "회";
@@ -117,14 +110,14 @@ const Chart = () => {
         });
 
         chart.current = chartjs
-    }, [list,size])
+    }, [chartMainData,graphSize])
 
 
     return (
         <div>
 
             <ScrollDiv>
-                <ChartWrapper size={size}>
+                <ChartWrapper size={graphSize}>
                     <canvas  height="300px" id="myChart"></canvas>
                 </ChartWrapper>
             </ScrollDiv>

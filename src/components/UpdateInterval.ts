@@ -6,34 +6,26 @@ import { useSelector } from 'react-redux';
 import { StoreState } from '../store'
 
 const UpdateInterval = () => {
-    const roundSize = useSelector((state: StoreState) => state.Reducer.recentRound)
-    const select1 = useSelector((state: StoreState) => state.Reducer.roundSelect1)
-    const select2 = useSelector((state: StoreState) => state.Reducer.roundSelect2)
+
+    const {roundSelect1,roundSelect2,recentRound} = useSelector((state: StoreState) => state.ChartReducer)
 
     const dispatch = useDispatch()
 
-    const setChartList = (value: number[]) => {
-        dispatch(actionCreators.chartList(value))
-    }
-    const setChartBonusList = (value: number[]) => {
-        dispatch(actionCreators.chartBonusList(value))
-    }
-    const setUserSum = (value: any) => {
-        dispatch(actionCreators.userChartSum(value))
-    }
-    const setUserChartList = (value: number[]) => {
-        dispatch(actionCreators.userChartList(value))
-    }
+    const setChartList = (value: number[]) => dispatch(actionCreators.setChartList(value))
+    
+    const setChartBonusList = (value: number[]) => dispatch(actionCreators.setChartBonusList(value))
+    
+    const setUserSum = (value: any) => dispatch(actionCreators.setUserChartSum(value))
+    
+    const setUserChartList = (value: number[]) => dispatch(actionCreators.setUserChartList(value))
+    
 
-    const setRoundSize = (value: number) => {
-        dispatch(actionCreators.recentRound(value))
-    }
-    const setRoundSelect2 = (value: number) => {
-        dispatch(actionCreators.roundSelect2(value))
-    }
-    const setRoundSelect1 = (value: number) => {
-        dispatch(actionCreators.roundSelect1(value))
-    }
+    const setRoundSize = (value: number) => dispatch(actionCreators.setRecentRound(value))
+    
+    const setRoundSelect2 = (value: number) => dispatch(actionCreators.setRoundSelect2(value))
+    
+    const setRoundSelect1 = (value: number) => dispatch(actionCreators.setRoundSelect1(value))
+    
     //최신 회차가 몇인지 가져옴.
     const getSize = async () => {
         await Axios.post(`${process.env.REACT_APP_URL}/`, {
@@ -57,7 +49,7 @@ const UpdateInterval = () => {
     }
 
     const winGraph = (skip: number, limit: number, bonus: boolean, sort: boolean) => {
-        if (roundSize === 0) return
+        if (recentRound === 0) return
         Axios.post(`${process.env.REACT_APP_URL}/winGraph`, { skip: skip, limit: limit !== 0 ? limit : 1, bonus: bonus, sort: sort })
             .then(res => {
                 if (!bonus) {
@@ -116,7 +108,7 @@ const UpdateInterval = () => {
 
     useEffect(() => {
         //처음 그래프 정보 로드
-        if (roundSize === 0)
+        if (recentRound === 0)
             getSize()
         else {
             //회차정보가져온 후 인터벌 시작
@@ -124,18 +116,18 @@ const UpdateInterval = () => {
                 interval()
             }, 15000);
         }
-    }, [roundSize])
+    }, [recentRound])
 
     const id = useRef<any>()
 
     useEffect(() => {
-        if (roundSize === 0) return
+        if (recentRound === 0) return
         //실제로또 회차 셀렉트 옵션 변경시 데이터 가져옴
-        var [big, small] = bigSmall(select1, select2)
+        var [big, small] = bigSmall(roundSelect1, roundSelect2)
         winGraph(small - 1, big - small + 1, false, false)
         winGraph(small - 1, big - small + 1, true, false)
 
-    }, [select1, select2])
+    }, [roundSelect1, roundSelect2])
 
     function interval() {
         console.log("Data Updated!")

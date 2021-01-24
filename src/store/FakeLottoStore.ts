@@ -3,30 +3,19 @@
 //interface를 통해 타입을 정해준다.
 export interface State {
   list: number[][];
-  accumulateList: number[][];
-  graphSize: number;
   drawCheck: boolean;
   corrected: boolean[];
   bonusCorrect: boolean[];
-  recentRound: number;
   resultTrigger: boolean;
-  roundSelect1: number
-  roundSelect2: number
   userResult: any
 }
 
 //액션 타입
 export const LIST = "LIST";
-export const ALIST = "ALIST";
-export const RESIZE = "RESIZE";
-export const GRAPHSIZE = "GRAPHSIZE";
 export const DRAWCHECK = "DRAWCHECK";
 export const CORRECTED = "CORRECTED";
 export const BONUSCORRECT = "BONUSCORRECT";
-export const RECENTROUND = "RECENTROUND";
 export const TRIGGER = "TRIGGER";
-export const ROUNDSELECT1 = "ROUNDSELECT1"
-export const ROUNDSELECT2 = "ROUNDSELECT2"
 export const USERRESULT = "USERRESULT"
 
 
@@ -36,15 +25,6 @@ interface ListAction {
   type: typeof LIST;
 }
 
-interface AccumulateListAction {
-  newList: number[][];
-  type: typeof ALIST;
-}
-
-interface GraphSize {
-  size: number;
-  type: typeof GRAPHSIZE;
-}
 interface DrawCheck {
   value: boolean;
   type: typeof DRAWCHECK;
@@ -57,37 +37,21 @@ interface bonusCorrect {
   value: boolean[];
   type: typeof BONUSCORRECT;
 }
-interface RecentRound {
-  value: number;
-  type: typeof RECENTROUND;
-}
 
 interface ResultTrigger {
   value: boolean;
   type: typeof TRIGGER;
 }
-interface RoundSelect1 {
-  value: number;
-  type: typeof ROUNDSELECT1;
-}
-interface RoundSelect2 {
-  value: number;
-  type: typeof ROUNDSELECT2;
-}
+
 interface UserResult {
   value: any;
   type: typeof USERRESULT;
 }
 
 type ActionTypes = ListAction |
-  AccumulateListAction |
-  GraphSize |
   DrawCheck | Corrected |
-  RecentRound |
   ResultTrigger |
   bonusCorrect |
-  RoundSelect1 |
-  RoundSelect2 | 
   UserResult
 // interface ActionTypes {
 //   actionTypes : ListAction | List2Action
@@ -104,24 +68,7 @@ function list(newList: number[][]) {
     newList: newList
   };
 }
-function accumulateList(newList: number[]) {
-  return {
-    type: ALIST,
-    newList: newList
-  };
-}
-function graphSizeUp(size: number) {
-  return {
-    type: GRAPHSIZE,
-    size: size
-  };
-}
-function graphSizeDown(size: number) {
-  return {
-    type: GRAPHSIZE,
-    size: size
-  };
-}
+
 function drawCheck(value: boolean) {
   return {
     type: DRAWCHECK,
@@ -140,30 +87,14 @@ function bonusCorrect(value: boolean[]) {
     value: value
   };
 }
-function recentRound(value: number) {
-  return {
-    type: RECENTROUND,
-    value: value
-  };
-}
+
 function resultTrigger(value: boolean) {
   return {
     type: TRIGGER,
     value: value
   };
 }
-function roundSelect1(value: number) {
-  return {
-    type: ROUNDSELECT1,
-    value: value
-  };
-}
-function roundSelect2(value: number) {
-  return {
-    type: ROUNDSELECT2,
-    value: value
-  };
-}
+
 function userResult(value: any) {
   return {
     type: USERRESULT,
@@ -173,28 +104,23 @@ function userResult(value: any) {
 
 //액션 함수 export
 export const actionCreators = {
-  list, accumulateList, graphSizeUp, graphSizeDown, drawCheck, corrected, recentRound, resultTrigger, bonusCorrect, roundSelect1, roundSelect2, userResult
-};
+  list, drawCheck, corrected, resultTrigger, bonusCorrect, userResult
+}
 
 //초기값 선언 타입은 가장 위에서 선언한 인터페이스
 const initialState: State = {
   list: [[]],
-  accumulateList: [],
-  graphSize: 1160,
   drawCheck: false,
   corrected: [],
   bonusCorrect: [],
-  recentRound: 0,
   resultTrigger: false,
-  roundSelect1: 1,
-  roundSelect2: 1,
   userResult: {
-    first : 0,
-    second : 0,
-    third : 0,
-    fourth : 0,
-    fifth : 0,
-    last : 0
+    first: 0,
+    second: 0,
+    third: 0,
+    fourth: 0,
+    fifth: 0,
+    last: 0
   }
 };
 
@@ -209,16 +135,7 @@ export function Reducer(
         ...state,
         list: action.newList
       };
-    case ALIST:
-      return {
-        ...state,
-        accumulateList: action.newList
-      };
-    case GRAPHSIZE:
-      return {
-        ...state,
-        graphSize: action.size
-      };
+
     case DRAWCHECK:
       return {
         ...state,
@@ -234,27 +151,14 @@ export function Reducer(
         ...state,
         bonusCorrect: action.value
       };
-    case RECENTROUND:
-      return {
-        ...state,
-        recentRound: action.value
-      };
+
     case TRIGGER:
       return {
         ...state,
         resultTrigger: action.value
       };
-    case ROUNDSELECT1:
-      return {
-        ...state,
-        roundSelect1: action.value
-      };
-    case ROUNDSELECT2:
-      return {
-        ...state,
-        roundSelect2: action.value
-      };
-      case USERRESULT:
+
+    case USERRESULT:
       return {
         ...state,
         userResult: action.value

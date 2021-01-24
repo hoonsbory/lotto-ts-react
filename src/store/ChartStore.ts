@@ -96,69 +96,69 @@ type ActionTypes =
 
 
 //액션 인터페이스 설정한 내용을 토대로 함수 작성.
-function chartMainData(newList: number[]) {
+function setChartMainData(newList: any) {
   return {
     type: CHARTMAINDATA,
     newList: newList
   };
 }
-function chartList(newList: number[]) {
+function setChartList(newList: number[]) {
   return {
     type: CHARTLIST,
     newList: newList
   };
 }
-function chartBonusList(newList: number[]) {
+function setChartBonusList(newList: number[]) {
   return {
     type: CHARTBONUSLIST,
     newList: newList
   };
 }
-function userChartList(newList: number[]) {
+function setUserChartList(newList: number[]) {
   return {
     type: USERCHARTLIST,
     newList: newList
   };
 }
-function graphSizeUp(size: number) {
+function setGraphSizeUp(size: number) {
   return {
     type: GRAPHSIZE,
     size: size
   };
 }
-function userChartSum(newData: any) {
+function setUserChartSum(newData: any) {
   return {
     type: USERCHARTSUM,
     newData: newData
   };
 }
-function graphSizeDown(size: number) {
+function setGraphSizeDown(size: number) {
   return {
     type: GRAPHSIZE,
     size: size
   };
 }
 
-function recentRound(value: number) {
+function setRecentRound(value: number) {
   return {
     type: RECENTROUND,
     value: value
   };
 }
 
-function roundSelect1(value: number) {
+function setRoundSelect1(value: number) {
   return {
     type: ROUNDSELECT1,
     value: value
   };
 }
-function roundSelect2(value: number) {
+function setRoundSelect2(value: number) {
   return {
     type: ROUNDSELECT2,
     value: value
   };
 }
-function sortBtn() {
+function setSortBtn() {
   return {
     type: SORTBTN
   };
@@ -166,7 +166,7 @@ function sortBtn() {
 
 //액션 함수 export
 export const actionCreators = {
-  chartMainData, chartList, chartBonusList, userChartSum, userChartList, graphSizeUp, graphSizeDown, recentRound, roundSelect1, roundSelect2, sortBtn
+  setChartMainData, setChartList, setChartBonusList, setUserChartSum, setUserChartList, setGraphSizeUp, setGraphSizeDown, setRecentRound, setRoundSelect1, setRoundSelect2, setSortBtn
 };
 
 //초기값 선언 타입은 가장 위에서 선언한 인터페이스

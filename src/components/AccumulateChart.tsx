@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { StoreState } from '../store'
 import { useDispatch } from 'react-redux';
 import { actionCreators } from '../store/ChartStore';
+import LoadingSvg from './LoadingSvg';
 //실제 로또 통계 차트 선택 섹션
 
 
@@ -34,44 +35,29 @@ const Select = styled.select`
     background : none;
     font-size : .9em;
 `
+const LoadingDiv = styled.div`
+    padding : 100px;
+    border : 1px solid gray;
+`
+
 
 const AccumulateChart = () => {
 
     //로또 회차정보
-    const roundSize = useSelector((state: StoreState) => state.Reducer.recentRound)
-    const select1 = useSelector((state: StoreState) => state.Reducer.roundSelect1)
-    const select2 = useSelector((state: StoreState) => state.Reducer.roundSelect2)
-    const MainList = useSelector((state: StoreState) => state.ChartReducer.chartMainData)
-    const chartList = useSelector((state: StoreState) => state.ChartReducer.chartList)
-    const chartBonusList = useSelector((state: StoreState) => state.ChartReducer.chartBonusList)
-    const sortBtn = useSelector((state: StoreState) => state.ChartReducer.sortBtn)
+    
+    const {sortBtn,chartBonusList,chartList,chartMainData,roundSelect1,roundSelect2,recentRound} =  useSelector((state: StoreState) => state.ChartReducer)
 
     const dispatch = useDispatch()
 
-    const setSelect1 = (value: number) => {
-        dispatch(actionCreators.roundSelect1(value))
-    }
-    const setSelect2 = (value: number) => {
-        dispatch(actionCreators.roundSelect2(value))
-    }
-    const setMainList = (value: any) => {
-        dispatch(actionCreators.chartMainData(value))
-    }
-    const setSortBtn = () => {
-        dispatch(actionCreators.sortBtn())
-    }
-    const setRoundSize = (value: number) => {
-        dispatch(actionCreators.recentRound(value))
-    }
+    const setSelect1 = (value: number) => dispatch(actionCreators.setRoundSelect1(value))
+    
+    const setSelect2 = (value: number) => dispatch(actionCreators.setRoundSelect2(value))
+    
+    const setMainList = (value: any) => dispatch(actionCreators.setChartMainData(value))
+    
+    const setSortBtn = () => dispatch(actionCreators.setSortBtn())
+    
 
-
-    const winGraph = (skip: number, limit: number, bonus: boolean, sort: boolean) => {
-        if (roundSize === 0) return
-        Axios.post(`${process.env.REACT_APP_URL}/winGraph`, { skip: skip, limit: limit !== 0 ? limit : 1, bonus: bonus, sort: sort })
-            .then(res => {
-                setMainList(res.data)
-            })
-    }
 
 
     useEffect(() => {
@@ -106,30 +92,21 @@ const AccumulateChart = () => {
     }
 
     //최신회차까지 옵션 생성 1회차부터기때문에 +1
-    var arr = new Array(roundSize).fill(0)
+    var arr = new Array(recentRound).fill(0)
     var map = arr.map((x, idx: number) => <option key={idx} value={idx + 1}>{idx + 1}</option>)
 
 
-    //회차 선택을 큰 수, 작은 수 순으로 할 경우를 위해 만든 대소 비교 함수.
-    const bigSmall = (val1: number, val2: number) => {
-        return val1 > val2 ? [val1, val2] : [val2, val1]
-    }
 
     //옵션1 이벤트
     const handleChange = (e: any) => {
         var val: number = parseInt(e.target.value)
-
-        var [big, small] = bigSmall(val, select2)
         setSelect1(val)
-        winGraph(small - 1, big - small + 1, btnSelect[1], sortBtn)
     }
 
     //옵션2 이벤트
     const handleChange2 = (e: any) => {
         var val: number = parseInt(e.target.value)
-        var [big, small] = bigSmall(val, select1)
         setSelect2(val)
-        winGraph(small - 1, big - small + 1, btnSelect[1], sortBtn)
     }
 
     //보너스 미포함 그래프
@@ -157,10 +134,10 @@ const AccumulateChart = () => {
     const sort = Debounce(() => {
         if (sortBtn) {
             setSortBtn()
-            setMainList([...MainList.sort((a: any, b: any) => b[1] - a[1])])
+            setMainList([...chartMainData.sort((a: any, b: any) => b[1] - a[1])])
         } else {
             setSortBtn()
-            setMainList([...MainList.sort((a: any, b: any) => a[1] - b[1])])
+            setMainList([...chartMainData.sort((a: any, b: any) => a[1] - b[1])])
         }
     }, 200)
 
@@ -168,17 +145,17 @@ const AccumulateChart = () => {
     return (
         <div>
             <LineDiv content={<div>
-                <Select value={select1} onChange={handleChange}>
+                <Select value={roundSelect1} onChange={handleChange}>
                     {map}
                 </Select>  회차부터&nbsp;&nbsp;
-            <Select value={select2} onChange={handleChange2}>
+            <Select value={roundSelect2} onChange={handleChange2}>
                     {map}
                 </Select>  회차까지
             </div>}></LineDiv>
 
             <FlexDiv><Span>가장 많이 뽑힌</Span><ButtonGroup id={["chartBtn1", "chartBtn2"]} selected={btnSelect} content={["번호(보너스X)", "보너스번호"]} click={[noBonus, bonus]}></ButtonGroup><Button border={true} click={sort} hoverBg="rgb(224,230,251)" bg="white" content={<Arrow fill="rgb(86,115,235)" upDown={sortBtn}></Arrow>}></Button></FlexDiv>
 
-            <Chart></Chart>
+            {chartMainData.length>0 ? <Chart></Chart> : <LoadingDiv><LoadingSvg></LoadingSvg>차트를 불러오고 있습니다.</LoadingDiv>}
         </div>
     )
 }

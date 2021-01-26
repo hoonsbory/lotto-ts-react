@@ -162,7 +162,7 @@ const SpeedMode = ({ list, draw, correct, bonusCorrect, trigger, setList, setUse
     return (
         <div>
             {rank > 0 && rank < 4 ? <InsertHOF rank={rank} handleChange={handleChange} sendResult={sendResult}></InsertHOF> : refReset()}
-            <Button id="randomBtn" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="50만원" click={() => randomTest(200)}></Button>
+            <Button id="randomBtn" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="50만원" click={() => randomTest(500)}></Button>
             <Button id="lineAdd" fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="100만원" click={() => randomTest(1000)}></Button>
             <Button fontSize={"1.0em"} color="rgb(86, 115, 235)" bg="rgb(224, 230, 251)" content="500만원" click={() => randomTest(5000)}></Button>
             <Button fontSize={"1.0em"} color="rgb(255,94,0)" bg="rgba(255,94,0,.12)" hoverBg="rgb(255,94,0)" content="1000만원" click={() => randomTest(10000)}></Button>

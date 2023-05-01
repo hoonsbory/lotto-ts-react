@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to Slamdunk 로또맛집 👋</h1>
+<h1 align="center">Welcome to 로또맛집 👋</h1>
 
 <br>
 
